@@ -93,6 +93,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uniTag: function() {
+      return __webpack_require__.e(/*! import() | uni_modules/uni-tag/components/uni-tag/uni-tag */ "uni_modules/uni-tag/components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-tag/components/uni-tag/uni-tag.vue */ 215))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -150,6 +173,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -159,14 +223,43 @@ var _default =
       person: {
         name: '账单',
         number: '18210646937',
-        sex: '先生' } };
+        sex: '先生' },
 
+      goodsList: [{
+        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+        type: '太空灰;256GB',
+        money: '￥368.00',
+        count: '1' },
+      {
+        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+        type: '太空灰;256GB',
+        money: '￥368.00',
+        count: '1' },
+      {
+        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+        type: '太空灰;256GB',
+        money: '￥368.00',
+        count: '1' }],
+
+      coupon: '-￥15.00',
+      freight: '￥10.00',
+      goodsnum: '2',
+      total: '159.00' };
 
   },
   methods: {
     toAddress: function toAddress() {
       uni.navigateTo({
         url: '../shipAddress/shipAddress' });
+
+    },
+    //优惠金额
+    toCoupon: function toCoupon() {
+      uni.navigateTo({
+        url: '../coupon/coupon' });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

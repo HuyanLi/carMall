@@ -38,6 +38,8 @@
   display: flex;
   flex-direction: column;
   padding: 30rpx;
+  border: 1px solid;
+  border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAAGCAYAAAAc5iwfAAAAAXNSR0IArs4c6QAAAmdJREFUeF7tm9Ft4kAYhGcwnSQpANMAKSJXBeIZHgJLeIBnRBWXIkIDmAIu6QTyR4vNxXBgvOxFSqTZFySwVr/G438/Zr1EMQwgXCehW26s15rC2AfwDqCxv6bmpwHYAmjCOOBiNTOHBt1urtrDzIjlMuH9/cb+ZFMQ8fUQA96kMzNrkAyrR/pU3jv5p9ra0kf6QP3nlAk+1wvpI31ieEP++Sn+8eyVgBjTV3ywOHbbj6A95V9j93vAKDUTm3C+Hvq5mc9VexzA52v2CCC+HmDC23To5yYZVk8ZPqXPP/dR/gmAK/lH/lH/KeUeRVih/lwND9JH+sTw2LfzD8acZ86TWCn5TB0MoyLBTGoTY35hKfmE4yIb28NDwudnn4bWHofJ58qBjK+HdLxpjc1+J+SvsHqkT0DyKf8ci6XnKwDOe/KP/KP+XHigFOZo/TrRRaTPxdZa/Ln7bvzjk8955nZ8uIdE+2z+m108Gk7bHuzyWNVP7jpNuOU2PP3MIdHe1iOYOQBx9ZiNedd29vLSRKezDU4/C4i2bjryqB5dj/Q599jIP9UNRfpIH/WfIw/8Xb/Un08+HdLnAqVpfa8OmL5eH+A/wGe+XW8ccrGaXA+f+fa4vWZ+y91vvV8Ln/vXB4a8TSdXw2fx+oD1Wk8wxtcjfc6ZXf65/G9Wz9d5jeQf+Uf9+RjOtX5d3L3zAZnW99My7V+f/Ep9WIJPn7D4A0eh733mB5VoM87Xgwj43B0MsresD8M0Aj7zegwz3qWDq+GzODhl3XYftPh6pM+5ZiD/VMOD9JE+6j/HcKX+XA1X0kf6/AD++QDo9qM7qckH4QAAAABJRU5ErkJggg==) 27 round;
 }
 .order .orderAdress .orderArea.data-v-c8ec6a50 {
   font-family: PingFangSC-Light;
@@ -51,10 +53,18 @@
   margin: 10rpx 0;
 }
 .order .orderAdress .detailAddress text.data-v-c8ec6a50 {
+  display: inline-block;
+  float: left;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   font-size: 36rpx;
   color: #333333;
+  width: 95%;
+}
+.order .orderAdress .detailAddress image.data-v-c8ec6a50 {
+  width: 32rpx;
+  height: 43rpx;
+  float: right;
 }
 .order .orderAdress .adressPerson text.data-v-c8ec6a50 {
   font-family: PingFangSC-Light;
@@ -62,5 +72,124 @@
   font-size: 24rpx;
   color: #666666;
   line-height: 36rpx;
+}
+.order .orderAdress .adressPerson .text2.data-v-c8ec6a50 {
+  margin: 0 20rpx;
+}
+.order .chooseGoods.data-v-c8ec6a50 {
+  margin: 30rpx 30rpx 20rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 30rpx 25rpx;
+}
+.order .chooseGoods .chooseItem.data-v-c8ec6a50 {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20rpx;
+}
+.order .chooseGoods .chooseItem .goodsImage.data-v-c8ec6a50 {
+  width: 180rpx;
+  height: 180rpx;
+}
+.order .chooseGoods .chooseItem .goodsInfo.data-v-c8ec6a50 {
+  margin: 0 0 0 20rpx;
+  width: 445rpx;
+}
+.order .chooseGoods .chooseItem .goodsInfo .shopTitle.data-v-c8ec6a50 {
+  display: inline-block;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #333333;
+}
+.order .chooseGoods .chooseItem .goodsInfo .shopTag.data-v-c8ec6a50 {
+  width: 210rpx;
+  height: 48rpx;
+  border-radius: 8rpx;
+  margin: 10rpx 0;
+}
+.order .chooseGoods .chooseItem .goodsInfo .shopTag .tag .uni-tag.data-v-c8ec6a50 {
+  background-color: #F3F3F3 !important;
+  font-size: 24rpx;
+  color: #757575;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+}
+.order .chooseGoods .chooseItem .goodsInfo .moneyInfo.data-v-c8ec6a50 {
+  width: 100%;
+  height: 44rpx;
+  border-radius: 4rpx;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+.order .chooseGoods .chooseItem .goodsInfo .moneyInfo .shopMoney.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 30rpx;
+  color: #ED1C24;
+}
+.order .chooseGoods .chooseItem .goodsInfo .moneyInfo .number-box.data-v-c8ec6a50 {
+  float: right;
+}
+.order .chooseGoods .chooseItem .goodsInfo .moneyInfo .number-box text.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 24rpx;
+  color: #757575;
+}
+.order .goodsMoney.data-v-c8ec6a50 {
+  width: 690rpx;
+  margin: 0 auto 20rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.order .goodsMoney .textS.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #333333;
+}
+.order .goodsMoney .testMon.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #FF0000;
+}
+.order .goodsMoney .goodsCoupon.data-v-c8ec6a50 {
+  padding: 30rpx 30rpx 35rpx;
+}
+.order .goodsMoney .goodsCoupon .money.data-v-c8ec6a50 {
+  float: right;
+  display: inline-block;
+}
+.order .goodsMoney .goodsCoupon .money image.data-v-c8ec6a50 {
+  width: 12rpx;
+  height: 20rpx;
+  margin-left: 20rpx;
+}
+.order .goodsMoney .yunfei.data-v-c8ec6a50 {
+  padding: 30rpx;
+}
+.order .goodsMoney .yunfei .yfMon.data-v-c8ec6a50 {
+  float: right;
+}
+.order .goodsMoney .total.data-v-c8ec6a50 {
+  padding: 30rpx;
+  float: right;
+}
+.order .goodsMoney .total .totalNum.data-v-c8ec6a50 {
+  font-size: 22rpx;
+  color: #999999;
+  margin-right: 20rpx;
+}
+.order .goodsMoney .total .totalMoney.data-v-c8ec6a50 {
+  font-size: 26rpx;
+  color: #333333;
+}
+.order .goodsMoney .total .money2.data-v-c8ec6a50 {
+  font-size: 36rpx;
 }
 

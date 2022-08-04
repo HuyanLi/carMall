@@ -142,6 +142,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/store/coupon/coupon",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"pageOrientation": "portrait",

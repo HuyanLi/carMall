@@ -21,14 +21,13 @@
 				<view class="shopInfo">
 					<text class="shopTitle">{{item.title}}</text>
 					<view class="shopTag">
-						<uni-tag class="tag" :text="tabTitle" />
+						<uni-tag class="tag" :text="item.type" />
 					</view>
 					<view class="moneyInfo">
 						<view class="">
 							<text class="shopMoney">{{item.money}}</text>
 							<text class="shopOriginMoney">{{item.originMoney}}</text>
 						</view>
-						<!-- <xg-money camel :size="UNI_FONT_SIZE_XL" :money="product.price"></xg-money> -->
 						<view class="number-box">
 							<uni-number-box :min="1" :value="item.count"  @change="onNumberBoxChange(product, $event)"></uni-number-box>
 						</view>

@@ -17,7 +17,8 @@
     "pages/store/groupActivity/groupActivity",
     "pages/store/shoppingCart/shoppingCart",
     "pages/store/shipAddress/shipAddress",
-    "pages/store/confirmOrder/confirmOrder"
+    "pages/store/confirmOrder/confirmOrder",
+    "pages/store/coupon/coupon"
   ],
   "subPackages": [],
   "window": {
@@ -39,6 +40,5 @@
   },
   "usingComponents": {
     "tab-bar": "/components/tabBar"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }
