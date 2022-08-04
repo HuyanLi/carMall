@@ -2,6 +2,8 @@
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "uni-number-box": "/node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box"
+    "uni-tag": "/node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag",
+    "uni-number-box": "/node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box",
+    "uni-goods-nav": "/node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav"
   }
 }

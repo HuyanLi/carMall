@@ -1,6 +1,6 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/tabBar/home/home"],{
 
-/***/ 203:
+/***/ 24:
 /*!****************************************************************************!*\
   !*** E:/autoMall/autoMall/main.js?{"page":"pages%2FtabBar%2Fhome%2Fhome"} ***!
   \****************************************************************************/
@@ -132,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 146));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 164));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -377,5 +377,5 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ })
 
-},[[203,"common/runtime","common/vendor"]]]);
+},[[24,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/tabBar/home/home.js.map

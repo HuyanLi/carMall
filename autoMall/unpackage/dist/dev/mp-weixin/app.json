@@ -15,7 +15,9 @@
     "pages/store/brandDetail/brandDetail",
     "pages/store/goodsDetail/goodsDetail",
     "pages/store/groupActivity/groupActivity",
-    "pages/store/shoppingCart/shoppingCart"
+    "pages/store/shoppingCart/shoppingCart",
+    "pages/store/shipAddress/shipAddress",
+    "pages/store/confirmOrder/confirmOrder"
   ],
   "subPackages": [],
   "window": {
@@ -37,5 +39,6 @@
   },
   "usingComponents": {
     "tab-bar": "/components/tabBar"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
