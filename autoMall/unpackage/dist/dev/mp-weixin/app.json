@@ -18,7 +18,10 @@
     "pages/store/shoppingCart/shoppingCart",
     "pages/store/shipAddress/shipAddress",
     "pages/store/confirmOrder/confirmOrder",
-    "pages/store/coupon/coupon"
+    "pages/store/coupon/coupon",
+    "pages/store/signAgreement/signAgreement",
+    "pages/store/moneyCertificates/moneyCertificates",
+    "pages/store/addAdress/addAdress"
   ],
   "subPackages": [],
   "window": {

@@ -56,6 +56,51 @@
 				<text class="testMon money2">{{total}}</text>
 			</view>
 		</view>
+		<!-- 付款方式 -->
+		<view class="payFor">
+			<view class="payType">
+				<text>支付方式： </text>
+				<text>{{payForType}}</text>
+			</view>
+			<text class="payTitle">线下打款帐号信息</text>
+			<view class="payInfo">
+				<view class="payAcount">
+					<text class="infoTitle">帐号</text>
+					<text class="info">{{account}}</text>
+				</view>
+				<view class="payAcount">
+					<text class="infoTitle">开户行</text>
+					<text class="info">{{bank}}</text>
+				</view>
+				<view class="payAcount">
+					<text class="infoTitle">名称</text>
+					<text class="info">{{company}}</text>
+				</view>
+			</view>
+		</view>
+		<!-- 确认打款 -->
+		<view class="confirmMoney">
+			<!-- <view class="confirmC">
+				<text>共{{goodsnum}}件</text>
+				<view class="confirmPay">
+					<text>实付</text>
+					<text>￥</text>
+					<text>{{total}}</text>
+				</view>
+				<view class="confirmBtn">
+					<button class="confirmB" type="default">确认打款</button>
+				</view>
+			</view> -->
+			<text class="goodN">共{{goodsnum}}件</text>
+			<view class="confirmPay">
+				<text style="font-size: 26rpx;color: #333333;">实付</text>
+				<text style="font-size: 24rpx;color: #FF0000;">￥</text>
+				<text style="font-size: 36rpx;color: #FF0000;">{{total}}</text>
+			</view>
+			<view class="confirmBtn">
+				<button class="confirmB" type="default" @click="toConfirm">确认打款</button>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -92,7 +137,11 @@
 				coupon: '-￥15.00',
 				freight: '￥10.00',
 				goodsnum: '2',
-				total: '159.00'
+				total: '159.00',
+				payForType: '线下支付',
+				account: '110 9307 9091 0206 ',
+				bank:'招商银行股份有限公司北京常营支行',
+				company:'北京多咖科技有限公司'
 			}
 		},
 		methods: {
@@ -106,6 +155,13 @@
 				uni.navigateTo({
 					url: '../coupon/coupon'
 				})
+			},
+			//确认打款
+			toConfirm() {
+				//签约协议
+				uni.navigateTo({
+					url: '../signAgreement/signAgreement'
+				})
 			}
 		}
 	}
@@ -116,7 +172,7 @@
 	width: 750rpx;
 	height: 590rpx;
 	background-image: linear-gradient(1deg, rgba(255,255,255,0.00) 0%, #003488 43%);
-	padding: 40rpx 0;
+	padding: 40rpx 0 120rpx;
 	.orderAdress {
 		margin: 0 30rpx;
 		background: #FFFFFF;
@@ -288,6 +344,93 @@
 			}
 			.money2 {
 				font-size: 36rpx;
+			}
+		}
+	}
+	.payFor {
+		width: 690rpx;
+		// height: 328rpx;
+		background: #FFFFFF;
+		border-radius: 16rpx 16rpx 0 0;
+		margin: 0 auto 120rpx;
+		.payType {
+			background: #2B2F36;
+			border-radius: 16rpx 16rpx 0 0;
+			padding: 30rpx;
+			text {
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				font-size: 26rpx;
+				color: #FFFFFF;
+			}
+		}
+		.payTitle {
+			font-family: PingFangSC-Semibold;
+			font-weight: 600;
+			font-size: 30rpx;
+			color: #000000;
+			padding: 20rpx 30rpx 13rpx;
+			display: inline-block;
+		}
+		.payInfo {
+			padding: 0rpx 30rpx 25rpx;
+			.payAcount {
+				margin: 13rpx 0 0rpx;
+				.infoTitle {
+					width: 130rpx;
+					font-family: PingFangSC-Regular;
+					font-weight: 400;
+					font-size: 26rpx;
+					display: inline-block;
+				}
+				.info {
+					font-family: PingFangSC-Regular;
+					font-weight: 400;
+					font-size: 26rpx;
+					color: #000000;
+				}
+			}
+			
+		}
+		
+	}
+	.confirmMoney {
+		width: 750rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		background: #FFFFFF;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		padding: 0rpx 30rpx;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		align-items: baseline;
+		.goodN {
+			// line-height: 100rpx;
+			// margin-left: 30rpx;
+			font-size: 24rpx;
+			color: #818181;
+		}
+		.confirmPay {
+			display: inline-block;
+			// line-height: 100rpx;
+			// float: left;
+			margin-left: 230rpx;
+		}
+		.confirmBtn {                     
+			display: inline-block;
+			margin: 10rpx 0rpx 10rpx 20rpx;
+			// margin-right: 20rpx;
+			// float: right;
+			.confirmB {
+				width: 200rpx;
+				// height: 78rpx;
+				background: #202425;
+				border-radius: 4rpx;
+				font-size: 26rpx;
+				color: #FFFFFF;
 			}
 		}
 	}

@@ -130,7 +130,31 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -142,11 +166,54 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {};
+    return {
+      addressList: [{
+        name: '巫菲莎',
+        number: '18210594025',
+        addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
+        default: true },
+      {
+        name: '巫菲莎',
+        number: '18210594025',
+        addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
+        default: false },
+      {
+        name: '巫菲莎',
+        number: '18210594025',
+        addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
+        default: false }] };
 
 
   },
-  methods: {} };exports.default = _default;
+  methods: {
+    setMr: function setMr(e) {
+      console.log(e);
+      uni.showToast({
+        title: '设置成功',
+        icon: 'none',
+        duration: 2000 });
+
+    },
+    deleteAddress: function deleteAddress() {
+      uni.showToast({
+        title: '删除成功',
+        icon: 'none',
+        duration: 2000 });
+
+    },
+    addAddrerss: function addAddrerss(src, item) {
+      if (item) {
+        uni.navigateTo({
+          url: src + '?adsId=' + item });
+
+      } else {
+        uni.navigateTo({
+          url: src });
+
+      }
+
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

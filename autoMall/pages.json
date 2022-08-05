@@ -77,8 +77,8 @@
             "path" : "pages/home/contrac/contrac",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": ""
+                // "enablePullDownRefresh": false
             }
             
         }
@@ -102,8 +102,7 @@
             "path" : "pages/store/goodsDetail/goodsDetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": ""
             }
             
         }
@@ -119,8 +118,7 @@
             "path" : "pages/store/shoppingCart/shoppingCart",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "购物车"
             }
             
         }
@@ -128,8 +126,7 @@
             "path" : "pages/store/shipAddress/shipAddress",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "收获地址"
             }
             
         }
@@ -137,8 +134,7 @@
             "path" : "pages/store/confirmOrder/confirmOrder",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "确认订单"
             }
             
         }
@@ -146,8 +142,31 @@
             "path" : "pages/store/coupon/coupon",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "优惠券"
+            }
+            
+        }
+        ,{
+            "path" : "pages/store/signAgreement/signAgreement",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "签署协议"
+            }
+            
+        }
+        ,{
+            "path" : "pages/store/moneyCertificates/moneyCertificates",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "提交打款凭证"
+            }
+            
+        }
+        ,{
+            "path" : "pages/store/addAdress/addAdress",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "添加地址"
             }
             
         }

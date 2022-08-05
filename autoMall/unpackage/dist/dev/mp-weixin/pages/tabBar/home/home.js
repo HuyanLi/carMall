@@ -132,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 164));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 196));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

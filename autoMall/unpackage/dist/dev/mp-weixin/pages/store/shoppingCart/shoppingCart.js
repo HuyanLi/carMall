@@ -96,10 +96,10 @@ var components
 try {
   components = {
     uniTag: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-tag/components/uni-tag/uni-tag */ "uni_modules/uni-tag/components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-tag/components/uni-tag/uni-tag.vue */ 215))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-tag/components/uni-tag/uni-tag */ "uni_modules/uni-tag/components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-tag/components/uni-tag/uni-tag.vue */ 239))
     },
     uniNumberBox: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-number-box/components/uni-number-box/uni-number-box */ "uni_modules/uni-number-box/components/uni-number-box/uni-number-box").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue */ 178))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-number-box/components/uni-number-box/uni-number-box */ "uni_modules/uni-number-box/components/uni-number-box/uni-number-box").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue */ 210))
     }
   }
 } catch (e) {
@@ -156,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniGoodsNav = function _uniGoodsNav() {Promise.all(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav")]).then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav */ 222));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniTag = function _uniTag() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag */ "node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-tag/uni-tag */ 233));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniNumberBox = function _uniNumberBox() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ "node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ 201));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniGoodsNav = function _uniGoodsNav() {Promise.all(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav")]).then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav */ 246));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniTag = function _uniTag() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag */ "node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-tag/uni-tag */ 257));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniNumberBox = function _uniNumberBox() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ "node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ 225));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

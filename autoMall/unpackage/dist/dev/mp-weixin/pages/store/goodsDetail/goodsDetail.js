@@ -96,13 +96,10 @@ var components
 try {
   components = {
     uniPopup: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 171))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 203))
     },
     uniNumberBox: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-number-box/components/uni-number-box/uni-number-box */ "uni_modules/uni-number-box/components/uni-number-box/uni-number-box").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue */ 178))
-    },
-    uniPopupMessage: function() {
-      return Promise.all(/*! import() | uni_modules/uni-popup/components/uni-popup-message/uni-popup-message */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-popup/components/uni-popup-message/uni-popup-message")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup-message/uni-popup-message.vue */ 185))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-number-box/components/uni-number-box/uni-number-box */ "uni_modules/uni-number-box/components/uni-number-box/uni-number-box").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue */ 210))
     }
   }
 } catch (e) {
@@ -176,7 +173,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniPopupMessage = function _uniPopupMessage() {Promise.all(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/@dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message")]).then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message */ 193));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniNumberBox = function _uniNumberBox() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ "node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ 201));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniPopup = function _uniPopup() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-popup/uni-popup */ "node-modules/@dcloudio/uni-ui/lib/uni-popup/uni-popup").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-popup/uni-popup */ 208));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _uniPopupMessage = function _uniPopupMessage() {Promise.all(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/@dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message")]).then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message */ 217));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniNumberBox = function _uniNumberBox() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ "node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-number-box/uni-number-box */ 225));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _uniPopup = function _uniPopup() {__webpack_require__.e(/*! require.ensure | node-modules/@dcloudio/uni-ui/lib/uni-popup/uni-popup */ "node-modules/@dcloudio/uni-ui/lib/uni-popup/uni-popup").then((function () {return resolve(__webpack_require__(/*! @dcloudio/uni-ui/lib/uni-popup/uni-popup */ 232));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -526,11 +523,34 @@ __webpack_require__.r(__webpack_exports__);
     //加入购物车
     addCart: function addCart(e) {
       if (e === '收藏') {
-        this.isShow = !this.isShow;
-        this.messageText = "\u6536\u85CF\u6210\u529F";
+        console.log(this.isShow);
+        if (this.isShow == true) {
+          uni.showToast({
+            title: '收藏成功',
+            icon: 'none',
+            duration: 2000 });
+
+          this.isShow = !this.isShow;
+        } else if (this.isShow == false) {
+          console.log(this.isShow);
+          uni.showToast({
+            title: '取消收藏',
+            icon: 'none',
+            duration: 2000 });
+
+          this.isShow = !this.isShow;
+        }
+        // this.isShow = !this.isShow
+        // this.messageText = `收藏成功`
       } else {
-        this.messageText = "\u52A0\u5165\u8D2D\u7269\u8F66\u6210\u529F";
-        this.$refs.message.open();
+        uni.showToast({
+          title: '加入购物车成功',
+          icon: 'none',
+          duration: 2000 });
+
+        // this.messageText = `加入购物车成功`
+        // this.$refs.message.open()
+
       }
     },
     //拼团

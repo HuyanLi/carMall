@@ -174,9 +174,9 @@
 				</view>
 			</view>
 		</uni-popup>
-		<uni-popup ref="message" type="message">
+		<!-- <uni-popup ref="message" type="message">
 			<uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message>
-		</uni-popup>
+		</uni-popup> -->
 	</view>
 </template>
 
@@ -348,11 +348,34 @@
 			//加入购物车
 			addCart(e){
 				if (e === '收藏') {
-					this.isShow = !this.isShow
-					this.messageText = `收藏成功`
+					console.log(this.isShow)
+					if(this.isShow == true) {
+						uni.showToast({
+						    title: '收藏成功',
+						    icon: 'none',
+						    duration: 2000
+						});
+						this.isShow = !this.isShow
+					}else if(this.isShow == false){
+						console.log(this.isShow)
+						uni.showToast({
+						    title: '取消收藏',
+						    icon: 'none',
+						    duration: 2000
+						});
+						this.isShow = !this.isShow
+					}
+					// this.isShow = !this.isShow
+					// this.messageText = `收藏成功`
 				}else {
-					this.messageText = `加入购物车成功`
-					this.$refs.message.open()
+					uni.showToast({
+					    title: '加入购物车成功',
+					    icon: 'none',
+					    duration: 2000
+					});
+					// this.messageText = `加入购物车成功`
+					// this.$refs.message.open()
+					
 				}
 			},
 			//拼团

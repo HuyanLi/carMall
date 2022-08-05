@@ -25,13 +25,93 @@
 /* 透明度 */
 /* 文章场景相关 */
 .shippingAddress.data-v-161d624a {
-  width: 100%;
-  margin: 0 auto;
+  width: 750rpx;
+  padding: 20rpx 30rpx;
 }
 .shippingAddress .addressContent.data-v-161d624a {
   width: 690rpx;
-  height: 212rpx;
   background: #FFFFFF;
   border-radius: 8rpx;
+}
+.shippingAddress .addressContent .addItem.data-v-161d624a {
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+.shippingAddress .addressContent .addItem .peoinfo .fontS.data-v-161d624a {
+  color: #333333;
+}
+.shippingAddress .addressContent .addItem .peoinfo .fontN.data-v-161d624a {
+  font-size: 32rpx;
+}
+.shippingAddress .addressContent .addItem .peoinfo .fontNum.data-v-161d624a {
+  font-size: 30rpx;
+  margin: 0 30rpx 0 50rpx;
+}
+.shippingAddress .addressContent .addItem .peoinfo .defaultBtn.data-v-161d624a {
+  width: 72rpx;
+  height: 35rpx;
+  background: #134488;
+  border-radius: 15rpx;
+  display: inline-block;
+  text-align: center;
+  line-height: 35rpx;
+  display: inline-block;
+  font-size: 20rpx;
+  color: #FFFFFF;
+}
+.shippingAddress .addressContent .addItem .addressInfo.data-v-161d624a {
+  margin: 15rpx 0;
+}
+.shippingAddress .addressContent .addItem .addressInfo text.data-v-161d624a {
+  font-size: 26rpx;
+  color: #333333;
+}
+.shippingAddress .addressContent .addItem .addressInfo image.data-v-161d624a {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 30rpx;
+}
+.shippingAddress .addressContent .addItem .delet.data-v-161d624a {
+  overflow: hidden;
+}
+.shippingAddress .addressContent .addItem .delet .oprtLft.data-v-161d624a {
+  float: left;
+  line-height: 48rpx;
+}
+.shippingAddress .addressContent .addItem .delet .oprtLft image.data-v-161d624a {
+  display: inline-block;
+  width: 28rpx;
+  height: 28rpx;
+  vertical-align: middle;
+}
+.shippingAddress .addressContent .addItem .delet .oprtLft text.data-v-161d624a {
+  font-size: 24rpx;
+  color: #999999;
+  margin-left: 20rpx;
+}
+.shippingAddress .addressContent .addItem .delet .oprtRgt.data-v-161d624a {
+  float: right;
+  width: 132rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #666666;
+  text-align: center;
+}
+.shippingAddress .btmBTtn.data-v-161d624a {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 750rpx;
+  background: #FFFFFF;
+}
+.shippingAddress .btmBTtn button.data-v-161d624a {
+  width: 690rpx;
+  height: 88rpx;
+  background: #202425;
+  border-radius: 8rpx;
+  color: #fff;
+  margin: 20rpx auto;
 }
 

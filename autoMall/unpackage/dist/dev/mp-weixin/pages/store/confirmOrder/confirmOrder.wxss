@@ -28,7 +28,7 @@
   width: 750rpx;
   height: 590rpx;
   background-image: linear-gradient(1deg, rgba(255, 255, 255, 0) 0%, #003488 43%);
-  padding: 40rpx 0;
+  padding: 40rpx 0 120rpx;
 }
 .order .orderAdress.data-v-c8ec6a50 {
   margin: 0 30rpx;
@@ -191,5 +191,82 @@
 }
 .order .goodsMoney .total .money2.data-v-c8ec6a50 {
   font-size: 36rpx;
+}
+.order .payFor.data-v-c8ec6a50 {
+  width: 690rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx 16rpx 0 0;
+  margin: 0 auto 120rpx;
+}
+.order .payFor .payType.data-v-c8ec6a50 {
+  background: #2B2F36;
+  border-radius: 16rpx 16rpx 0 0;
+  padding: 30rpx;
+}
+.order .payFor .payType text.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #FFFFFF;
+}
+.order .payFor .payTitle.data-v-c8ec6a50 {
+  font-family: PingFangSC-Semibold;
+  font-weight: 600;
+  font-size: 30rpx;
+  color: #000000;
+  padding: 20rpx 30rpx 13rpx;
+  display: inline-block;
+}
+.order .payFor .payInfo.data-v-c8ec6a50 {
+  padding: 0rpx 30rpx 25rpx;
+}
+.order .payFor .payInfo .payAcount.data-v-c8ec6a50 {
+  margin: 13rpx 0 0rpx;
+}
+.order .payFor .payInfo .payAcount .infoTitle.data-v-c8ec6a50 {
+  width: 130rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  display: inline-block;
+}
+.order .payFor .payInfo .payAcount .info.data-v-c8ec6a50 {
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #000000;
+}
+.order .confirmMoney.data-v-c8ec6a50 {
+  width: 750rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  background: #FFFFFF;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0rpx 30rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+.order .confirmMoney .goodN.data-v-c8ec6a50 {
+  font-size: 24rpx;
+  color: #818181;
+}
+.order .confirmMoney .confirmPay.data-v-c8ec6a50 {
+  display: inline-block;
+  margin-left: 230rpx;
+}
+.order .confirmMoney .confirmBtn.data-v-c8ec6a50 {
+  display: inline-block;
+  margin: 10rpx 0rpx 10rpx 20rpx;
+}
+.order .confirmMoney .confirmBtn .confirmB.data-v-c8ec6a50 {
+  width: 200rpx;
+  background: #202425;
+  border-radius: 4rpx;
+  font-size: 26rpx;
+  color: #FFFFFF;
 }
 

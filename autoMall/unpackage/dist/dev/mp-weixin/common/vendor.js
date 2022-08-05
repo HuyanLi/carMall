@@ -2852,7 +2852,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/tabBar/home/home": { "navigationBarTitleText": "首页", "usingComponents": { "tab-bar": "/components/tabBar" }, "usingAutoImportComponents": {} }, "pages/tabBar/mall/mall": { "navigationBarTitleText": "商城", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/tabBar/service/service": { "navigationBarTitleText": "客服", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/tabBar/mine/mine": { "navigationBarTitleText": "我的", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/giftPack/giftPack": { "navigationBarTitleText": "注册礼包", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/tryCargo/tryCargo": { "navigationBarTitleText": "试货", "enablePullDownRefresh": false, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/approve/approve": { "navigationBarTitleText": "", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/shareTask/shareTask": { "navigationBarTitleText": "分享", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/testReport/testReport": { "navigationBarTitleText": "测试报告", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/liveBar/liveBar": { "navigationBarTitleText": "直播", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/contrac/contrac": { "navigationBarTitleText": "", "enablePullDownRefresh": false, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/shareTask/shareDetail": { "navigationBarTitleText": "内容详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/store/brandDetail/brandDetail": { "navigationBarTitleText": "品牌详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/store/goodsDetail/goodsDetail": { "navigationBarTitleText": "", "enablePullDownRefresh": false, "usingComponents": { "uni-popup": "/node-modules/@dcloudio/uni-ui/lib/uni-popup/uni-popup", "uni-number-box": "/node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box", "uni-popup-message": "/node-modules/@dcloudio/uni-ui/lib/uni-popup-message/uni-popup-message" }, "usingAutoImportComponents": { "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup", "uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box", "uni-popup-message": "/uni_modules/uni-popup/components/uni-popup-message/uni-popup-message" } }, "pages/store/groupActivity/groupActivity": { "navigationBarTitleText": "拼团活动", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/store/shoppingCart/shoppingCart": { "navigationBarTitleText": "", "enablePullDownRefresh": false, "usingComponents": { "uni-number-box": "/node-modules/@dcloudio/uni-ui/lib/uni-number-box/uni-number-box", "uni-tag": "/node-modules/@dcloudio/uni-ui/lib/uni-tag/uni-tag", "uni-goods-nav": "/node-modules/@dcloudio/uni-ui/lib/uni-goods-nav/uni-goods-nav" }, "usingAutoImportComponents": { "uni-tag": "/uni_modules/uni-tag/components/uni-tag/uni-tag", "uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box" } }, "pages/store/shipAddress/shipAddress": { "navigationBarTitleText": "", "enablePullDownRefresh": false, "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/store/confirmOrder/confirmOrder": { "navigationBarTitleText": "", "enablePullDownRefresh": false, "usingComponents": {}, "usingAutoImportComponents": { "uni-tag": "/uni_modules/uni-tag/components/uni-tag/uni-tag" } }, "pages/store/coupon/coupon": { "navigationBarTitleText": "", "enablePullDownRefresh": false } }, "globalStyle": { "pageOrientation": "portrait", "navigationBarTitleText": "Hello uniapp", "navigationBarTextStyle": "black", "navigationBarBackgroundColor": "#f7f7f7", "backgroundColor": "#F8F8F8", "backgroundColorTop": "#F4F5F6", "backgroundColorBottom": "#F4F5F6" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/tabBar/home/home": { "navigationBarTitleText": "首页" }, "pages/tabBar/mall/mall": { "navigationBarTitleText": "商城" }, "pages/tabBar/service/service": { "navigationBarTitleText": "客服" }, "pages/tabBar/mine/mine": { "navigationBarTitleText": "我的" }, "pages/home/giftPack/giftPack": { "navigationBarTitleText": "注册礼包" }, "pages/home/tryCargo/tryCargo": { "navigationBarTitleText": "试货", "enablePullDownRefresh": false }, "pages/home/approve/approve": { "navigationBarTitleText": "" }, "pages/home/shareTask/shareTask": { "navigationBarTitleText": "分享" }, "pages/home/testReport/testReport": { "navigationBarTitleText": "测试报告" }, "pages/home/liveBar/liveBar": { "navigationBarTitleText": "直播" }, "pages/home/contrac/contrac": { "navigationBarTitleText": "" }, "pages/home/shareTask/shareDetail": { "navigationBarTitleText": "内容详情" }, "pages/store/brandDetail/brandDetail": { "navigationBarTitleText": "品牌详情" }, "pages/store/goodsDetail/goodsDetail": { "navigationBarTitleText": "" }, "pages/store/groupActivity/groupActivity": { "navigationBarTitleText": "拼团活动" }, "pages/store/shoppingCart/shoppingCart": { "navigationBarTitleText": "购物车" }, "pages/store/shipAddress/shipAddress": { "navigationBarTitleText": "收获地址" }, "pages/store/confirmOrder/confirmOrder": { "navigationBarTitleText": "确认订单" }, "pages/store/coupon/coupon": { "navigationBarTitleText": "优惠券" }, "pages/store/signAgreement/signAgreement": { "navigationBarTitleText": "签署协议" }, "pages/store/moneyCertificates/moneyCertificates": { "navigationBarTitleText": "提交打款凭证" }, "pages/store/addAdress/addAdress": { "navigationBarTitleText": "添加地址" } }, "globalStyle": { "pageOrientation": "portrait", "navigationBarTitleText": "Hello uniapp", "navigationBarTextStyle": "black", "navigationBarBackgroundColor": "#f7f7f7", "backgroundColor": "#F8F8F8", "backgroundColorTop": "#F4F5F6", "backgroundColorBottom": "#F4F5F6" } };exports.default = _default;
 
 /***/ }),
 
@@ -4338,76 +4338,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
-/***/ 190:
-/*!********************************************************************************!*\
-  !*** E:/autoMall/autoMall/uni_modules/uni-popup/components/uni-popup/popup.js ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
-{
-  data: function data() {
-    return {};
-
-
-  },
-  created: function created() {
-    this.popup = this.getParent();
-  },
-  methods: {
-    /**
-              * 获取父元素实例
-              */
-    getParent: function getParent() {var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uniPopup';
-      var parent = this.$parent;
-      var parentName = parent.$options.name;
-      while (parentName !== name) {
-        parent = parent.$parent;
-        if (!parent) return false;
-        parentName = parent.$options.name;
-      }
-      return parent;
-    } } };exports.default = _default;
-
-/***/ }),
-
-/***/ 198:
-/*!*********************************************************************************!*\
-  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-popup/popup.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
-{
-  data: function data() {
-    return {};
-
-
-  },
-  created: function created() {
-    this.popup = this.getParent();
-  },
-  methods: {
-    /**
-              * 获取父元素实例
-              */
-    getParent: function getParent() {var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uniPopup';
-      var parent = this.$parent;
-      var parentName = parent.$options.name;
-      while (parentName !== name) {
-        parent = parent.$parent;
-        if (!parent) return false;
-        parentName = parent.$options.name;
-      }
-      return parent;
-    } } };exports.default = _default;
-
-/***/ }),
-
 /***/ 2:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -4568,43 +4498,38 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 227:
-/*!******************************************************************************************!*\
-  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/index.js ***!
-  \******************************************************************************************/
+/***/ 222:
+/*!*********************************************************************************!*\
+  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-popup/popup.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 228));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 229));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 230));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  en: _en.default,
-  'zh-Hans': _zhHans.default,
-  'zh-Hant': _zhHant.default };exports.default = _default;
+  data: function data() {
+    return {};
 
-/***/ }),
 
-/***/ 228:
-/*!*****************************************************************************************!*\
-  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/en.json ***!
-  \*****************************************************************************************/
-/*! exports provided: uni-goods-nav.options.shop, uni-goods-nav.options.cart, uni-goods-nav.buttonGroup.addToCart, uni-goods-nav.buttonGroup.buyNow, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"uni-goods-nav.options.shop\":\"shop\",\"uni-goods-nav.options.cart\":\"cart\",\"uni-goods-nav.buttonGroup.addToCart\":\"add to cart\",\"uni-goods-nav.buttonGroup.buyNow\":\"buy now\"}");
-
-/***/ }),
-
-/***/ 229:
-/*!**********************************************************************************************!*\
-  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/zh-Hans.json ***!
-  \**********************************************************************************************/
-/*! exports provided: uni-goods-nav.options.shop, uni-goods-nav.options.cart, uni-goods-nav.buttonGroup.addToCart, uni-goods-nav.buttonGroup.buyNow, default */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"uni-goods-nav.options.shop\":\"店铺\",\"uni-goods-nav.options.cart\":\"购物车\",\"uni-goods-nav.buttonGroup.addToCart\":\"加入购物车\",\"uni-goods-nav.buttonGroup.buyNow\":\"立即购买\"}");
+  },
+  created: function created() {
+    this.popup = this.getParent();
+  },
+  methods: {
+    /**
+              * 获取父元素实例
+              */
+    getParent: function getParent() {var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'uniPopup';
+      var parent = this.$parent;
+      var parentName = parent.$options.name;
+      while (parentName !== name) {
+        parent = parent.$parent;
+        if (!parent) return false;
+        parentName = parent.$options.name;
+      }
+      return parent;
+    } } };exports.default = _default;
 
 /***/ }),
 
@@ -4750,7 +4675,47 @@ store;exports.default = _default;
 
 /***/ }),
 
-/***/ 230:
+/***/ 251:
+/*!******************************************************************************************!*\
+  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/index.js ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 252));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 253));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 254));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+{
+  en: _en.default,
+  'zh-Hans': _zhHans.default,
+  'zh-Hant': _zhHant.default };exports.default = _default;
+
+/***/ }),
+
+/***/ 252:
+/*!*****************************************************************************************!*\
+  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/en.json ***!
+  \*****************************************************************************************/
+/*! exports provided: uni-goods-nav.options.shop, uni-goods-nav.options.cart, uni-goods-nav.buttonGroup.addToCart, uni-goods-nav.buttonGroup.buyNow, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"uni-goods-nav.options.shop\":\"shop\",\"uni-goods-nav.options.cart\":\"cart\",\"uni-goods-nav.buttonGroup.addToCart\":\"add to cart\",\"uni-goods-nav.buttonGroup.buyNow\":\"buy now\"}");
+
+/***/ }),
+
+/***/ 253:
+/*!**********************************************************************************************!*\
+  !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/zh-Hans.json ***!
+  \**********************************************************************************************/
+/*! exports provided: uni-goods-nav.options.shop, uni-goods-nav.options.cart, uni-goods-nav.buttonGroup.addToCart, uni-goods-nav.buttonGroup.buyNow, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"uni-goods-nav.options.shop\":\"店铺\",\"uni-goods-nav.options.cart\":\"购物车\",\"uni-goods-nav.buttonGroup.addToCart\":\"加入购物车\",\"uni-goods-nav.buttonGroup.buyNow\":\"立即购买\"}");
+
+/***/ }),
+
+/***/ 254:
 /*!**********************************************************************************************!*\
   !*** E:/autoMall/autoMall/node_modules/@dcloudio/uni-ui/lib/uni-goods-nav/i18n/zh-Hant.json ***!
   \**********************************************************************************************/
@@ -4761,7 +4726,7 @@ module.exports = JSON.parse("{\"uni-goods-nav.options.shop\":\"店鋪\",\"uni-go
 
 /***/ }),
 
-/***/ 245:
+/***/ 269:
 /*!****************************************************************************************************!*\
   !*** E:/autoMall/autoMall/uni_modules/uni-transition/components/uni-transition/createAnimation.js ***!
   \****************************************************************************************************/
@@ -4901,7 +4866,7 @@ function createAnimation(option, _this) {
 
 /***/ }),
 
-/***/ 251:
+/***/ 275:
 /*!********************************************************************************!*\
   !*** E:/autoMall/autoMall/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \********************************************************************************/

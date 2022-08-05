@@ -96,7 +96,7 @@ var components
 try {
   components = {
     uniTag: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-tag/components/uni-tag/uni-tag */ "uni_modules/uni-tag/components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-tag/components/uni-tag/uni-tag.vue */ 215))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-tag/components/uni-tag/uni-tag */ "uni_modules/uni-tag/components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-tag/components/uni-tag/uni-tag.vue */ 239))
     }
   }
 } catch (e) {
@@ -214,6 +214,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -247,7 +292,11 @@ var _default =
       coupon: '-￥15.00',
       freight: '￥10.00',
       goodsnum: '2',
-      total: '159.00' };
+      total: '159.00',
+      payForType: '线下支付',
+      account: '110 9307 9091 0206 ',
+      bank: '招商银行股份有限公司北京常营支行',
+      company: '北京多咖科技有限公司' };
 
   },
   methods: {
@@ -260,6 +309,13 @@ var _default =
     toCoupon: function toCoupon() {
       uni.navigateTo({
         url: '../coupon/coupon' });
+
+    },
+    //确认打款
+    toConfirm: function toConfirm() {
+      //签约协议
+      uni.navigateTo({
+        url: '../signAgreement/signAgreement' });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
