@@ -174,9 +174,6 @@
 				</view>
 			</view>
 		</uni-popup>
-		<!-- <uni-popup ref="message" type="message">
-			<uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message>
-		</uni-popup> -->
 	</view>
 </template>
 
@@ -397,7 +394,7 @@
 		border-radius:7rpx;
 		position: relative;
 		overflow: hidden;
-		margin-top: 16rpx;
+		// margin-top: 16rpx;
 		// 轮播图
 		.image-container {
 			width: 750rpx;
@@ -502,7 +499,6 @@
 	}
 	.tuijian {
 		width: 690rpx;
-		height: 847rpx;
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		margin: 0rpx auto 30rpx;
@@ -520,8 +516,7 @@
 			justify-content:space-around;
 			.goodsList {
 				border-radius: 16rpx;
-				margin: -10rpx 20rpx 200rpx;
-				height: 100%;
+				margin: -10rpx 20rpx 20rpx;
 				.goodsItem {
 					width: 30%;
 					margin: 10rpx 20rpx 10rpx 0;
@@ -576,7 +571,7 @@
 			margin-bottom: 15rpx;
 		}
 		.box {
-			
+			margin-bottom: 120rpx;
 		}
 	}
 	.shoppCar {

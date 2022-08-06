@@ -70,11 +70,11 @@
 		border-radius:7rpx;
 		position: relative;
 		overflow: hidden;
-		margin-top: 16rpx;
+		// margin-top: 16rpx;
 		// 轮播图
 		.image-container {
 			width: 750rpx;
-			height: 747rpx;
+			// height: 747rpx;
 			.item {
 				position: relative;
 				overflow: hidden;
@@ -106,7 +106,7 @@
 		
 	}
 	.title {
-		width: 750rpx;
+		// width: 750rpx;
 		// height: 94rpx;
 		background: #FFFFFF;
 		border-radius: 16rpx;

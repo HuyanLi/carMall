@@ -32,23 +32,29 @@
 						"iconPath": "/static/image/home/home1.png",
 						"selectedIconPath": "/static/image/home/home.png",
 						"text": "首页"
-					},
-					{
+					},{
 						"pagePath": "pages/tabBar/mall/mall",
 						"iconPath": "/static/image/home/mall.png",
 						"selectedIconPath": "/static/image/home/mall1.png",
-						"text": "商城"
-					},{
-						"pagePath": "pages/tabBar/service/service",
-						"iconPath": "/static/image/home/service.png",
-						"selectedIconPath": "/static/image/home/serviceActive.png",
-						"text": "客服"
-					},{
-						"pagePath": "pages/tabBar/mine/mine",
-						"iconPath": "/static/image/home/mine.png",
-						"selectedIconPath": "/static/image/home/mineActive.png",
-						"text": "我的"
-					}
+						"text": "品牌专区"
+					},
+					// {
+					// 	"pagePath": "pages/tabBar/mall/mall",
+					// 	"iconPath": "/static/image/home/mall.png",
+					// 	"selectedIconPath": "/static/image/home/mall1.png",
+					// 	"text": "商城"
+					// },
+					// {
+					// 	"pagePath": "pages/tabBar/service/service",
+					// 	"iconPath": "/static/image/home/service.png",
+					// 	"selectedIconPath": "/static/image/home/serviceActive.png",
+					// 	"text": "客服"
+					// },{
+					// 	"pagePath": "pages/tabBar/mine/mine",
+					// 	"iconPath": "/static/image/home/mine.png",
+					// 	"selectedIconPath": "/static/image/home/mineActive.png",
+					// 	"text": "我的"
+					// }
 				]
 			};
 		},

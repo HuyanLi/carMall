@@ -28,6 +28,26 @@
   width: 750rpx;
   padding: 20rpx 30rpx;
 }
+.shippingAddress .empty.data-v-161d624a {
+  width: 690rpx;
+  text-align: center;
+}
+.shippingAddress .empty image.data-v-161d624a {
+  margin: 180rpx auto 80rpx;
+  width: 288rpx;
+  height: 187rpx;
+  opacity: 0.7;
+  display: block;
+}
+.shippingAddress .empty-text1.data-v-161d624a {
+  font-size: 28rpx;
+  color: #333;
+}
+.shippingAddress .empty-text2.data-v-161d624a {
+  font-size: 28rpx;
+  color: #7D0016;
+  border-bottom: 1rpx solid #7D0016;
+}
 .shippingAddress .addressContent.data-v-161d624a {
   width: 690rpx;
   background: #FFFFFF;
@@ -70,6 +90,7 @@
   width: 30rpx;
   height: 30rpx;
   margin-left: 30rpx;
+  float: right;
 }
 .shippingAddress .addressContent .addItem .delet.data-v-161d624a {
   overflow: hidden;
@@ -97,7 +118,7 @@
   border-radius: 30rpx;
   font-size: 26rpx;
   color: #666666;
-  text-align: center;
+  text-align: right;
 }
 .shippingAddress .btmBTtn.data-v-161d624a {
   position: fixed;

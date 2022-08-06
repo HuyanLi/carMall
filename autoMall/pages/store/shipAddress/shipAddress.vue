@@ -1,9 +1,14 @@
 <!-- 收货地址 -->
 <template>
 	<view class="shippingAddress">
-		<view class="addressContent" v-for="(item,index) in addressList" :key="index">
+		<view class="empty" v-if="addressList.length === 0">
+			<image src="../../../static/image/mall/empty.png" mode=""></image>
+			<text class="empty-text1">当前地址为空,</text>
+			<text class="empty-text2" @click="addAddress('/pages/store/addAdress/addAdress')">去添加</text>
+		</view>
+		<view v-if="addressList.length !== 0" class="addressContent" v-for="(item,index) in addressList" :key="index">
 			<view class="addItem">
-				<view class="peoinfo">
+				<view class="peoinfo" @click="activeAdress(item,index)">
 					<text class="fontS fontN">{{item.name}}</text>
 					<text class="fontS fontNum">{{item.number}}</text>
 					<view v-if='item.default' class="defaultBtn">
@@ -12,7 +17,7 @@
 				</view>
 				<view class="addressInfo">
 					<text>{{item.addres}}</text>
-					<image @click="addAddrerss('/pages/store/addAdress/addAddress',item)" src="../../../static/image/mall/edit.png" mode=""></image>
+					<image @tap="addAddress('/pages/store/addAdress/addAdress',item)" src="../../../static/image/mall/edit.png" mode=""></image>
 				</view>
 				<view class="delet">
 					<view class="oprtLft" @click="setMr(item)">
@@ -23,10 +28,9 @@
 					<text class="oprtRgt" @click="deleteAddress">删除</text>
 				</view>
 			</view>
-			
 		</view>
-		<view class="btmBTtn">
-			<button type="default" @click="addAddrerss('/pages/store/addAdress/addAddress')">添加新地址</button>
+		<view v-if="addressList.length !== 0" class="btmBTtn">
+			<button type="default" @click="addAddress('/pages/store/addAdress/addAdress')">添加新地址</button>
 		</view>
 	</view>
 </template>
@@ -35,25 +39,23 @@
 	export default {
 		data() {
 			return {
-				addressList: [{
-					name: '巫菲莎',
-					number: '18210594025',
-					addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
-					default: true
-				},{
-					name: '巫菲莎',
-					number: '18210594025',
-					addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
-					default: false
-				},{
-					name: '巫菲莎',
-					number: '18210594025',
-					addres: '北京通州区玉桥街道 柳岸方园86号楼4单元502',
-					default: false
-				}],
+				addressList: [],
+			}
+		},
+		onShow(e) {
+			console.log(e)
+			let pages = getCurrentPages();
+			console.log(pages,5555555)
+			let currPage = pages[pages.length-1];
+			if(currPage.data.address==undefined || currPage.data.detailAddress==''){
+				
+			}else{
+				this.addressList = currPage.data.address
+				// this.address_id = currPage.data.detailAddress
 			}
 		},
 		methods: {
+			
 			setMr(e) {
 				console.log(e)
 				uni.showToast({
@@ -62,6 +64,23 @@
 				    duration: 2000
 				});
 			},
+			//选择地址
+			activeAdress(ids,e){
+				console.log(22222222223333,ids)
+				var pages = getCurrentPages();
+				var prepage = pages[pages.length - 2]; //上一个页面
+				prepage.$vm.person = {
+					name: ids.name,
+					number: ids.number,
+					addres: ids.detailAdress,
+					sex: '先生',
+					area: ids.addres
+				}
+				console.log(111111111,prepage.$vm.person)
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 			deleteAddress() {
 				uni.showToast({
 				    title: '删除成功',
@@ -69,12 +88,14 @@
 				    duration: 2000
 				});
 			},
-			addAddrerss(src,item) {
+			addAddress(src,item) {
 				if(item) {
+					console.log(111111111)
 					uni.navigateTo({
 						url: src + '?adsId=' + item
 					})
 				}else {
+					console.log(222222222)
 					uni.navigateTo({
 						url: src
 					})
@@ -89,6 +110,26 @@
 .shippingAddress {
 	width: 750rpx;
 	padding: 20rpx 30rpx;
+	.empty {
+		width: 690rpx;
+		text-align: center;
+		image {
+			margin: 180rpx auto 80rpx;
+			width: 288rpx;
+			height: 187rpx;
+			opacity: 0.7;
+			display: block;
+		}
+		&-text1 {
+			font-size: 28rpx;
+			color: #333;
+		}
+		&-text2 {
+			font-size: 28rpx;
+			color: #7D0016;
+			border-bottom: 1rpx solid #7D0016;
+		}
+	}
 	.addressContent {
 		width: 690rpx;
 		// height: 200rpx;
@@ -132,6 +173,7 @@
 					width: 30rpx;
 					height: 30rpx;
 					margin-left: 30rpx;
+					float: right;
 				}
 			}
 			.delet {
@@ -160,7 +202,7 @@
 					// border: 2rpx solid #003BB9;
 					font-size: 26rpx;
 					color: #666666;
-					text-align: center;
+					text-align: right;
 				}
 			}
 		}

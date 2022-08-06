@@ -26,7 +26,6 @@
 /* 文章场景相关 */
 /* Tab切换 */
 .body-view.data-v-96a7abd2 {
-  padding-bottom: 120rpx;
   height: 100%;
   width: 100%;
   display: flex;
@@ -120,15 +119,14 @@
   flex: 1;
   width: 100%;
   height: auto;
-  background-color: #FFFFFF;
 }
 .swiper-topic-list.data-v-96a7abd2 {
   height: 100%;
   width: 100%;
+  padding-bottom: 120rpx;
 }
 .chooseBox.data-v-96a7abd2 {
   width: 750rpx;
-  height: 107rpx;
   background: #FFFFFF;
   padding: 35rpx 30rpx;
 }
@@ -157,16 +155,24 @@
   border-radius: 16rpx;
   margin: -10rpx 30rpx 200rpx;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20rpx 30rpx;
+  justify-content: space-between;
 }
 .goodsList .goodsItem.data-v-96a7abd2 {
-  width: 47%;
-  margin: 30rpx 20rpx 20rpx 0;
-  float: left;
+  width: 48%;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+.goodsList .goodsItem .text.data-v-96a7abd2 {
+  width: 300rpx;
+  margin: 20rpx auto 30rpx;
 }
 .goodsList .goodsItem image.data-v-96a7abd2 {
   width: 300rpx;
   height: 300rpx;
-  margin: 20rpx 20rpx 30rpx;
 }
 .goodsList .goodsItem .fontText.data-v-96a7abd2 {
   font-family: PingFangSC-Regular;
@@ -174,7 +180,7 @@
   font-size: 26rpx;
   color: #231F20;
   line-height: 36rpx;
-  margin: 0 0 20rpx 20rpx;
+  margin: 0 0 0 20rpx;
   text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
   text-overflow: ellipsis;

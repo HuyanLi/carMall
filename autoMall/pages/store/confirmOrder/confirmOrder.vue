@@ -4,10 +4,10 @@
 		<!-- 收货地址 -->
 		<view class="orderAdress" @click="toAddress">
 			<view class="orderArea">
-				<text>{{area}}</text>
+				<text>{{person.area}}</text>
 			</view>
 			<view class="detailAddress">
-				<text>{{addres}}</text>
+				<text>{{person.addres}}</text>
 				<image src="../../../static/image/mall/to.png"></image>
 			</view>
 			<view class="adressPerson">
@@ -22,9 +22,7 @@
 				<image class="goodsImage" :src="item.imgSrc"></image>
 				<view class="goodsInfo">
 					<text class="shopTitle">{{item.title}}</text>
-					<view class="shopTag">
-						<uni-tag class="tag" :text="item.type" />
-					</view>
+					<text class="shopTag">{{item.type}}</text>
 					<view class="moneyInfo">
 						<view class="">
 							<text class="shopMoney">{{item.money}}</text>
@@ -41,7 +39,7 @@
 			<view class="goodsCoupon">
 				<text class="textS">优惠金额</text>
 				<view class="money" @click="toCoupon">
-					<text class="testMon">{{coupon}}</text>
+					<text class="testMon">-￥{{coupon}}</text>
 					<image src="../../../static/image/mall/to.png" mode=""></image>
 				</view>
 			</view>
@@ -108,9 +106,9 @@
 	export default {
 		data() {
 			return {
-				area: '北京市朝阳区',
-				addres:'动漫大厦五号楼3单元1101',
 				person: {
+					area: '北京市朝阳区',
+					addres:'动漫大厦五号楼3单元1101',
 					name: '账单',
 					number: '18210646937',
 					sex: '先生'
@@ -134,7 +132,7 @@
 					money: '￥368.00',
 					count: '1',
 				}],
-				coupon: '-￥15.00',
+				coupon: '15.00',
 				freight: '￥10.00',
 				goodsnum: '2',
 				total: '159.00',
@@ -247,19 +245,16 @@
 					color: #333333;
 				}
 				.shopTag {
-					width: 210rpx;
+					display: inline-block;
+					padding: 0 20rpx;
 					height: 48rpx;
 					border-radius: 8rpx;
 					margin: 10rpx 0 ;
-					.tag {
-						.uni-tag {
-							background-color: #F3F3F3 !important;
-							font-size: 24rpx;
-							color: #757575;
-							font-family: PingFangSC-Regular;
-							font-weight: 400;
-						}
-					}
+					background: #F3F3F3;
+					border-radius: 8rpx;
+					text-align: center;
+					line-height: 48rpx;
+					font-size: 22rpx;
 				}
 				.moneyInfo {
 					// width: 76rpx;

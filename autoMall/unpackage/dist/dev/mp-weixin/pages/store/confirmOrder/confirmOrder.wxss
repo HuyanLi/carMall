@@ -103,17 +103,16 @@
   color: #333333;
 }
 .order .chooseGoods .chooseItem .goodsInfo .shopTag.data-v-c8ec6a50 {
-  width: 210rpx;
+  display: inline-block;
+  padding: 0 20rpx;
   height: 48rpx;
   border-radius: 8rpx;
   margin: 10rpx 0;
-}
-.order .chooseGoods .chooseItem .goodsInfo .shopTag .tag .uni-tag.data-v-c8ec6a50 {
-  background-color: #F3F3F3 !important;
-  font-size: 24rpx;
-  color: #757575;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
+  background: #F3F3F3;
+  border-radius: 8rpx;
+  text-align: center;
+  line-height: 48rpx;
+  font-size: 22rpx;
 }
 .order .chooseGoods .chooseItem .goodsInfo .moneyInfo.data-v-c8ec6a50 {
   width: 100%;

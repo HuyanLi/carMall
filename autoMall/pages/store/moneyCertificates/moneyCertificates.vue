@@ -46,11 +46,33 @@
 				</view>
 			</view>
 			<view class="godsCoup">
-				
+				<text class="couLft">{{couponInfo}}</text>
+				<text class="couRig">-￥{{couponMoney}}</text>
+			</view>
+			<view class="payMoney">
+				<text class="text">需支付：¥<text class="money">{{money}}</text></text>
 			</view>
 		</view>
 		<!-- 打款凭证 -->
-		
+		<view class="moneyProf">
+			<view class="chooseT">
+				<text class="imText">*</text>
+				<text>订单信息</text>
+			</view>
+			<view class="uPImg">
+				<!-- 上传图片 -->
+				<view class="shangchuan">
+					<view class="sc2" v-for="(item, index) in imgList" :key="index">
+						<image class="del" @click="del(index)" src="../../../static/image/mall/close.png" mode=""></image>
+						<image class="Img3" :src="item" mode=""></image>
+					</view>
+					<view class="sc2" v-if="imgList.length < 3" @click="upload"><image class="sc3" src="../../../static/image/mall/upload.png" mode=""></image></view>
+				</view>
+			</view>
+
+		</view>
+		<!-- 按钮 -->
+		<button class="bottomBtn" type="default" @click="payment('/pages/store/completePay/completePay')">我已打款</button>
 	</view>
 </template>
 
@@ -68,23 +90,58 @@
 					type: '太空灰;256GB',
 					money: '￥368.00',
 					count: '1',
-				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
-				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
 				}],
+				couponInfo: '满100减10元优惠券',
+				couponMoney: '10',
+				money: '159.00',
+				imgList:[],
 			}
 		},
 		methods: {
-			
+			//我已打款
+			payment(url) {
+				//完成支付
+				uni.navigateTo({
+					url: url
+				})
+			},
+			// 点击上传图片
+			upload() {
+				uni.chooseImage({
+					count: 3, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album'], //从相册选择
+					loop: true,
+					success: res => {
+						console.log(res);
+						if (res.tempFilePaths.length != 0) {
+							this.imgList.push(res.tempFilePaths[0]);
+						}
+					console.log(JSON.stringify(res.tempFilePaths));
+						var tempFilePaths = res.tempFilePaths;
+	 
+						console.log(tempFilePaths);
+						console.log(tempFilePaths[0]);
+						uni.uploadFile({
+							url: 'http://douzhuoqianshouba.xieenguoji.com/api/ajax/upload',
+							filePath: tempFilePaths[0],
+							name: 'file',
+							success: uploadFileRes => {
+								console.log('上传图片', JSON.parse(uploadFileRes.data));
+							},
+							fail(err) {
+								console.log(err);
+							}
+						});
+					}
+				});
+			},
+	 
+		  // 删除图片
+			del(index) {
+				this.imgList.splice(index, 1);
+				console.log(this.imgList);
+			},
 		}
 	}
 </script>
@@ -92,13 +149,13 @@
 <style lang="scss" scoped>
 .moneyC {
 	width: 750rpx;
-	margin: 0 auto;
+	margin: 0 auto 150rpx;
 	.payFor {
 		width: 690rpx;
 		// height: 328rpx;
 		background: #FFFFFF;
 		border-radius: 16rpx 16rpx 0 0;
-		margin: 0 auto 20rpx;
+		margin: 30rpx auto 20rpx;
 		.payType {
 			background: #2B2F36;
 			border-radius: 16rpx 16rpx 0 0;
@@ -145,9 +202,11 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		padding: 35rpx 30rpx;
+		overflow: hidden;
 		.chooseT {
 			font-weight: 600;
 			font-size: 30rpx;
+			margin-bottom: 30rpx;
 		}
 		.chooseItem {
 			display: flex;
@@ -173,7 +232,7 @@
 					width: 210rpx;
 					height: 48rpx;
 					border-radius: 8rpx;
-					margin: 10rpx 0 ;
+					margin: 10rpx 0;
 					.tag {
 						.uni-tag {
 							background-color: #F3F3F3 !important;
@@ -214,9 +273,92 @@
 			}
 		
 		}
+		.godsCoup{
+			margin: 35rpx auto;
+			.couLft {
+				font-size: 26rpx;
+				color: #333333;
+			}
+			.couRig {
+				font-size: 26rpx;
+				color: #FF0000;
+				float: right;
+			}
+		}
+		.payMoney {
+			float: right;
+			.text {
+				font-size: 26rpx;
+				color: #333333;
+			}
+			.money {
+				font-size: 36rpx;
+				color: #FF0000;
+			}
+		}
 	}
-	.godsCoup{
-		
+	.moneyProf {
+		margin: 30rpx 30rpx 20rpx;
+		background: #FFFFFF;
+		border-radius: 16rpx;
+		padding: 35rpx 30rpx;
+		overflow: hidden;
+		.chooseT {
+			font-weight: 600;
+			font-size: 30rpx;
+			margin-bottom: 30rpx;
+			.imText {
+				color: #FF6B33;
+				font-size: 28rpx;
+				margin-right: 10rpx;
+			}
+		}
+		.shangchuan {
+			// width: 90%;
+			height: 200rpx;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			.sc2 {
+				width: 30%;
+				height: 90%;
+				border-radius: 10rpx;
+				background-color: #dadfef;
+				text-align: center;
+				line-height: 240rpx;
+				margin: 0 10rpx;
+				position: relative;
+				// background-color: #4CD964;
+			}
+			.Img3 {
+				width: 100%;
+				height: 100%;
+				border-radius: 10rpx;
+			}
+			.del {
+				width: 32rpx;
+				height: 32rpx;
+				position: absolute;
+				z-index: 1000;
+				top: 0rpx;
+				right: 0;
+			}
+			.sc3 {
+				width: 196rpx;
+				height: 196rpx;
+				border-radius: 10rpx;
+			}
+		}
+	}
+	.bottomBtn {
+		width: 690rpx;
+		height: 90rpx;
+		background: #202425;
+		border-radius: 8rpx;
+		position: fixed;
+		bottom: 30rpx;
+		left: 30rpx;
+		color: #fff;
 	}
 }
 </style>

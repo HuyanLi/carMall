@@ -26,13 +26,13 @@
 /* 文章场景相关 */
 .moneyC.data-v-31decbdc {
   width: 750rpx;
-  margin: 0 auto;
+  margin: 0 auto 150rpx;
 }
 .moneyC .payFor.data-v-31decbdc {
   width: 690rpx;
   background: #FFFFFF;
   border-radius: 16rpx 16rpx 0 0;
-  margin: 0 auto 20rpx;
+  margin: 30rpx auto 20rpx;
 }
 .moneyC .payFor .payType.data-v-31decbdc {
   background: #2B2F36;
@@ -77,10 +77,12 @@
   background: #FFFFFF;
   border-radius: 16rpx;
   padding: 35rpx 30rpx;
+  overflow: hidden;
 }
 .moneyC .chooseGoods .chooseT.data-v-31decbdc {
   font-weight: 600;
   font-size: 30rpx;
+  margin-bottom: 30rpx;
 }
 .moneyC .chooseGoods .chooseItem.data-v-31decbdc {
   display: flex;
@@ -139,5 +141,89 @@
   font-weight: 400;
   font-size: 24rpx;
   color: #757575;
+}
+.moneyC .chooseGoods .godsCoup.data-v-31decbdc {
+  margin: 35rpx auto;
+}
+.moneyC .chooseGoods .godsCoup .couLft.data-v-31decbdc {
+  font-size: 26rpx;
+  color: #333333;
+}
+.moneyC .chooseGoods .godsCoup .couRig.data-v-31decbdc {
+  font-size: 26rpx;
+  color: #FF0000;
+  float: right;
+}
+.moneyC .chooseGoods .payMoney.data-v-31decbdc {
+  float: right;
+}
+.moneyC .chooseGoods .payMoney .text.data-v-31decbdc {
+  font-size: 26rpx;
+  color: #333333;
+}
+.moneyC .chooseGoods .payMoney .money.data-v-31decbdc {
+  font-size: 36rpx;
+  color: #FF0000;
+}
+.moneyC .moneyProf.data-v-31decbdc {
+  margin: 30rpx 30rpx 20rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 35rpx 30rpx;
+  overflow: hidden;
+}
+.moneyC .moneyProf .chooseT.data-v-31decbdc {
+  font-weight: 600;
+  font-size: 30rpx;
+  margin-bottom: 30rpx;
+}
+.moneyC .moneyProf .chooseT .imText.data-v-31decbdc {
+  color: #FF6B33;
+  font-size: 28rpx;
+  margin-right: 10rpx;
+}
+.moneyC .moneyProf .shangchuan.data-v-31decbdc {
+  height: 200rpx;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+.moneyC .moneyProf .shangchuan .sc2.data-v-31decbdc {
+  width: 30%;
+  height: 90%;
+  border-radius: 10rpx;
+  background-color: #dadfef;
+  text-align: center;
+  line-height: 240rpx;
+  margin: 0 10rpx;
+  position: relative;
+}
+.moneyC .moneyProf .shangchuan .Img3.data-v-31decbdc {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+.moneyC .moneyProf .shangchuan .del.data-v-31decbdc {
+  width: 32rpx;
+  height: 32rpx;
+  position: absolute;
+  z-index: 1000;
+  top: 0rpx;
+  right: 0;
+}
+.moneyC .moneyProf .shangchuan .sc3.data-v-31decbdc {
+  width: 196rpx;
+  height: 196rpx;
+  border-radius: 10rpx;
+}
+.moneyC .bottomBtn.data-v-31decbdc {
+  width: 690rpx;
+  height: 90rpx;
+  background: #202425;
+  border-radius: 8rpx;
+  position: fixed;
+  bottom: 30rpx;
+  left: 30rpx;
+  color: #fff;
 }
 

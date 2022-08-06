@@ -17,12 +17,23 @@
 			"path": "pages/tabBar/service/service",
 			"style": {
 				"navigationBarTitleText": "客服"
+				// "navigationStyle": "custom" // 取消本页面的导航栏
 			}
 		},
 		{
 			"path": "pages/tabBar/mine/mine",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom", // 取消本页面的导航栏
+				"app-plus": {
+					"animationType": "fade-in", // 设置fade-in淡入动画，为最合理的动画类型
+					"background": "transparent", // 背景透明
+					"backgroundColor": "rgba(0,0,0,0)", // 背景透明
+					"webviewBGTransparent": true,
+					"mask": "none",
+					"opacity": 0.9,
+					"popGesture": "none" // 关闭IOS屏幕左边滑动关闭当前页面的功能
+				}
 			}
 		},
 		{
@@ -102,7 +113,7 @@
             "path" : "pages/store/goodsDetail/goodsDetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "商品详情"
             }
             
         }
@@ -167,6 +178,47 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "添加地址"
+            }
+            
+        },{
+		    "path" : "pages/mine/infoEdit",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "修改资料"
+		    }
+		}
+        ,{
+            "path" : "pages/mine/orderList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "普通订单"
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "站内信",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/wallet",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的钱包",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/store/completePay/completePay",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
             }
             
         }

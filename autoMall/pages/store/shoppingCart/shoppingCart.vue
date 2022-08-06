@@ -15,21 +15,24 @@
 			<!-- 非空购物车 -->
 			<view v-if="!isEmptyCart" class="shopItem" v-for="(item, index) in goodsList" :key="index">
 				<view class="shopcheckbox" @click="chooseShop(item,index)">
-					<checkbox class="interestthreecheckbox" :checked="item.checked" />
+					<view v-if="!item.checked" class="choose"></view>
+					<image v-else class="chooseImage" src="../../../static/image/mall/choose.png"></image>
 				</view>
-				<image class="shopImage" :src="item.imgSrc" mode=""></image>
-				<view class="shopInfo">
-					<text class="shopTitle">{{item.title}}</text>
-					<view class="shopTag">
-						<uni-tag class="tag" :text="item.type" />
-					</view>
-					<view class="moneyInfo">
-						<view class="">
-							<text class="shopMoney">{{item.money}}</text>
-							<text class="shopOriginMoney">{{item.originMoney}}</text>
+				<view class="shopLists">
+					<image class="shopImage" :src="item.imgSrc" mode=""></image>
+					<view class="shopInfo">
+						<text class="shopTitle">{{item.title}}</text>
+						<view class="shopTag">
+							<uni-tag class="tag" :text="item.type" />
 						</view>
-						<view class="number-box">
-							<uni-number-box :min="1" :value="item.count"  @change="onNumberBoxChange(product, $event)"></uni-number-box>
+						<view class="moneyInfo">
+							<view class="">
+								<text class="shopMoney">{{item.money}}</text>
+								<text class="shopOriginMoney">{{item.originMoney}}</text>
+							</view>
+							<view class="number-box">
+								<uni-number-box :min="1" :value="item.count"  @change="onNumberBoxChange(product, $event)"></uni-number-box>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -74,7 +77,7 @@
 					money: '￥368.00',
 					originMoney: '¥1642',
 					count: '1',
-					checked: false,
+					checked: true,
 				},{
 					imgSrc: require('../../../static/image/home/banner1.png'),
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
@@ -108,12 +111,18 @@
 				})
 			},
 			chooseShop(e,i) {
+				console.log(e,i)
 				this.goodsList.forEach((item,index)=>{
 					if(index === i) {
-						item.checked = false
+						item.checked = true
+					}
+					if(item.checked === false) {
+						this.allChecked = false
+					}else {
+						this.allChecked = true
 					}
 				})
-				this.allChecked = false
+				console.log(this.goodsList)
 			},
 			//全选
 			checkedAll() {
@@ -161,7 +170,7 @@
 		width: 750rpx;
 		background: #FFFFFF;
 		.shopItem {
-			width: 750rpx;
+			// width: 750rpx;
 			// height: 230rpx;
 			padding: 24rpx 30rpx 15rpx;
 			display: flex;
@@ -169,9 +178,19 @@
 			// flex-direction: column;
 			// justify-content: center;
 			.shopcheckbox {
-				
-				border: 1rpx solid #A9A9A9;
-				border-radius: 16rpx;
+				// border: 1rpx solid #A9A9A9;
+				// border-radius: 16rpx;
+				margin-right: 35rpx;
+				.choose {
+					width: 32rpx;
+					height: 32rpx;
+					border: 1px solid #A9A9A9;
+					border-radius: 50%;
+				}
+				.chooseImage {
+					width: 32rpx;
+					height: 32rpx;
+				}
 				.interestthreecheckbox .wx-checkbox-input {
 					border-radius: 50%;
 					width: 32rpx;
@@ -189,63 +208,66 @@
 				}
 
 			}
-			.shopImage {
-				width: 139rpx;
-				height: 139rpx;
-			}
-			
-			.shopInfo {
-				margin: 25rpx 30rpx 20rpx 20rpx;
-				width: 65%;
-				.shopTitle {
-					width: 367rpx;
-					display: inline-block;
-				}
-				.shopTag {
-					width: 210rpx;
-					height: 48rpx;
-					border-radius: 8rpx;
-					margin: 15rpx 0 ;
-					.tag {
-						.uni-tag {
-							background-color: #F3F3F3 !important;
-							font-size: 24rpx;
-							color: #757575;
-							font-family: PingFangSC-Regular;
-							font-weight: 400;
+			.shopLists {
+				display: flex;
+				flex-direction: row;
+				.shopImage {
+						width: 139rpx;
+						height: 139rpx;
+					}
+					.shopInfo {
+						margin: 0rpx 0rpx 20rpx 20rpx;
+						.shopTitle {
+							width: 370rpx;
+							display: inline-block;
+						}
+						.shopTag {
+							width: 210rpx;
+							height: 48rpx;
+							border-radius: 8rpx;
+							margin: 15rpx 0 ;
+							.tag {
+								.uni-tag {
+									background-color: #F3F3F3 !important;
+									font-size: 24rpx;
+									color: #757575;
+									font-family: PingFangSC-Regular;
+									font-weight: 400;
+								}
+							}
+						}
+						.moneyInfo {
+							// width: 76rpx;
+							width: 475rpx;
+							height: 44rpx;
+							// background: #F6F6F6;
+							border-radius: 4rpx;
+							display: flex;
+							justify-content: space-between;
+							flex-direction: row;
+							align-items: center;
+							.shopMoney {
+								font-family: PingFangSC-Regular;
+								font-weight: 400;
+								font-size: 30rpx;
+								color: #ED1C24;
+							}
+							.shopOriginMoney {
+								font-family: PingFangSC-Regular;
+								font-weight: 400;
+								font-size: 22rpx;
+								color: #B1B1B1;
+								text-decoration: line-through;
+								margin-left: 5rpx;
+							}
+							.number-box {
+								float: right;
+							}
 						}
 					}
-				}
-				.moneyInfo {
-					// width: 76rpx;
-					width: 100%;
-					height: 44rpx;
-					// background: #F6F6F6;
-					border-radius: 4rpx;
-					display: flex;
-					justify-content: space-between;
-					flex-direction: row;
-					align-items: center;
-					.shopMoney {
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						font-size: 30rpx;
-						color: #ED1C24;
-					}
-					.shopOriginMoney {
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						font-size: 22rpx;
-						color: #B1B1B1;
-						text-decoration: line-through;
-						margin-left: 5rpx;
-					}
-					.number-box {
-						float: right;
-					}
-				}
+				
 			}
-		}
+			}
 	}
 	.shopPay {
 		position: fixed;

@@ -25,6 +25,33 @@
 /* 透明度 */
 /* 文章场景相关 */
 .service.data-v-36d1e043 {
-  padding-bottom: 120rpx;
+  padding-bottom: 100rpx;
+  position: relative;
+  width: 750rpx;
+}
+.service-content.data-v-36d1e043 {
+  padding: 30rpx;
+  background: #FFFFFF;
+}
+.service-content text.data-v-36d1e043 {
+  color: #424242;
+  display: inline-block;
+  margin: 0 0 30rpx 0;
+  font-weight: 600;
+  font-size: 28rpx;
+}
+.service button.data-v-36d1e043 {
+  width: 690rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  background-color: #202425;
+  border-radius: 8rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  text-align: center;
+  margin: 40rpx auto 30rpx;
 }
 

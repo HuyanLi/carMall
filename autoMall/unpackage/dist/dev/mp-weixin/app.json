@@ -21,7 +21,12 @@
     "pages/store/coupon/coupon",
     "pages/store/signAgreement/signAgreement",
     "pages/store/moneyCertificates/moneyCertificates",
-    "pages/store/addAdress/addAdress"
+    "pages/store/addAdress/addAdress",
+    "pages/mine/infoEdit",
+    "pages/mine/orderList",
+    "pages/mine/message",
+    "pages/mine/wallet",
+    "pages/store/completePay/completePay"
   ],
   "subPackages": [],
   "window": {

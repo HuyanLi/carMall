@@ -31,11 +31,9 @@
   border-radius: 7rpx;
   position: relative;
   overflow: hidden;
-  margin-top: 16rpx;
 }
 .brandDetail .myContainer .image-container.data-v-004c338a {
   width: 750rpx;
-  height: 747rpx;
 }
 .brandDetail .myContainer .image-container .item.data-v-004c338a {
   position: relative;
@@ -64,7 +62,6 @@
   margin: 15rpx auto;
 }
 .brandDetail .title.data-v-004c338a {
-  width: 750rpx;
   background: #FFFFFF;
   border-radius: 16rpx;
   padding: 30rpx;

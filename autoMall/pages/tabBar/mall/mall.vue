@@ -223,7 +223,7 @@
 <style lang="scss" scoped>
 	/* Tab切换 */
 	.body-view {
-		padding-bottom: 120rpx;
+		// padding-bottom: 120rpx;
 		height: 100%;
 		width: 100%;
 		display: flex;
@@ -335,17 +335,17 @@
 		flex: 1;
 		width: 100%;
 		height: auto;
-		background-color: #FFFFFF;
+		// background-color: #FFFFFF;
 	}
 
 	.swiper-topic-list {
 		height: 100%;
 		width: 100%;
+		padding-bottom: 120rpx;
 	}
 
 	.chooseBox {
 		width: 750rpx;
-		height: 107rpx;
 		background: #FFFFFF;
 		padding: 35rpx 30rpx;
 		.chooseText {
@@ -382,16 +382,24 @@
 		border-radius: 16rpx;
 		margin: -10rpx 30rpx 200rpx;
 		height: 100%;
-
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin: 20rpx 30rpx;
+		justify-content: space-between;
 		.goodsItem {
-			width: 47%;
-			margin: 30rpx 20rpx 20rpx 0;
-			float: left;
-
+			// padding: 20rpx 18rpx;
+			width: 48%;
+			background-color: #fff;
+			margin-bottom: 20rpx;
+			.text {
+				width: 300rpx;
+				margin: 20rpx auto 30rpx;
+			}
 			image {
 				width: 300rpx;
 				height: 300rpx;
-				margin: 20rpx 20rpx 30rpx;
+				// margin: 20rpx 20rpx 30rpx;
 			}
 
 			.fontText {
@@ -400,7 +408,7 @@
 				font-size: 26rpx;
 				color: #231F20;
 				line-height: 36rpx;
-				margin: 0 0 20rpx 20rpx;
+				margin: 0 0 0 20rpx;
 				//文本超出部分以...形式展示
 				text-overflow: -o-ellipsis-lastline;
 				//整体超出部分隐藏

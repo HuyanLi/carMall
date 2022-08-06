@@ -56,9 +56,9 @@
 		},
 		methods:{ 
 			//确认并签署
-			addCart() {
+			addCart(url) {
 				uni.navigateTo({
-					url
+					url:url
 				})
 			},
 			//触摸开始，获取到起点
