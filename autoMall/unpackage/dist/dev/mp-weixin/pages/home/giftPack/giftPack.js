@@ -163,11 +163,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 var _default =
 {
   data: function data() {
@@ -175,19 +170,19 @@ var _default =
       couponsList: [{
         dollars: 15,
         money: 50,
-        image: __webpack_require__(/*! ../../../static/image/register/coupons.png */ 65) },
+        image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png' },
       {
         dollars: 15,
         money: 50,
-        image: __webpack_require__(/*! ../../../static/image/register/coupons.png */ 65) },
+        image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png' },
       {
         dollars: 15,
         money: 50,
-        image: __webpack_require__(/*! ../../../static/image/register/coupons.png */ 65) },
+        image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png' },
       {
         dollars: 15,
         money: 50,
-        image: __webpack_require__(/*! ../../../static/image/register/coupons.png */ 65) }] };
+        image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png' }] };
 
 
   },
@@ -201,7 +196,10 @@ var _default =
     // 认证页面
     toApprove: function toApprove() {
       uni.navigateTo({
-        url: '/pages/home/approve/approve' });
+        url: '/pages/home/approve/approve',
+        success: function success() {
+          id: 'gif';
+        } });
 
     },
     //分享任务&测试报告

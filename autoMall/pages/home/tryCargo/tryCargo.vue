@@ -2,22 +2,22 @@
 <template>
 	<view class="tryGO">
 		<view class="'topImg">
-			<image v-if="sh" src="../../../static/image/home/shihuo.png"></image>
-			<image v-else src="../../../static/image/home/qyImage.png"></image>
+			<image v-if="sh" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"></image>
+			<image v-else src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qyImage.png"></image>
 		</view>
 		<view class="goodsList">
-			<view class="uni-flex uni-column goodsItem"  v-for="(item,index) in goodsList" :key='index'>
+			<view class="goodsItem"  v-for="(item,index) in goodList" :key='index'>
 				<view class="text">
 					<image :src="item.imgSrc"></image>
 				</view>
-				<view class="text fontText" style="-webkit-flex: 1;flex: 1;">{{item.text}}</view>
-				<view class="text money" style="-webkit-flex: 1;flex: 1;">￥{{item.money}}</view>
+				<view class="fontText" style="-webkit-flex: 1;flex: 1;">{{item.text}}</view>
+				<view class="money" style="-webkit-flex: 1;flex: 1;">￥{{item.money}}</view>
 			</view>
 		</view>
 		<view class="tryGoods">
 			<view class="shihuoLogo">
-				<image v-if="sh" src="../../../static/image/home/sh.png" @click="toSH"></image>
-				<image v-else src="../../../static/image/home/qyLogo.png" @click="toSH"></image>
+				<image v-if="sh" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/sh.png" @click="toSH('sh')"></image>
+				<image v-else src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qyLogo.png" @click="toSH('qy')"></image>
 			</view>
 		</view>
 	</view>
@@ -28,24 +28,24 @@
 		data() {
 			return {
 				sh: true,
-				goodsList: [{
-					imgSrc: '../../../static/image/home/banner1.png',
+				goodList: [{
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
 					money: '2538.00'
 				},{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
 					money: '2538.00'
 				},{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
 					money: '111.00'
 				},{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
 					money: '222.00'
 				},{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
 					money: '33.00'
 				}]
@@ -60,9 +60,16 @@
 		},
 		methods: {
 			toSH(e) {
-				uni.switchTab({
-					url: 'pages/tabBar/mall/mall'
-				})
+				if(e == 'sh') {
+					uni.navigateTo({
+						url: '/pages/tabBar/mall/mall'
+					})
+				}else {
+					uni.navigateTo({
+						url: '/pages/tabBar/mall/mall'
+					})
+				}
+				
 			},
 		}
 	}
@@ -73,7 +80,7 @@
 	width: 750rpx;
 	background: #FFFFFF;
 	// height: 100%;
-	margin-bottom: 300rpx;
+	margin-bottom: 100rpx;
 	.topImg {
 		image {
 			width: 750rpx;
@@ -82,24 +89,27 @@
 	}
 	.goodsList {
 		border-radius: 16rpx;
-		margin: -10rpx 30rpx 200rpx;
-		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		padding: 30rpx 30rpx 100rpx;
 		.goodsItem {
-			width: 47.2%;
-			margin: 30rpx 20rpx 20rpx 0;
-			float: left;
+			// padding: 20rpx 18rpx 25rpx;
 			image {
 				width: 300rpx;
 				height: 300rpx;
 				margin: 20rpx 20rpx 30rpx;
 			}
 			.fontText {
+				margin-left: 20rpx;
+				width: 296rpx;
+				display: block;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				font-size: 26rpx;
 				color: #231F20;
 				line-height: 36rpx;
-				margin: 0 0 20rpx 20rpx;
 				//文本超出部分以...形式展示
 				text-overflow: -o-ellipsis-lastline;
 				//整体超出部分隐藏

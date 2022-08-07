@@ -13,7 +13,7 @@
 					</view>
 					<view class="info-invit-code">邀请码：S4SDF7</view>
 				</view>
-				<image @tap="handleInfo" class="edit" src="../../../static/image/mine/edit.png"/>
+				<image @tap="handleInfo" class="edit" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png"/>
 			</view>
 		</view>
 
@@ -174,7 +174,7 @@
 }
 
 .top-bg {
-    background: url('../../../static/image/mine/mineBackground.png');
+    background: url('https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineBackground.png');
     background-position: center top;
     background-size: cover;
 	width: 100%;

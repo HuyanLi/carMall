@@ -149,7 +149,8 @@ var _default =
   data: function data() {
     return {
       currentTabIndex: 2,
-      content: '' };
+      content: '',
+      approve: true };
 
   },
   onLoad: function onLoad() {

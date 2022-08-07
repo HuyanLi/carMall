@@ -119,6 +119,7 @@
   flex: 1;
   width: 100%;
   height: auto;
+  margin-bottom: 120rpx;
 }
 .swiper-topic-list.data-v-96a7abd2 {
   height: 100%;

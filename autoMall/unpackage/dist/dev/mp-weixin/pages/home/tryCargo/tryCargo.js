@@ -160,24 +160,24 @@ var _default =
   data: function data() {
     return {
       sh: true,
-      goodsList: [{
-        imgSrc: '../../../static/image/home/banner1.png',
+      goodList: [{
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
         money: '2538.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面',
         money: '2538.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
         money: '111.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
         money: '222.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
         money: '33.00' }] };
 
@@ -192,8 +192,15 @@ var _default =
   },
   methods: {
     toSH: function toSH(e) {
-      uni.switchTab({
-        url: 'pages/tabBar/mall/mall' });
+      if (e == 'sh') {
+        uni.navigateTo({
+          url: '/pages/tabBar/mall/mall' });
+
+      } else {
+        uni.navigateTo({
+          url: '/pages/tabBar/mall/mall' });
+
+      }
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

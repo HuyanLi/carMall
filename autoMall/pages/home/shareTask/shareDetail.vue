@@ -3,7 +3,7 @@
 		<view class="box">
 			<rich-text :nodes="content"></rich-text>
 			<view class="buton">
-				<button type="default" @click="toShare">分享给好友</button>
+				<button type="default" open-type="share" @click="toShare">分享给好友</button>
 			</view>
 		</view>
 	</view>
@@ -16,16 +16,61 @@
 				content:''
 			}
 		},
-		onLoad(){
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
+		onShow(){
+			
 		},
-		
-		methods: {
+		methods:{
 			toShare() {
-				
-			}
+				console.log('2222222222')
+			},
+			onShareAppMessage(res) {
+			    	if (res.from === 'button') {
+						// 来自页面内分享按钮
+						console.log(res.target);
+					}
+					return {
+						title: '棱接龙',//标题
+						path: '/page/index/index',//可以指定动态路径
+						imageUrl: 'https://cdn.uviewui.com/uview/swiper/1.jpg',//分享图
+						desc: '描述'
+					};
+			  },
+			// 分享给好友
+			onShareAppMessage(options){
+			　　var that = this;
+			　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+			　　var shareObj = {
+			　　　  title:'',        // 默认是小程序的名称(可以写slogan等)
+			　　　　desc:'',// 小程序的描述
+					path: '/pages/home/shareDetail/shareDetail',        // 默认是当前页面，必须是以‘/’开头的完整路径
+			　　　　imageUrl: '', // 图片封面，本地文件路径、网络图片路，支持PNG及JPG，默认当前页面截图，显示图片长宽比是 5:4。
+			　　　　success: function(res){
+			　　　　　　// 转发成功之后的回调
+			　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+							
+			　　　　　　}
+			　　　　},
+			　　　　fail: function(){
+			　　　　　　// 转发失败之后的回调
+			　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+							console.log(res)
+			　　　　　　　　// 用户取消转发
+			　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+							console.log(res)
+			　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+			　　　　　　}
+			　　　　},
+			　　}
+			　　// 来自页面内的按钮的转发
+			　　if( options.from == 'button' ){
+			　　　　var eData = options.target.dataset;
+			　　　　console.log( eData.id);     // shareBtn
+			　　　　// 此处可以修改 shareObj 中的内容
+			　　　　shareObj.path = '/pages/share/index'
+			　　}
+			　　// 返回shareObj
+			　　return shareObj;
+			},
 		}
 	}
 </script>

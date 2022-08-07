@@ -132,7 +132,18 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 232));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tabBar = function tabBar() {__webpack_require__.e(/*! require.ensure | components/tabBar */ "components/tabBar").then((function () {return resolve(__webpack_require__(/*! ../../../components/tabBar.vue */ 321));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -236,19 +247,21 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
+      approve: false,
+      beforeapprove: false,
       currentTabIndex: 0,
       currentIndex: 0,
       imgList: [{
-        bannerUrl: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30) },
+        bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png' },
 
       {
-        bannerUrl: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30) },
+        bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png' },
 
       {
-        bannerUrl: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30) },
+        bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png' },
 
       {
-        bannerUrl: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30) }],
+        bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png' }],
 
 
       tabbarHeights: '100',
@@ -265,21 +278,25 @@ __webpack_require__.r(__webpack_exports__);
 
       goodsIndex: 0,
       wyList: [{
-        img: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '产值千万的关键在于坚定心中信念！',
-        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？' },
+        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
+        date: '2022-09-21' },
       {
-        img: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '产值千万的关键在于坚定心中信念！',
-        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？' },
+        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
+        date: '2022-09-21' },
       {
-        img: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '产值千万的关键在于坚定心中信念！',
-        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？' },
+        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
+        date: '2022-09-21' },
       {
-        img: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '产值千万的关键在于坚定心中信念！',
-        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？' }],
+        text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
+        date: '2022-09-21' }],
 
       background: ['color1', 'color2', 'color3'],
       indicatorDots: true,
@@ -287,6 +304,17 @@ __webpack_require__.r(__webpack_exports__);
       interval: 2000,
       duration: 500 };
 
+  },
+  onShow: function onShow() {
+    var pages = getCurrentPages();
+    var currPage = pages[pages.length - 1];
+    if (currPage.data.approve == undefined) {
+
+    } else {
+      this.approve = currPage.data.approve;
+      this.beforeapprove = currPage.data.beforeapprove;
+      // this.address_id = currPage.data.detailAddress
+    }
   },
   methods: {
     tabClick: function tabClick(index) {
@@ -308,12 +336,17 @@ __webpack_require__.r(__webpack_exports__);
         uni.navigateTo({
           url: url });
 
+        // this.beforeapprove = true
       }
 
     },
     changeType: function changeType(e) {
-      console.log(e);
       this.goodsIndex = e;
+    },
+    toDetail: function toDetail(e) {
+      uni.navigateTo({
+        url: '/pages/home/articleDetail/articleDetail?title=' + e.title + '&date=' + e.date });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -26,7 +26,16 @@
     "pages/mine/orderList",
     "pages/mine/message",
     "pages/mine/wallet",
-    "pages/store/completePay/completePay"
+    "pages/mine/saleRelation",
+    "pages/mine/saleOrder",
+    "pages/mine/cashout",
+    "pages/store/completePay/completePay",
+    "pages/home/articleDetail/articleDetail",
+    "pages/home/checkWard/checkWard",
+    "pages/mine/cashoutHistory",
+    "pages/mine/orderDetail",
+    "pages/mine/warehouse",
+    "pages/mine/wareHistory"
   ],
   "subPackages": [],
   "window": {

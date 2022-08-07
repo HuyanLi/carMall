@@ -63,10 +63,10 @@
 				<!-- 上传图片 -->
 				<view class="shangchuan">
 					<view class="sc2" v-for="(item, index) in imgList" :key="index">
-						<image class="del" @click="del(index)" src="../../../static/image/mall/close.png" mode=""></image>
+						<image class="del" @click="del(index)" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/close.png" mode=""></image>
 						<image class="Img3" :src="item" mode=""></image>
 					</view>
-					<view class="sc2" v-if="imgList.length < 3" @click="upload"><image class="sc3" src="../../../static/image/mall/upload.png" mode=""></image></view>
+					<view class="sc2" v-if="imgList.length < 3" @click="upload"><image class="sc3" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/upload.png" mode=""></image></view>
 				</view>
 			</view>
 
@@ -85,7 +85,7 @@
 				bank:'招商银行股份有限公司北京常营支行',
 				company:'北京多咖科技有限公司',
 				goodsList: [{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',

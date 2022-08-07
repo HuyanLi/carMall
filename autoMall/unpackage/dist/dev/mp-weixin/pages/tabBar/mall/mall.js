@@ -183,55 +183,60 @@ var _default =
 {
   data: function data() {
     return {
+      approve: true,
       currentTabIndex: 1,
       scrollLeft: 0,
       isClickChange: false,
       currentTab: 0,
       type: '',
       goodsList: [{
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
         money: '2538.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面',
         money: '2538.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
         money: '111.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
         money: '222.00' },
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
         money: '33.00' }],
 
       // Tab分类标题
       menuTabs: [{
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '今日热点' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '医疗' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '交通' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '住房' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '社会保障' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '教育' },
-      {
-        imgSrc: __webpack_require__(/*! ../../../static/image/home/banner1.png */ 30),
-        name: '民生热点' }],
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+        name: '今日热点' }],
 
+      // menuTabs: [{
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'),
+      // 	name: '今日热点'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '医疗'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '交通'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '住房'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '社会保障'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '教育'
+      // }, {
+      // 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+      // 	name: '民生热点'
+      // }],
       // Tab切换内容
       swiperDateList: [
       [],

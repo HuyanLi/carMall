@@ -56,7 +56,7 @@
             "path" : "pages/home/approve/approve",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "认证申请"
             }
             
         }
@@ -212,6 +212,33 @@
                 "enablePullDownRefresh": false
             }
             
+        },{
+            "path" : "pages/mine/saleRelation",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "分销关系",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/saleOrder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "分销订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/mine/cashout",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "提现",
+                "navigationBarBackgroundColor": "#003488",
+				"navigationBarTextStyle": "white"
+            }
+            
         }
         ,{
             "path" : "pages/store/completePay/completePay",
@@ -222,6 +249,62 @@
             }
             
         }
+        ,{
+            "path" : "pages/home/articleDetail/articleDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "内容详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/home/checkWard/checkWard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+		,{
+		    "path" : "pages/mine/cashoutHistory",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "提现记录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/mine/orderDetail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "订单详情",
+		        "navigationBarBackgroundColor": "#003488",
+		        "navigationBarTextStyle": "white"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/mine/warehouse",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的仓库",
+		        "navigationBarBackgroundColor": "#003488",
+		        "navigationBarTextStyle": "white"
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/mine/wareHistory",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "库存记录",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"pageOrientation": "portrait",

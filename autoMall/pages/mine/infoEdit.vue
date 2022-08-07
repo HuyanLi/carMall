@@ -17,13 +17,16 @@
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">地址</text>
-				<input class="info-item-content ipt right" v-model="address" type="text">
+				<input @tap="handleAddress" class="info-item-content ipt right" readonly v-model="address" type="text">
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">公司信息</text>
 				<input class="info-item-content ipt" v-model="company" type="text">
 			</view>
 		</view>
+		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="dataTree" v-model="address"
+			@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
+		</uni-data-picker>
 	</view>
 </template>
 
@@ -31,19 +34,96 @@
 	export default {
 		data() {
 			return {
+				pickerVisible: false,
 				tel: '13112345678',
 				userName: '张三',
 				address: '重庆重庆市渝中区郭守敬大道831号',
-				company: '北京多咖科技有限公司'
+				company: '北京多咖科技有限公司',
+				dataTree: [{
+					text: "河北省",
+					value: "1-0",
+					children: [{
+						text: "石家庄市",
+						value: "1-1",
+						children: [{
+							text: "长安区",
+							value: '1-1-1'
+						},{
+							text: "雨花区",
+							value: '1-1-2'
+						},{
+							text: "桥东区",
+							value: '1-1-3'
+						},{
+							text: "桥南区",
+							value: '1-1-4'
+						}]
+					},
+					{
+						text: "保定市",
+						value: "1-2"
+					}]
+				},
+				{
+					text: "山西省",
+					value: "2-0",
+					children: [{
+						text: "太原市",
+						value: "2-1"
+					},
+					{
+						text: "大同市",
+						value: "2-2"
+					}]
+				},
+				{
+					text: "辽宁省",
+					value: "3-0",
+					children: [{
+						text: "沈阳市",
+						value: "3-1"
+					},
+					{
+						text: "朝阳市",
+						value: "3-2"
+					}]
+				}]
 			}
 		},
 		methods: {
-			
+			handleAddress() {
+				this.pickerVisible = true
+				this.$nextTick(() => {
+					this.$refs.picker.show()
+				})
+			},
+			onnodeclick(e) {
+				console.log(e);
+			},
+			onpopupopened(e) {
+				console.log('popupopened');
+			},
+			onpopupclosed(e) {
+				this.pickerVisible = false
+				console.log('popupclosed');
+			},
+			onchange(e) {
+				console.log('onchange:', e);
+				let address = ''
+				e.detail.value.forEach(i => {
+					address+=i.text
+				})
+				this.address = address
+			}
  		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	::v-deep .selected-item-active{
+		color: #7D0016;
+		border: none;
+	}
 	.info {
 		width: 100%;
 		&-list {

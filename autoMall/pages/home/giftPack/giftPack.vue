@@ -1,35 +1,30 @@
 <template>
 	<view class="container">
 		<view class="topCon">
-			<image src="../../../static/image/register/top.png" mode=""></image>
+			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/top.png" mode=""></image>
 		</view>
 		<view class="yhq">
 			<view class="textCou">
 				认证后即可领取优惠券
 			</view>
 			<view class="coupons">
-				<view class="uni-flex uni-row couponsItem" v-for="(item,index) in couponsList" :key='index'>
-					<view class="text" style="-webkit-flex: 1;flex: 1;">
-						<image :src="item.image" mode=""></image>
-						<view class="main">
-							<text class="title">${{item.dollars}}</text>
-							<text class="money">满{{item.money}}元可使用</text>
-							<text class="getC" @click="getCoupons">立即领取</text>
-						</view>
-					</view>
+				<view class="couponsItem" v-for="(item,index) in couponsList" :key='index'>
+					<text class="title">${{item.dollars}}</text>
+					<text class="money">满{{item.money}}元可使用</text>
+					<text class="getC" @click="getCoupons">立即领取</text>
 				</view>
 			</view>
 			<view class="approve">
-				<image @click="toApprove" src="../../../static/image/register/approve.png"></image>
+				<image @click="toApprove" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/approve.png"></image>
 			</view>
 		</view>
 		<view class="task">
 			<view class="uni-flex uni-row taskImg">
 				<view class="text" style="-webkit-flex: 1;flex: 1;" @click="toShare('share')">
-					<image src="../../../static/image/register/share.png"></image>
+					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/share.png"></image>
 				</view>
 				<view class="text" style="-webkit-flex: 1;flex: 1;" @click="toShare('testReport')">
-					<image src="../../../static/image/register/testReport.png"></image>
+					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/testReport.png"></image>
 				</view>
 			</view>
 		</view>
@@ -43,19 +38,19 @@
 				couponsList:[{
 					dollars: 15,
 					money: 50,
-					image: require('../../../static/image/register/coupons.png')
+					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
 				},{
 					dollars: 15,
 					money: 50,
-					image: require('../../../static/image/register/coupons.png')
+					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
 				},{
 					dollars: 15,
 					money: 50,
-					image: require('../../../static/image/register/coupons.png')
+					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
 				},{
 					dollars: 15,
 					money: 50,
-					image: require('../../../static/image/register/coupons.png')
+					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
 				}]
 			}
 		},
@@ -69,7 +64,10 @@
 			// 认证页面
 			toApprove() {
 				uni.navigateTo({
-					url: '/pages/home/approve/approve'
+					url: '/pages/home/approve/approve',
+					success() {
+						id:'gif'
+					}
 				})
 			},
 			//分享任务&测试报告
@@ -113,51 +111,41 @@
 			padding: 40rpx 0 10rpx;
 		}
 		.coupons {
-			width: 750rpx;
+			// width: 750rpx;
 			background: #FFFFFF;
 			border-radius: 16rpx 16rpx 0 0;
 			border-radius: 16rpx 16rpx 0 0;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 0 80rpx;
 			.couponsItem {
-				float: left;
-				width: 50%;
-				text-align: center;
-				position: relative;
+				width: 244rpx;
+				height: 168rpx;
 				margin-bottom: 30rpx;
-				.main {
-					text-align: center;
-					.title {
-						position: absolute;
-						top: 5rpx;
-						// left: 45%;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
+				text-align: center;
+				background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png);
+				background-repeat:no-repeat;
+				background-size: 100%;
+				text {
+					display: block;
+					font-family: PingFangSC-Regular;
+					font-weight: 400;
+				}
+				.title {
 						font-size: 49rpx;
 						color: #FFFFFF;
 					}
 					.money {
-						// text-align: center;
-						position: absolute;
-						top:60rpx;
-						// left: 45%;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
 						font-size: 24rpx;
 						color: #FFFFFF;
+						margin-bottom: 25rpx;
 					}
 					.getC {
-						position: absolute;
-						top: 120rpx;
-						// left: 45%;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
 						font-size: 24rpx;
 						color: #003488;
 					}
-				}
-				image {
-					width: 244rpx;
-					height: 168rpx;	
-				}
 			}
 			
 		}

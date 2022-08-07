@@ -8,7 +8,7 @@
 		</view>
 		<button type="default" @click="toShare">在线客服</button>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
 </template>
 
@@ -17,7 +17,8 @@
 		data() {
 			return {
 				currentTabIndex: 2,
-				content: ''
+				content: '',
+				approve: true
 			}
 		},
 		onLoad() {

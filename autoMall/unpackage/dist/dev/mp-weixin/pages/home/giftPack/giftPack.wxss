@@ -45,48 +45,41 @@
   padding: 40rpx 0 10rpx;
 }
 .container .yhq .coupons.data-v-66136e58 {
-  width: 750rpx;
   background: #FFFFFF;
   border-radius: 16rpx 16rpx 0 0;
   border-radius: 16rpx 16rpx 0 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 80rpx;
 }
 .container .yhq .coupons .couponsItem.data-v-66136e58 {
-  float: left;
-  width: 50%;
-  text-align: center;
-  position: relative;
+  width: 244rpx;
+  height: 168rpx;
   margin-bottom: 30rpx;
-}
-.container .yhq .coupons .couponsItem .main.data-v-66136e58 {
   text-align: center;
+  background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
-.container .yhq .coupons .couponsItem .main .title.data-v-66136e58 {
-  position: absolute;
-  top: 5rpx;
+.container .yhq .coupons .couponsItem text.data-v-66136e58 {
+  display: block;
   font-family: PingFangSC-Regular;
   font-weight: 400;
+}
+.container .yhq .coupons .couponsItem .title.data-v-66136e58 {
   font-size: 49rpx;
   color: #FFFFFF;
 }
-.container .yhq .coupons .couponsItem .main .money.data-v-66136e58 {
-  position: absolute;
-  top: 60rpx;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
+.container .yhq .coupons .couponsItem .money.data-v-66136e58 {
   font-size: 24rpx;
   color: #FFFFFF;
+  margin-bottom: 25rpx;
 }
-.container .yhq .coupons .couponsItem .main .getC.data-v-66136e58 {
-  position: absolute;
-  top: 120rpx;
-  font-family: PingFangSC-Regular;
-  font-weight: 400;
+.container .yhq .coupons .couponsItem .getC.data-v-66136e58 {
   font-size: 24rpx;
   color: #003488;
-}
-.container .yhq .coupons .couponsItem image.data-v-66136e58 {
-  width: 244rpx;
-  height: 168rpx;
 }
 .container .yhq .approve.data-v-66136e58 {
   text-align: center;

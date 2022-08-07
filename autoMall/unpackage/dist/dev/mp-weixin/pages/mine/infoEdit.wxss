@@ -24,6 +24,10 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.data-v-6d171c6b .selected-item-active {
+  color: #7D0016;
+  border: none;
+}
 .info.data-v-6d171c6b {
   width: 100%;
 }

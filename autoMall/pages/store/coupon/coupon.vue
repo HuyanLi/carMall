@@ -2,7 +2,7 @@
 <template>
 	<view class="coupon">
 		<view class="coupon-que">
-			<image src="../../../static/image/mall/went.png" mode=""></image>
+			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/went.png" mode=""></image>
 			<text>如何使用</text>
 		</view>
 		<view class="coupon-content">
@@ -95,7 +95,7 @@
 		&-image {
 			width: 690rpx;
 			height: 190rpx;
-			background-image: url(../../../static/image/mall/hcoupon.png);
+			background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/hcoupon.png);
 			background-repeat: no-repeat;
 			background-size: 690rpx 190rpx;
 			display: flex;

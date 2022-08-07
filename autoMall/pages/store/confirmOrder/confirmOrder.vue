@@ -8,7 +8,7 @@
 			</view>
 			<view class="detailAddress">
 				<text>{{person.addres}}</text>
-				<image src="../../../static/image/mall/to.png"></image>
+				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
 			</view>
 			<view class="adressPerson">
 				<text class="text1">{{person.name}}</text>
@@ -40,7 +40,7 @@
 				<text class="textS">优惠金额</text>
 				<view class="money" @click="toCoupon">
 					<text class="testMon">-￥{{coupon}}</text>
-					<image src="../../../static/image/mall/to.png" mode=""></image>
+					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png" mode=""></image>
 				</view>
 			</view>
 			<view class="yunfei">
@@ -114,19 +114,19 @@
 					sex: '先生'
 				},
 				goodsList: [{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
 					count: '1',
 				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
 					count: '1',
 				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
@@ -145,20 +145,21 @@
 		methods: {
 			toAddress() {
 				uni.navigateTo({
-					url: '../shipAddress/shipAddress'
+					url: '/pages/store/shipAddress/shipAddress'
 				})
 			},
 			//优惠金额
 			toCoupon() {
 				uni.navigateTo({
-					url: '../coupon/coupon'
+					url: '/pages/store/coupon/coupon'
 				})
 			},
 			//确认打款
 			toConfirm() {
+				console.log('2222')
 				//签约协议
 				uni.navigateTo({
-					url: '../signAgreement/signAgreement'
+					url: '/pages/store/signAgreement/signAgreement'
 				})
 			}
 		}
@@ -180,7 +181,7 @@
 		flex-direction: column;
 		padding: 30rpx;
 		border: 1px solid;
-		border-image:url(../../../static/image/mall/group.png) 27 round; 
+		border-image:url(https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/group.png) 27 round; 
 		.orderArea {
 			font-family: PingFangSC-Light;
 			font-weight: 300;

@@ -31,7 +31,17 @@
 								共{{item.commodities.length}}件商品，总金额
 								<text class="order-content-info-price">¥{{item.totalPrice}}</text>
 							</view>
-							
+							<view class="order-item-btn">
+								<view class="gray">
+									取消订单
+								</view>
+								<view class="gray">
+									联系客服
+								</view>
+								<view class="black">
+									去打款
+								</view>
+							</view>
 						</view>
 						
 					</view>
@@ -261,6 +271,33 @@
 				color: #FF6B33;
 			}
 		}
+		
+		&-btn {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding-left: 160rpx;
+			box-sizing: border-box;
+			margin-top: 30rpx;
+			view {
+				width: 160rpx;
+				height: 54rpx;
+				line-height: 54rpx;
+				text-align: center;
+				margin-left: 10rpx;
+				border-radius: 4rpx;
+			}
+			
+			.gray {
+				color: #202425;
+				background: #ededed;
+			}
+			
+			.black {
+				color: #ffffff;
+				background: #202425;
+			}
+		}
 	}
 	.order-content {
 		display: flex;
@@ -277,6 +314,7 @@
 		&-info {
 			margin-left: 21rpx;
 			font-weight: 400;
+			flex: 1;
 			&-name{
 				font-size: 26rpx;
 				color: #333333;

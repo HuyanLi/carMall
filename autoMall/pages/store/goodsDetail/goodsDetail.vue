@@ -29,7 +29,7 @@
 				</view>
 				<view class="" @click="toChoose">
 					<view class="text content1" >
-						<image src="../../../static/image/mall/jt.png" mode=""></image>
+						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/jt.png" mode=""></image>
 					</view>
 					<view class="text content">
 						{{chooseStyle}}
@@ -42,7 +42,7 @@
 				</view>
 				<view class="" @click="toCoup">
 					<view class="text content1" >
-						<image src="../../../static/image/mall/jt.png" mode=""></image>
+						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/jt.png" mode=""></image>
 					</view>
 					<view class="text content">
 						{{coupTitle}}
@@ -82,12 +82,12 @@
 			<view class="icon" @click="addCart('收藏')">
 				<template v-if="isShow">
 					<view>
-						<image src="../../../static/image/mall/already.png"></image>
+						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/already.png"></image>
 					</view>
 				</template>
 				<template v-else>
 					<view>
-						<image src="../../../static/image/mall/collect.png"></image>
+						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/collect.png"></image>
 					</view>
 				</template>
 				<view class="text">
@@ -95,7 +95,7 @@
 				</view>
 			</view>
 			<view class="icon" @click="goShop">
-				<image src="../../../static/image/mall/shopCar.png"></image>
+				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/shopCar.png"></image>
 				<view class="text">
 					购物车
 				</view>
@@ -147,7 +147,7 @@
 					<text>选择优惠券</text>
 				</view>
 				<view class="couponsImage" v-for="(item,index) in couList" :key='index'>
-					<image src="../../../static/image/mall/detailC.png" mode=""></image>
+					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/detailC.png" mode=""></image>
 					<view class="couponsInfo">
 						<view class="copMoney" v-if="item.money">
 							<view class="money"> <text style="font-size: 28rpx;">￥</text> {{item.money}}</view>
@@ -235,16 +235,16 @@
 				}],
 				currentIndex: 0,
 				imgList: [{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
 				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
 				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
 				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				}
 				],
 				indicatorDots: true,
@@ -255,34 +255,34 @@
 				money: '368.00',
 				type: 'MICHELIN轮胎 性能三合一 都市畅行更放心',
 				goodsList: [{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
 					money: '2538.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
 					money: '2538.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
 					money: '111.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
 					money: '222.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
 					money: '33.00'
 				},{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
 					money: '33.00'
 				}],
 				content: '',
 				isShow: true,
 				shopDetail: {
-					productMainImg: require('../../../static/image/home/banner1.png'),
+					productMainImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					productName: '选择药品规格',
 					productPrice: '368'
 				},

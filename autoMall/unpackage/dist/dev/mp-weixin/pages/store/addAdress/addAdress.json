@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "添加地址",
   "usingComponents": {
-    "simple-address": "/components/simple-address/simple-address"
+    "uni-data-picker": "/uni_modules/uni-data-picker/components/uni-data-picker/uni-data-picker"
   }
 }

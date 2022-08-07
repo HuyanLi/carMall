@@ -18,7 +18,7 @@
 			<view class="text uni-flex detail" @click="toDetail"
 				style="-webkit-flex: 1;flex: 1;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
 				<text class="choseText">品牌详情 </text>
-				<image src="../../../static/image/mall/to.png"></image>
+				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
 			</view>
 		</view>
 		<!-- 显示区域 -->
@@ -43,7 +43,7 @@
 			</block>
 		</swiper>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
 </template>
 
@@ -51,55 +51,60 @@
 	export default {
 		data() {
 			return {
+				approve: true,
 				currentTabIndex: 1,
 				scrollLeft: 0,
 				isClickChange: false,
 				currentTab: 0,
 				type: '',
 				goodsList: [{
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
 					money: '2538.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
 					money: '2538.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
 					money: '111.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
 					money: '222.00'
 				}, {
-					imgSrc: '../../../static/image/home/banner1.png',
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
 					money: '33.00'
 				}],
 				// Tab分类标题
 				menuTabs: [{
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '今日热点'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '医疗'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '交通'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '住房'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '社会保障'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '教育'
-				}, {
-					imgSrc: require('../../../static/image/home/banner1.png'),
-					name: '民生热点'
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+					name: '今日热点',
 				}],
+				// menuTabs: [{
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'),
+				// 	name: '今日热点'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '医疗'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '交通'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '住房'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '社会保障'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '教育'
+				// }, {
+				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
+				// 	name: '民生热点'
+				// }],
 				// Tab切换内容
 				swiperDateList: [
 					[],
@@ -335,15 +340,14 @@
 		flex: 1;
 		width: 100%;
 		height: auto;
+		margin-bottom: 120rpx;
 		// background-color: #FFFFFF;
 	}
-
 	.swiper-topic-list {
 		height: 100%;
 		width: 100%;
 		padding-bottom: 120rpx;
 	}
-
 	.chooseBox {
 		width: 750rpx;
 		background: #FFFFFF;

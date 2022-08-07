@@ -22,7 +22,9 @@
 		},
 		methods: {
 			toShare() {
-				
+				uni.navigateTo({
+					url: '/pages/store/confirmOrder/confirmOrder'
+				})
 			}
 		}
 	}

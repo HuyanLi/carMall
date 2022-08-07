@@ -159,27 +159,27 @@ var _default =
     return {
       textList: [
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '文章标题文字占位sdrtrdsterterteteryeuyrtywer',
         text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有' },
 
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '文章标题文字占位',
         text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有' },
 
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '文章标题文字占位',
         text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有' },
 
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '文章标题文字占位',
         text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有' },
 
       {
-        imgSrc: '../../../static/image/home/banner1.png',
+        imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
         title: '文章标题文字占位',
         text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有' }] };
 

@@ -1,7 +1,7 @@
 <!-- 完成支付 -->
 <template>
 	<view class="compPay">
-		<image class="compPay-img" src="../../../static/image/mall/success.png"></image>
+		<image class="compPay-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/success.png"></image>
 		<view class="compPay-title">
 			提交成功
 		</view>

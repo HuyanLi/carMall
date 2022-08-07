@@ -19,13 +19,15 @@
 	export default {
 		props: {
 		//从父级继承过来的属性 需要在父级中使用:pagePath='pagePath',
-			current: Number
+			current: Number,
+			approve: Boolean
 		},
 		data() {
 			return {
 				// page: '',
 				showPage: false,
 				containerHeight: 400,
+				// approve: false,
 				//公共的tabbar
 				tabbar: [{
 						"pagePath": "pages/tabBar/home/home",
@@ -64,20 +66,40 @@
 					console.log('pagePath监听===val', pagePath)
 				},
 				immediate: true
+			},
+			approve: {
+				handler(newd,old) {
+					console.log(newd,2222222222222,old)
+					if(newd === true) {
+						this.tabbar = [{
+								"pagePath": "pages/tabBar/home/home",
+								"iconPath": "/static/image/home/home1.png",
+								"selectedIconPath": "/static/image/home/home.png",
+								"text": "首页"
+							},{
+								"pagePath": "pages/tabBar/mall/mall",
+								"iconPath": "/static/image/home/mall.png",
+								"selectedIconPath": "/static/image/home/mall1.png",
+								"text": "商城"
+							},
+							{
+								"pagePath": "pages/tabBar/service/service",
+								"iconPath": "/static/image/home/service.png",
+								"selectedIconPath": "/static/image/home/serviceActive.png",
+								"text": "客服"
+							},{
+								"pagePath": "pages/tabBar/mine/mine",
+								"iconPath": "/static/image/home/mine.png",
+								"selectedIconPath": "/static/image/home/mineActive.png",
+								"text": "我的"
+							}]
+					}
+				}
 			}
 		},
 		mounted() {
 			// 根据自己的业务需求判断条件为true，替换即可,根据权限设置的tabbar	
 			//第三个参数为插入项,第一个参数为第一项位置，第二个参数为要删除几个。
-			// if (true) {
-			// 	this.tabbar.splice(3, 0, {
-			// 			"pagePath": "pages/wareHouse/wareHouse",
-			// 			// "iconPath": "/static/cart.png",
-			// 			"selectedIconPath": "/static/cartSelected.png",
-			// 			"text": "出入库"
-			// 		}
-			// 	)
-			// }
 		},
 		methods: {
 			changeTab(item) {

@@ -16,7 +16,7 @@
 			<view v-if="!isEmptyCart" class="shopItem" v-for="(item, index) in goodsList" :key="index">
 				<view class="shopcheckbox" @click="chooseShop(item,index)">
 					<view v-if="!item.checked" class="choose"></view>
-					<image v-else class="chooseImage" src="../../../static/image/mall/choose.png"></image>
+					<image v-else class="chooseImage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/choose.png"></image>
 				</view>
 				<view class="shopLists">
 					<image class="shopImage" :src="item.imgSrc" mode=""></image>
@@ -71,7 +71,7 @@
 			return {
 				isEmptyCart: false,
 				goodsList: [{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
@@ -79,7 +79,7 @@
 					count: '1',
 					checked: true,
 				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
@@ -87,7 +87,7 @@
 					count: '1',
 					checked: false,
 				},{
-					imgSrc: require('../../../static/image/home/banner1.png'),
+					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					type: '太空灰;256GB',
 					money: '￥368.00',
@@ -107,7 +107,7 @@
 			//领券结算
 			toPay() {
 				uni.navigateTo({
-					url: '../confirmOrder/confirmOrder'
+					url: '/pages/store/confirmOrder/confirmOrder'
 				})
 			},
 			chooseShop(e,i) {
@@ -143,7 +143,7 @@
 			//拼团活动
 			toActivity() {
 				uni.navigateTo({
-					url: '../groupActivity/groupActivity'
+					url: '/pages/store/groupActivity/groupActivity'
 				})
 			}
 		}

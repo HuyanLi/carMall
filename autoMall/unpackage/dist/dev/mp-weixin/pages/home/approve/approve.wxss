@@ -24,31 +24,65 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.aprove .content.data-v-1b43b7d4 {
-  margin: 20rpx 0 125rpx;
+.approve.data-v-1b43b7d4 {
   width: 750rpx;
-  height: 1135rpx;
+}
+.approve .content.data-v-1b43b7d4 {
+  margin-top: 20rpx;
+  padding: 30rpx;
   background: #FFFFFF;
   border-radius: 16rpx;
-  padding: 0 20rpx;
-  background: #FFFFFF;
   box-shadow: 0px 4rpx 28rpx 0px rgba(0, 0, 0, 0.12);
   border-radius: 24rpx;
-  margin-bottom: 24rpx;
   font-size: 28rpx;
   color: #999999;
 }
-.aprove .content input.data-v-1b43b7d4 {
-  display: block;
-  width: 450rpx;
-  height: 80rpx;
-  line-height: 80rpx;
-  float: right;
-  margin-top: 20rpx;
-  font-size: 28rpx;
-  color: #333333;
-  text-align: right;
-  outline: none;
-  border: 0;
+.approve .content .uploadImg.data-v-1b43b7d4 {
+  width: 158rpx;
+  height: 158rpx;
+}
+.approve .bottom.data-v-1b43b7d4 {
+  background: #FFFFFF;
+  padding: 30rpx;
+}
+.approve .bottom .title.data-v-1b43b7d4 {
+  line-height: 40rpx;
+  margin-bottom: 34rpx;
+  display: flex;
+  flex-direction: row;
+}
+.approve .bottom .title .text.data-v-1b43b7d4 {
+  width: 36rpx;
+  height: 36rpx;
+  border: 1px solid #999;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 15rpx;
+  line-height: 40rpx;
+}
+.approve .bottom .title .approveT.data-v-1b43b7d4 {
+  color: #134488;
+}
+.approve .bottom .title image.data-v-1b43b7d4 {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 15rpx;
+}
+.approve .bottom .btnList.data-v-1b43b7d4 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.approve .bottom .btnList button.data-v-1b43b7d4 {
+  width: 331rpx;
+  float: left;
+}
+.approve .bottom .btnList .btn1.data-v-1b43b7d4 {
+  background: #EDEDED;
+  color: #202425;
+}
+.approve .bottom .btnList .btn2.data-v-1b43b7d4 {
+  background-color: #202425;
+  color: #fff;
 }
 

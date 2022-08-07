@@ -39,7 +39,7 @@
   flex-direction: column;
   padding: 30rpx;
   border: 1px solid;
-  border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAAGCAYAAAAc5iwfAAAAAXNSR0IArs4c6QAAAmdJREFUeF7tm9Ft4kAYhGcwnSQpANMAKSJXBeIZHgJLeIBnRBWXIkIDmAIu6QTyR4vNxXBgvOxFSqTZFySwVr/G438/Zr1EMQwgXCehW26s15rC2AfwDqCxv6bmpwHYAmjCOOBiNTOHBt1urtrDzIjlMuH9/cb+ZFMQ8fUQA96kMzNrkAyrR/pU3jv5p9ra0kf6QP3nlAk+1wvpI31ieEP++Sn+8eyVgBjTV3ywOHbbj6A95V9j93vAKDUTm3C+Hvq5mc9VexzA52v2CCC+HmDC23To5yYZVk8ZPqXPP/dR/gmAK/lH/lH/KeUeRVih/lwND9JH+sTw2LfzD8acZ86TWCn5TB0MoyLBTGoTY35hKfmE4yIb28NDwudnn4bWHofJ58qBjK+HdLxpjc1+J+SvsHqkT0DyKf8ci6XnKwDOe/KP/KP+XHigFOZo/TrRRaTPxdZa/Ln7bvzjk8955nZ8uIdE+2z+m108Gk7bHuzyWNVP7jpNuOU2PP3MIdHe1iOYOQBx9ZiNedd29vLSRKezDU4/C4i2bjryqB5dj/Q599jIP9UNRfpIH/WfIw/8Xb/Un08+HdLnAqVpfa8OmL5eH+A/wGe+XW8ccrGaXA+f+fa4vWZ+y91vvV8Ln/vXB4a8TSdXw2fx+oD1Wk8wxtcjfc6ZXf65/G9Wz9d5jeQf+Uf9+RjOtX5d3L3zAZnW99My7V+f/Ep9WIJPn7D4A0eh733mB5VoM87Xgwj43B0MsresD8M0Aj7zegwz3qWDq+GzODhl3XYftPh6pM+5ZiD/VMOD9JE+6j/HcKX+XA1X0kf6/AD++QDo9qM7qckH4QAAAABJRU5ErkJggg==) 27 round;
+  border-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/group.png) 27 round;
 }
 .order .orderAdress .orderArea.data-v-c8ec6a50 {
   font-family: PingFangSC-Light;

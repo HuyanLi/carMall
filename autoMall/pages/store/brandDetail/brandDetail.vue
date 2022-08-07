@@ -28,17 +28,14 @@
 			return {
 				currentIndex: 0,
 				imgList: [{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
 				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
 				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
+					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
 				},
-				{
-					bannerUrl: require('../../../static/image/home/banner1.png')
-				}
 				],
 				goodsIndex: 0,
 				indicatorDots: true,

@@ -2,7 +2,7 @@
 <template>
 	<view class="shippingAddress">
 		<view class="empty" v-if="addressList.length === 0">
-			<image src="../../../static/image/mall/empty.png" mode=""></image>
+			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/empty.png" mode=""></image>
 			<text class="empty-text1">当前地址为空,</text>
 			<text class="empty-text2" @click="addAddress('/pages/store/addAdress/addAdress')">去添加</text>
 		</view>
@@ -17,7 +17,7 @@
 				</view>
 				<view class="addressInfo">
 					<text>{{item.addres}}</text>
-					<image @tap="addAddress('/pages/store/addAdress/addAdress',item)" src="../../../static/image/mall/edit.png" mode=""></image>
+					<image @tap="addAddress('/pages/store/addAdress/addAdress',item)" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/edit.png" mode=""></image>
 				</view>
 				<view class="delet">
 					<view class="oprtLft" @click="setMr(item)">
@@ -36,26 +36,14 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {
 				addressList: [],
 			}
 		},
-		onShow(e) {
-			console.log(e)
-			let pages = getCurrentPages();
-			console.log(pages,5555555)
-			let currPage = pages[pages.length-1];
-			if(currPage.data.address==undefined || currPage.data.detailAddress==''){
-				
-			}else{
-				this.addressList = currPage.data.address
-				// this.address_id = currPage.data.detailAddress
-			}
-		},
 		methods: {
-			
 			setMr(e) {
 				console.log(e)
 				uni.showToast({
@@ -66,7 +54,6 @@
 			},
 			//选择地址
 			activeAdress(ids,e){
-				console.log(22222222223333,ids)
 				var pages = getCurrentPages();
 				var prepage = pages[pages.length - 2]; //上一个页面
 				prepage.$vm.person = {
