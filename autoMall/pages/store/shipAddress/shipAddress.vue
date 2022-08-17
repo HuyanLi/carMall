@@ -40,7 +40,7 @@
 </template>
 
 <script>
-	import { getAddress, addAddress } from '@/api/store.js'
+	import { getAddress, addAddress, editAddress, deleteAddress } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -87,11 +87,13 @@
 				})
 			},
 			deleteAddress() {
-				uni.showToast({
-				    title: '删除成功',
-				    icon: 'none',
-				    duration: 2000
-				});
+				deleteAddress().then(res=> {
+					uni.showToast({
+					    title: '删除成功',
+					    icon: 'none',
+					    duration: 2000
+					});
+				})
 			},
 			addAddress(src,item) {
 				if(item) {

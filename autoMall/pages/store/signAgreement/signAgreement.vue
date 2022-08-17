@@ -15,7 +15,7 @@
 			</view>
 			<view class="btn">
 				<!-- <button class="btn1" @click="addCart('购物车')">加入购物车</button> -->
-				<button type="default" @click="addCart('/pages/store/moneyCertificates/moneyCertificates')">我已阅读并确认签署</button>
+				<button type="default" @click="addCart()">我已阅读并确认签署</button>
 			</view>
 		</view>
 	</view>
@@ -40,9 +40,12 @@
 				writeTipsTrue: true,
 				ctx: '', //绘图图像
 				points: [], //路径点集合,
+				user:'',
+				type:'',
+				info: null
 			};
 		},
-		onLoad(){
+		onLoad(e){
 			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
 			data = data.replace(/\<img/g, "<img style='width: 100%;'")
 			this.content= data;
@@ -53,13 +56,23 @@
 			    this.ctx.lineWidth = 4;
 			    this.ctx.lineCap = 'round';
 			    this.ctx.lineJoin = 'round';
+				this.user = uni.getStorageSync('userInfo')
+				this.type = e.pt
+				this.info = e.info
 		},
 		methods:{ 
 			//确认并签署
-			addCart(url) {
-				uni.navigateTo({
-					url:url
-				})
+			addCart() {
+				if( this.type === 'pt' ) {
+					uni.navigateTo({
+						url:'/pages/home/groupBooking/groupBooking'
+					})
+				}else {
+					uni.navigateTo({
+						url:'/pages/store/moneyCertificates/moneyCertificates?info=' +this.info
+					})
+				}
+				
 			},
 			//触摸开始，获取到起点
 			touchstart: function (e) {

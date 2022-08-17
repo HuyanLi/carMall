@@ -242,7 +242,8 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
       allChecked: false,
       deleteIds: [],
       goodsActiveList: [],
-      chooseList: [] };
+      chooseList: [],
+      gods: [] };
 
   },
   computed: {
@@ -255,6 +256,7 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
     } },
 
   created: function created() {
+    console.log(this.$store.state);
     this.initGoosList();
   },
   methods: {
@@ -309,15 +311,24 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
     //领券结算
     toPay: function toPay() {
       uni.navigateTo({
-        url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) });
+        url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) + '&goods=' + JSON.stringify(this.gods) });
 
     },
     chooseShop: function chooseShop(e, i) {
+      this.gods = [];
       e.checked = !e.checked;
       if (!e.checked) {
         this.allChecked = false;
       } else {
         console.log(e);
+        this.gods.push({
+          image: e.goods.image,
+          price: e.goods.price,
+          skuText: e.sku_price.goods_sku_text,
+          number: e.goods_num,
+          title: e.goods.title });
+
+        console.log(this.gods);
         // 判断每一个商品是否是被选择的状态
         var cartList = this.goodsList.every(function (item) {
           return item.checked === true;
@@ -326,7 +337,7 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
         this.deleteIds = [];
         var goodsIndex = i;
         this.deleteIds.push(e.goods.id);
-        this.goodsActiveList.push({ goods_id: e.id, goods_sku_price_id: e.sku_price.id, num: e.goods_num });
+        this.goodsActiveList.push({ goods_id: e.goods_id, goods_sku_price_id: e.sku_price.id, num: e.goods_num });
         if (cartList) {
           this.allChecked = true;
         } else {

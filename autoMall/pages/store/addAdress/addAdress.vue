@@ -26,8 +26,11 @@
 		<view class="info-btn">
 			<button type="default" @click="saveAddress">保存</button>
 		</view>
-		<uni-data-picker ref="picker" :step-searh="true" parent-field="id" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressList"
-			@change="onchange" @nodeclick="onnodeclick"  @popupclosed="onpopupclosed">
+		<uni-data-picker ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressAreaList" v-model="area"
+			@change="onchange">
+			<text class="word13" v-if="!area.length">点击选择</text>
+			<text class="word13" v-else>{{ area[0] }}，{{ area[1] }}，{{ area[2] }}</text>
+			<text class="icon">&#xe70d;</text>
 		</uni-data-picker>
 	</view>
 </template>
@@ -51,6 +54,8 @@
 			    select:"请选择地区",
 				id:'',
 				tempClasses : '',
+				addres: [],
+				addressAreaList: []
 			}
 		},
 		created() {
@@ -58,31 +63,25 @@
 		},
 		methods: {
 			initCity(e,i) {
-				let query
-				if(e == 'init') {
-				    query = {
-						
-					}
-					getCity(query).then(res=>{
-						res.data.forEach(item=>{
-							item.text = item.name
-							item.value = item.id
-						})
-						this.addressList=res.data
+				getCity().then(res=>{
+					res.data.forEach(item=>{
+						item.value = item.id
+						item.text = item.name
 					})
-				}else {
-					query = {
-						parent_id: this.id
-					}
-					getCity(query).then(res=>{
-						res.data.forEach(item=>{
-							item.text = item.name
-							item.value = item.id
-						})
-						this.addressList[i] = res.data
-					})
-					console.log(this.addressList)
-				}
+					let { provinceData, cityData, areaData } = res.data;
+					// let provinceData = res.data
+					// let cityData;
+					// let areaData;
+					console.log(provinceData)
+					provinceData.forEach((item, index) => {
+						this.addressAreaList.push({ ...item, children: [] });
+						this.addressAreaList[index].children.push(...cityData[index]);
+						this.addressAreaList[index].children.forEach((item1, index1) => {
+							item1['children'] = [];
+							item1.children.push(...areaData[index][index1]);
+						});
+					});
+				})
 				
 			},
 			switch1Change: function (e) {
@@ -108,13 +107,24 @@
 				console.log('popupclosed');
 				this.$refs.picker.close()
 			},
-			onchange(e) {
-				console.log(e,22)
-				// let address = ''
-				// e.value.forEach(i => {
-				// 	address+=i.text
-				// })
-				// this.address = address
+			onchange(val) {
+				console.log(val,222)
+				getCity({parent_id: val.detail.value[0].value}).then(res=>{
+					// let { provinceData, cityData, areaData } = res.data;
+					let provinceData = res.data
+					let cityData;
+					let areaData;
+					console.log(provinceData)
+					provinceData.forEach((item, index) => {
+						this.addressAreaList.push({ ...item, children: [] });
+						this.addressAreaList[index].children.push(...cityData[index]);
+						this.addressAreaList[index].children.forEach((item1, index1) => {
+							item1['children'] = [];
+							item1.children.push(...areaData[index][index1]);
+						});
+					});
+				})
+				
 			},
 			saveAddress() {
 				let _this = this

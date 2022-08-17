@@ -2,7 +2,7 @@
 	<view>
 		<button v-if="isLogin" open-type="getUserInfo" class="userLogin userLogin1" @click="getUserProfile"></button>
 		<button v-if="isPhone" class="userLogin userLogin2" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
-		<!-- <button v-if="isMap" class="userLogin userLogin2" @tap="getAddress"></button> -->
+		<button v-if="isMap" class="userLogin userLogin2" @tap="getAddress"></button>
 	</view>
 </template>
 
@@ -50,6 +50,7 @@
 					success: function(res) {
 						getOpenIds({code: res.code}).then(res=>{
 							uni.setStorageSync("openid",res.data.openid);
+							// this.$store.commit('openid',res.data.openid)
 							uni.setStorageSync("session_key",res.data.session_key);
 						})
 					},
@@ -71,14 +72,15 @@
 						let nickName = userInfo.userInfo.nickName;
 						let openid = uni.getStorageSync("openid");
 						getUserInfo({openid:openid}).then(res=>{
-							if(res.code === 1) {
+							if(res.code === '-1') {
+								//未注册
 								let query = {
 									openid: openid,
 									headimg: avatarUrl,
 									nickname: nickName
 								}
 								addUser(query).then(data=>{
-									console.log(data)
+									uni.setStorageSync('userInfo',data.data)
 									uni.setStorageSync("member_id",data.data.member_id);
 									this.$store.commit('userInfo',data.data)
 									uni.showToast({
@@ -88,9 +90,11 @@
 									this.isPhone = true
 								})
 							}else {
-								uni.setStorageSync("member_id",res.id);
+								//已注册
+								uni.setStorageSync("member_id",res.data.id);
+								uni.setStorageSync("userInfo",res.data);
 								this.isLogin = false
-								this.isPhone = false
+								this.isPhone = true
 								this.isMap = false
 							}
 						})

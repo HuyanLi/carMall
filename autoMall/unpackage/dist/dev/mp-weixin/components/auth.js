@@ -166,6 +166,7 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
         success: function success(res) {
           (0, _user.getOpenIds)({ code: res.code }).then(function (res) {
             uni.setStorageSync("openid", res.data.openid);
+            // this.$store.commit('openid',res.data.openid)
             uni.setStorageSync("session_key", res.data.session_key);
           });
         },
@@ -187,14 +188,15 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
           var nickName = userInfo.userInfo.nickName;
           var openid = uni.getStorageSync("openid");
           (0, _user.getUserInfo)({ openid: openid }).then(function (res) {
-            if (res.code === 1) {
+            if (res.code === '-1') {
+              //未注册
               var query = {
                 openid: openid,
                 headimg: avatarUrl,
                 nickname: nickName };
 
               (0, _user.addUser)(query).then(function (data) {
-                console.log(data);
+                uni.setStorageSync('userInfo', data.data);
                 uni.setStorageSync("member_id", data.data.member_id);
                 _this2.$store.commit('userInfo', data.data);
                 uni.showToast({
@@ -204,9 +206,11 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
                 _this2.isPhone = true;
               });
             } else {
-              uni.setStorageSync("member_id", res.id);
+              //已注册
+              uni.setStorageSync("member_id", res.data.id);
+              uni.setStorageSync("userInfo", res.data);
               _this2.isLogin = false;
-              _this2.isPhone = false;
+              _this2.isPhone = true;
               _this2.isMap = false;
             }
           });

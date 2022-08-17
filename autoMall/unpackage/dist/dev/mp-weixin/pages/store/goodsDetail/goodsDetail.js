@@ -397,12 +397,14 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
       bottomHight: 0,
       //商品类型
       goodsType: 1,
-      sku_price_id: '' };
+      sku_price_id: '',
+      user: '' };
 
   },
   onLoad: function onLoad(option) {
     this.goodsId = option.id;
     this.initgoods(this.goodsId);
+    this.user = uni.getStorageSync('userInfo');
   },
   created: function created() {
   },
@@ -583,8 +585,6 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
 
           this.isShow = !this.isShow;
         }
-        // this.isShow = !this.isShow
-        // this.messageText = `收藏成功`
       } else {
         var query = {
           member_id: uni.getStorageSync('member_id'),
@@ -603,8 +603,24 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
     },
     //拼团
     buyGroup: function buyGroup() {
-      uni.navigateTo({
-        url: '/pages/store/groupActivity/groupActivity' });
+      //认证状态 1：未认证 2：已认证
+      if (this.user.is_authentication === 2) {
+        //去签约
+        uni.navigateTo({
+          url: '/pages/store/groupActivity/groupActivity' });
+
+      } else if (this.user.signing_image === null) {
+        //有数据  签约成功   ““不成功
+        //我已阅读并确认签署
+        uni.navigateTo({
+          url: '/pages/store/signAgreement/signAgreement?type=pt' });
+
+      } else if (this.user.signing_image !== '') {
+        //拼团活动
+        uni.navigateTo({
+          url: '/pages/home/groupBooking/groupBooking' });
+
+      }
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -219,11 +219,13 @@ var _default = { data: function data() {return { addressList: [] };}, created: f
 
     },
     deleteAddress: function deleteAddress() {
-      uni.showToast({
-        title: '删除成功',
-        icon: 'none',
-        duration: 2000 });
+      (0, _store.deleteAddress)().then(function (res) {
+        uni.showToast({
+          title: '删除成功',
+          icon: 'none',
+          duration: 2000 });
 
+      });
     },
     addAddress: function addAddress(src, item) {
       if (item) {

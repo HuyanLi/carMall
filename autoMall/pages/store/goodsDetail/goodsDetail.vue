@@ -239,12 +239,14 @@
 				bottomHight: 0,
 				//商品类型
 				goodsType: 1,
-				sku_price_id: ''
+				sku_price_id: '',
+				user: ''
 			}
 		},
 		onLoad(option) {
 			this.goodsId = option.id
 			this.initgoods(this.goodsId)
+			this.user = uni.getStorageSync('userInfo')
 		},
 		created() {
 		},
@@ -425,8 +427,6 @@
 						});
 						this.isShow = !this.isShow
 					}
-					// this.isShow = !this.isShow
-					// this.messageText = `收藏成功`
 				}else {
 					let query = {
 						member_id: uni.getStorageSync('member_id'),
@@ -445,9 +445,25 @@
 			},
 			//拼团
 			buyGroup() {
-				uni.navigateTo({
-					url: '/pages/store/groupActivity/groupActivity'
-				})
+				//认证状态 1：未认证 2：已认证
+				if(this.user.is_authentication === 2) {
+					//去签约
+					uni.navigateTo({
+						url: '/pages/store/groupActivity/groupActivity'
+					})
+				}else if(this.user.signing_image === null){
+					//有数据  签约成功   ““不成功
+					//我已阅读并确认签署
+					uni.navigateTo({
+						url: '/pages/store/signAgreement/signAgreement?type=pt'
+					})
+				}else if(this.user.signing_image !== '') {
+					//拼团活动
+					uni.navigateTo({
+						url: '/pages/home/groupBooking/groupBooking'
+					})
+				}
+				
 			},
 		}
 	}

@@ -4412,7 +4412,7 @@ module.exports = index_cjs;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var state = {
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var state = {
   userInfo: {},
   openId: null,
   approve: false,
@@ -4430,13 +4430,22 @@ var mutations = {
   },
   setShowNav: function setShowNav(state, nav) {
     state.showNav = nav;
+  },
+  setOpenId: function setOpenId(state, nav) {
+    state.openId = nav;
   } };
 
-// const actions = {
-// 	setStoreInfo: async ({ commit, state }, params) => {
-// 		commit('UPDATE_STORE_INFO', params)
-// 	},
-// }
+var actions = {
+  userInfo: function () {var _userInfo2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref, params) {var commit, state;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:commit = _ref.commit, state = _ref.state;
+              commit('userInfo', params);case 2:case "end":return _context.stop();}}}, _callee);}));function userInfo(_x, _x2) {return _userInfo2.apply(this, arguments);}return userInfo;}(),
+
+  setApprove: function () {var _setApprove = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(_ref2, params) {var commit, state;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:commit = _ref2.commit, state = _ref2.state;
+              commit('approve', params);case 2:case "end":return _context2.stop();}}}, _callee2);}));function setApprove(_x3, _x4) {return _setApprove.apply(this, arguments);}return setApprove;}(),
+
+  setOpenId: function () {var _setOpenId = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(_ref3, params) {var commit, state;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:commit = _ref3.commit, state = _ref3.state;
+              commit('openId', params);case 2:case "end":return _context3.stop();}}}, _callee3);}));function setOpenId(_x5, _x6) {return _setOpenId.apply(this, arguments);}return setOpenId;}() };
+
+
 
 var getters = {};var _default =
 
@@ -12971,7 +12980,7 @@ var get_file_data = /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#_
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getBankInfo = exports.getptList = exports.addAddress = exports.getAddress = exports.getCity = exports.getOrderPrice = exports.addCollageCart = exports.editShopCart = exports.shopList = exports.addShopCart = exports.goodsDetail = exports.goodsList = exports.bransList = exports.myCoupon = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getBankInfo = exports.getptList = exports.deleteAddress = exports.editAddress = exports.addAddress = exports.getAddress = exports.getCity = exports.getOrderPrice = exports.addCollageCart = exports.editShopCart = exports.shopList = exports.addShopCart = exports.goodsDetail = exports.goodsList = exports.bransList = exports.myCoupon = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 //我的优惠券
 var myCoupon = function myCoupon(data) {return (0, _request.default)(
   '/index.php/api/user/getMyCouponList',
@@ -13043,8 +13052,20 @@ exports.getAddress = getAddress;var addAddress = function addAddress(data) {retu
   data,
   'POST');};
 
+//修改收货地址
+exports.addAddress = addAddress;var editAddress = function editAddress(data) {return (0, _request.default)(
+  '/index.php/api/address/delAddress',
+  data,
+  'POST');};
+
+//删除收货地址
+exports.editAddress = editAddress;var deleteAddress = function deleteAddress(data) {return (0, _request.default)(
+  '/index.php/api/address/delAddress',
+  data,
+  'POST');};
+
 //获取拼团详情
-exports.addAddress = addAddress;var getptList = function getptList(data) {return (0, _request.default)(
+exports.deleteAddress = deleteAddress;var getptList = function getptList(data) {return (0, _request.default)(
   '/index.php/api/index/getCollageInfo',
   data,
   'POST');};

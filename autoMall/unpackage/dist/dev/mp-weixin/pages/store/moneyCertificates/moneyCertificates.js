@@ -249,8 +249,12 @@ var _default =
       couponInfo: '满100减10元优惠券',
       couponMoney: '10',
       money: '159.00',
-      imgList: [] };
+      imgList: [],
+      info: null };
 
+  },
+  onLoad: function onLoad(e) {
+    this.info = JSON.parse(e.info);
   },
   methods: {
     //我已打款

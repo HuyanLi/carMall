@@ -70,6 +70,18 @@ export const addAddress = (data) => request(
 	data,
 	'POST'
 )
+//修改收货地址
+export const editAddress = (data) => request(
+	'/index.php/api/address/delAddress',
+	data,
+	'POST'
+)
+//删除收货地址
+export const deleteAddress = (data) => request(
+	'/index.php/api/address/delAddress',
+	data,
+	'POST'
+)
 //获取拼团详情
 export const getptList = (data) => request(
 	'/index.php/api/index/getCollageInfo',

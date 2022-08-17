@@ -189,55 +189,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _store = __webpack_require__(/*! @/api/store.js */ 43); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// import { addressList } from '@/components/address.js'
-var _default = { data: function data() {return { tel: '', userName: '', address: '', detailAddress: '', switchState: false, pickerVisible: false, addressList: [], multiIndex: [0, 0, 0], newCategotyDataList: [[], [], []], categoryArr: {}, select: "请选择地区", id: '', tempClasses: '' };}, created: function created() {this.initCity('init');}, methods: { initCity: function initCity(e, i) {var _this2 = this;var query;if (e == 'init') {query = {};(0, _store.getCity)(query).then(function (res) {res.data.forEach(function (item) {item.text = item.name;item.value = item.id;});_this2.addressList = res.data;});
-      } else {
-        query = {
-          parent_id: this.id };
 
-        (0, _store.getCity)(query).then(function (res) {
-          res.data.forEach(function (item) {
-            item.text = item.name;
-            item.value = item.id;
+
+
+var _store = __webpack_require__(/*! @/api/store.js */ 43);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+{
+  data: function data() {
+    return {
+      tel: '',
+      userName: '',
+      address: '',
+      detailAddress: '',
+      switchState: false,
+      pickerVisible: false,
+      addressList: [],
+      multiIndex: [0, 0, 0],
+      newCategotyDataList: [[], [], []],
+      categoryArr: {},
+      select: "请选择地区",
+      id: '',
+      tempClasses: '',
+      addres: [],
+      addressAreaList: [] };
+
+  },
+  created: function created() {
+    this.initCity('init');
+  },
+  methods: {
+    initCity: function initCity(e, i) {var _this2 = this;
+      (0, _store.getCity)().then(function (res) {
+        res.data.forEach(function (item) {
+          item.value = item.id;
+          item.text = item.name;
+        });var _res$data =
+        res.data,provinceData = _res$data.provinceData,cityData = _res$data.cityData,areaData = _res$data.areaData;
+        // let provinceData = res.data
+        // let cityData;
+        // let areaData;
+        console.log(provinceData);
+        provinceData.forEach(function (item, index) {var _this2$addressAreaLis;
+          _this2.addressAreaList.push(_objectSpread(_objectSpread({}, item), {}, { children: [] }));
+          (_this2$addressAreaLis = _this2.addressAreaList[index].children).push.apply(_this2$addressAreaLis, _toConsumableArray(cityData[index]));
+          _this2.addressAreaList[index].children.forEach(function (item1, index1) {var _item1$children;
+            item1['children'] = [];
+            (_item1$children = item1.children).push.apply(_item1$children, _toConsumableArray(areaData[index][index1]));
           });
-          _this2.addressList[i] = res.data;
         });
-        console.log(this.addressList);
-      }
+      });
 
     },
     switch1Change: function switch1Change(e) {
@@ -263,13 +262,24 @@ var _default = { data: function data() {return { tel: '', userName: '', address:
       console.log('popupclosed');
       this.$refs.picker.close();
     },
-    onchange: function onchange(e) {
-      console.log(e, 22);
-      // let address = ''
-      // e.value.forEach(i => {
-      // 	address+=i.text
-      // })
-      // this.address = address
+    onchange: function onchange(val) {var _this4 = this;
+      console.log(val, 222);
+      (0, _store.getCity)({ parent_id: val.detail.value[0].value }).then(function (res) {
+        // let { provinceData, cityData, areaData } = res.data;
+        var provinceData = res.data;
+        var cityData;
+        var areaData;
+        console.log(provinceData);
+        provinceData.forEach(function (item, index) {var _this4$addressAreaLis;
+          _this4.addressAreaList.push(_objectSpread(_objectSpread({}, item), {}, { children: [] }));
+          (_this4$addressAreaLis = _this4.addressAreaList[index].children).push.apply(_this4$addressAreaLis, _toConsumableArray(cityData[index]));
+          _this4.addressAreaList[index].children.forEach(function (item1, index1) {var _item1$children2;
+            item1['children'] = [];
+            (_item1$children2 = item1.children).push.apply(_item1$children2, _toConsumableArray(areaData[index][index1]));
+          });
+        });
+      });
+
     },
     saveAddress: function saveAddress() {
       var _this = this;

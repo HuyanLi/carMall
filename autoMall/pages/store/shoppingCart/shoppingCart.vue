@@ -84,7 +84,8 @@
 				allChecked: false,
 				deleteIds:[],
 				goodsActiveList: [],
-				chooseList: []
+				chooseList: [],
+				gods: []
 			}
 		},
 		computed: {
@@ -97,6 +98,7 @@
 			}
 		},
 		created() {
+			console.log(this.$store.state)
 			this.initGoosList()
 		},
 		methods: {
@@ -151,15 +153,24 @@
 			//领券结算
 			toPay() {
 				uni.navigateTo({
-					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
+					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) + '&goods=' + JSON.stringify(this.gods)
 				})
 			},
 			chooseShop(e,i) {
+				this.gods = []
 				e.checked = !e.checked
 				if (!e.checked) {
 					this.allChecked = false
 				} else {
 					console.log(e)
+					this.gods.push({
+						image: e.goods.image,
+						price: e.goods.price,
+						skuText: e.sku_price.goods_sku_text,
+						number: e.goods_num,
+						title: e.goods.title
+					})
+					console.log(this.gods)
 					// 判断每一个商品是否是被选择的状态
 					const cartList = this.goodsList.every(item => {
 						return item.checked === true
@@ -168,7 +179,7 @@
 					this.deleteIds = []
 					let goodsIndex = i
 					this.deleteIds.push(e.goods.id)
-					this.goodsActiveList.push({goods_id: e.id, goods_sku_price_id:e.sku_price.id, num:e.goods_num})
+					this.goodsActiveList.push({goods_id: e.goods_id, goods_sku_price_id:e.sku_price.id, num:e.goods_num})
 					if (cartList) {
 						this.allChecked = true
 					} else {

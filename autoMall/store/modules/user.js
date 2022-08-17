@@ -16,13 +16,22 @@ const mutations = {
 	},
 	setShowNav(state,nav) {
 		state.showNav = nav
+	},
+	setOpenId(state,nav) {
+		state.openId = nav
 	}
 }
-// const actions = {
-// 	setStoreInfo: async ({ commit, state }, params) => {
-// 		commit('UPDATE_STORE_INFO', params)
-// 	},
-// }
+const actions = {
+	userInfo: async ({ commit, state }, params) => {
+		commit('userInfo', params)
+	},
+	setApprove: async({ commit, state },params) => {
+		commit('approve', params)
+	},
+	setOpenId: async({ commit, state },params) => {
+		commit('openId', params)
+	},
+}
 
 const getters = {} 
 

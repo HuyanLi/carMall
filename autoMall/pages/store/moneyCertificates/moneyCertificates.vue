@@ -11,15 +11,15 @@
 			<view class="payInfo">
 				<view class="payAcount">
 					<text class="infoTitle">帐号</text>
-					<text class="info">{{account}}</text>
+					<text class="info">{{info.pay_bank_code}}</text>
 				</view>
 				<view class="payAcount">
 					<text class="infoTitle">开户行</text>
-					<text class="info">{{bank}}</text>
+					<text class="info">{{info.pay_bank_name}}</text>
 				</view>
 				<view class="payAcount">
 					<text class="infoTitle">名称</text>
-					<text class="info">{{company}}</text>
+					<text class="info">{{info.company_name}}</text>
 				</view>
 			</view>
 		</view>
@@ -95,7 +95,11 @@
 				couponMoney: '10',
 				money: '159.00',
 				imgList:[],
+				info: null
 			}
+		},
+		onLoad(e) {
+			this.info = JSON.parse(e.info)
 		},
 		methods: {
 			//我已打款

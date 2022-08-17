@@ -19,16 +19,16 @@
 		<!-- 选购商品 -->
 		<view class="chooseGoods">
 			<view class="chooseItem" v-for="(item,index) in goodsList" :key='index'>
-				<image class="goodsImage" :src="item.imgSrc"></image>
+				<image class="goodsImage" :src="item.image"></image>
 				<view class="goodsInfo">
 					<text class="shopTitle">{{item.title}}</text>
-					<text class="shopTag">{{item.type}}</text>
+					<text class="shopTag">{{item.skuText}}</text>
 					<view class="moneyInfo">
 						<view class="">
-							<text class="shopMoney">{{item.money}}</text>
+							<text class="shopMoney">{{item.price}}</text>
 						</view>
 						<view class="number-box">
-							<text>X {{item.count}}</text>
+							<text>X {{item.number}}</text>
 						</view>
 					</view>
 				</view>
@@ -99,52 +99,36 @@
 					number: '18210646937',
 					sex: '先生'
 				},
-				goodsList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
-				}],
-				coupon: '15.00',
-				freight: '￥10.00',
-				goodsnum: '2',
-				total: '159.00',
+				goodsList: [],
+				coupon: '',
+				goodsnum: '',
+				total: '',
 				payForType: '线下支付',
-				account: '110 9307 9091 0206 ',
-				bank:'招商银行股份有限公司北京常营支行',
-				company:'北京多咖科技有限公司'
+				bankInfo: null,
+				account: '',
+				bank:'',
+				company:'',
+				user: ''
 			}
 		},
 		onLoad(e) {
-			console.log(e)
 			let data = e.goodsData
+			this.goodsList = JSON.parse(e.goods)
 			this.initconfrom(data)
 			this.initBankInfo()
+			console.log(this.$store.state)
+			this.user = uni.getStorageSync('userInfo')
 		},
 		methods: {
 			initconfrom(e){
 				let data = {
 					member_id: uni.getStorageSync('member_id'),
 					goods_list: e,
-					address_id: 2,
+					address_id: 3,
 					is_cart: 2,
 					type: 'other'
 				}
 				getOrderPrice(data).then(res=>{
-					console.log(res)
 					this.total = res.data.pay_fee
 					this.coupon = res.data.coupon_fee
 					this.company = res.data.goods_num
@@ -152,6 +136,7 @@
 			},
 			initBankInfo() {
 				getBankInfo().then(res=>{
+					this.bankInfo = res.data
 					this.account = res.data.pay_bank_code
 					this.bank = res.data.pay_bank_name
 					this.account = res.data.company_name
@@ -170,15 +155,16 @@
 			},
 			//确认打款
 			toConfirm() {
-				//是否签约 1：未签约 2：已签约
-				if(this.$store.state.user.userInfo.is_signing === '1') {
-					//签约协议
+				//是否签约 
+				if( this.user.signing_image === null) {
+					//1：未签约   签约协议
 					uni.navigateTo({
-						url: '/pages/store/signAgreement/signAgreement'
+						url: '/pages/store/signAgreement/signAgreement?info='+ JSON.stringify(this.bankInfo)
 					})
 				}else {
+					//2：已签约  提交打款凭证
 					uni.navigateTo({
-						url: '/pages/store/signAgreement/signAgreement'
+						url: '/pages/store/moneyCertificates/moneyCertificates'
 					})
 				}
 				
