@@ -9,11 +9,11 @@
 		</view>
 		<view class="wallet-part">
 			<view class="wallet-part-left" @tap="handlePart('/pages/mine/saleRelation')">
-				<img src="../../static/image/mine/fenxiaoguanxi.png">
+				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/fenxiaoguanxi.png">
 				<text>分销关系</text>
 			</view>
 			<view class="wallet-part-right" @tap="handlePart('/pages/mine/saleOrder')">
-				<img src="../../static/image/mine/fenxiaodingdan.png">
+				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/fenxiaodingdan.png">
 				<text>分销订单</text>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 			<view class="wallet-select-left">共{{bills.length}}笔</view>
 			<view class="wallet-select-right" @tap="openCalendar">
 				<text>{{date}}</text>
-				<img src="../../static/image/mine/down.png" class="img" />
+				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/down.png" class="img" />
 			</view>
 		</view>
 		
@@ -99,7 +99,7 @@
 	background: #f6f6f6;
 	&-header {
 		height: 340rpx;
-		background: url("../../static/image/mine/background-blue.png") no-repeat;
+		background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/background-blue.png") no-repeat;
 		transform: translate3d(0,-3rpx,0);
 		background-size: cover;
 		color: #ffffff;

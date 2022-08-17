@@ -27,16 +27,19 @@
 		},
 		methods: {
 			goShop() {
+				console.log('1111111111')
 				uni.navigateTo({
 					url: '/pages/tabBar/mall/mall'
 				})
 			},
 			tomyOrder() {
+				console.log('2222222222')
 				uni.navigateTo({
 					url: '/pages/mine/orderList'
 				})
 			},
 			toContract() {
+				console.log('3333333333')
 				uni.navigateTo({
 					url: '/pages/tabBar/service/service'
 				})

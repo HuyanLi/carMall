@@ -1,4 +1,4 @@
-<!-- 试货 -->
+<!-- 试货、签约 -->
 <template>
 	<view class="tryGO">
 		<view class="'topImg">
@@ -80,7 +80,7 @@
 	width: 750rpx;
 	background: #FFFFFF;
 	// height: 100%;
-	margin-bottom: 100rpx;
+	// margin-bottom: 100rpx;
 	.topImg {
 		image {
 			width: 750rpx;

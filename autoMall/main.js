@@ -4,7 +4,15 @@ import store from './store'
 // #ifndef VUE3
 import Vue from 'vue'
 import tabBar from './components/tabBar.vue'
+import auth from './components/auth.vue'
+import share from '@/utils/shares.js'
+import shoproSku from './components/shopro-sku.vue'
+
+
+Vue.mixin(share)
 Vue.component('tab-bar', tabBar)
+Vue.component('auth',auth)
+Vue.component('shopro-sku',shoproSku)
 Vue.config.productionTip = false
 Vue.prototype.$store = store
 Vue.prototype.$adpid = "1111111111"

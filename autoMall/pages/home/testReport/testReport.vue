@@ -54,6 +54,9 @@
 				confirmText: '确定'
 			}
 		},
+		onLoad(e) {
+			console.log(e)
+		},
 		methods: {
 			toGift() {
 				uni.navigateTo({
@@ -127,17 +130,19 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
-		padding: 25rpx 0;
+		// padding: 25rpx 0;
 		width: 100%;
 		position: fixed;
 		bottom: 0;
 		left: 0;
+		height: 140rpx;
 		button {
 			width: 325rpx;
 			height: 90rpx;
 			line-height: 90rpx;
 			border-radius: 8rpx;
 			font-size: 24rpx;
+			margin: 25rpx auto;
 		}
 		&-btn1 {
 			background: #EDEDED;

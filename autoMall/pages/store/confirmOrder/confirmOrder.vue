@@ -103,6 +103,7 @@
 </template>
 
 <script>
+	import { getOrderPrice } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -142,7 +143,24 @@
 				company:'北京多咖科技有限公司'
 			}
 		},
+		onLoad(e) {
+			console.log(e)
+			let data = e.goodsData
+			this.initconfrom(data)
+		},
 		methods: {
+			initconfrom(e){
+				let data = {
+					member_id: uni.getStorageSync('member_id'),
+					goods_list: e,
+					address_id: 2,
+					is_cart: 2,
+					type: 'other'
+				}
+				getOrderPrice(data).then(res=>{
+					console.log(res)
+				})
+			},
 			toAddress() {
 				uni.navigateTo({
 					url: '/pages/store/shipAddress/shipAddress'
@@ -171,7 +189,7 @@
 	width: 750rpx;
 	height: 590rpx;
 	background-image: linear-gradient(1deg, rgba(255,255,255,0.00) 0%, #003488 43%);
-	padding: 40rpx 0 120rpx;
+	padding: 40rpx 0 ;
 	.orderAdress {
 		margin: 0 30rpx;
 		background: #FFFFFF;

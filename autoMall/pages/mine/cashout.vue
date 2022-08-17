@@ -18,11 +18,11 @@
 				<view class="cashout-content-footer-title">提现至</view>
 				<view class="cashout-content-footer-content">
 					<view>
-						<img class="size33" src="../../static/image/mine/wechat.png" />
+						<img class="size33" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wechat.png" />
 						<text class="we">微信</text>
 						<text class="name">微微一笑很倾城</text>
 					</view>
-					<img class="size30" src="../../static/image/mine/duigou.png" />
+					<img class="size30" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/duigou.png" />
 				</view>
 			</view>
 			<view class="cashout-button" @tap="handleCashout">

@@ -1,37 +1,40 @@
 <!-- 购物车 -->
 <template>
 	<view class="shoppingCart">
-		<view class="shopDelete" @click="deleteShop">
+		<view v-if="!isEmptyCart" class="shopDelete" @click="deleteShop('delete')">
 			<text>删除</text>
 		</view>
-		<view class="shopList">
+		<view class="shopListM">
 			<!-- 空购物车 -->
-			<view v-if="isEmptyCart" class="bg-color-white border-bottom-left-radius-xl border-bottom-right-radius-xl padding-lg">
-				<view class="row-center-center">
-					<image class="img-size-xl" src="/static/cart/empty-cart.png" mode="aspectFit"></image>
-					<text class="font-size-lg text-color-greyblack">购物车是空的</text>
-				</view>
+			<view v-if="isEmptyCart" class="empty">
+				<!-- <image class="img-size-xl" src="https://baiyuechangxiong-pic.luobo.info/che/static/cart/empty-cart.png" mode="aspectFit"></image> -->
+				<text>购物车是空的</text>
 			</view>
 			<!-- 非空购物车 -->
 			<view v-if="!isEmptyCart" class="shopItem" v-for="(item, index) in goodsList" :key="index">
-				<view class="shopcheckbox" @click="chooseShop(item,index)">
-					<view v-if="!item.checked" class="choose"></view>
-					<image v-else class="chooseImage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/choose.png"></image>
+				<view class="shopcheckbox">
+					<checkbox-group @change="chooseShop(item,index)">
+						<label>
+							<checkbox :value="item.goods.price" :checked="item.checked" color="#203885" style="transform:scale(0.7)" />
+						</label>
+					</checkbox-group>
+					<!-- <view v-if="!item.checked" class="choose"></view>
+					<image v-else class="chooseImage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/choose.png"></image> -->
 				</view>
 				<view class="shopLists">
-					<image class="shopImage" :src="item.imgSrc" mode=""></image>
+					<image class="shopImage" :src="item.goods.image" mode=""></image>
 					<view class="shopInfo">
-						<text class="shopTitle">{{item.title}}</text>
-						<view class="shopTag">
-							<uni-tag class="tag" :text="item.type" />
+						<text class="shopTitle">{{item.goods.title}}</text>
+						<view class="shopTag" >
+							<uni-tag class="tag" :text="item.sku_price.goods_sku_text" />
 						</view>
 						<view class="moneyInfo">
 							<view class="">
-								<text class="shopMoney">{{item.money}}</text>
-								<text class="shopOriginMoney">{{item.originMoney}}</text>
+								<text class="shopMoney">{{item.goods.price}}</text>
+								<text class="shopOriginMoney">{{item.goods.original_price}}</text>
 							</view>
 							<view class="number-box">
-								<uni-number-box :min="1" :value="item.count"  @change="onNumberBoxChange(product, $event)"></uni-number-box>
+								<uni-number-box :min="0" :value="item.goods_num"  @change="deleteShop('edit',item, $event)"></uni-number-box>
 							</view>
 						</view>
 					</view>
@@ -40,15 +43,20 @@
 				
 		</view>
 		<!-- 领券结算 -->
-		<view class="shopPay">
+		<view class="shopPay" v-if="!isEmptyCart">
 			<view class="shopCart">
-				<view class="chooseAll" @click="checkedAll">
-					<checkbox :checked="allChecked" />
-					<text class="font-size-base">全选</text>
+				<view class="chooseAll">
+					<!-- <checkbox :checked="allChecked" value="1111" />
+					<text class="font-size-base">全选</text> -->
+					<checkbox-group name="" @change="checkedAll" class="check">
+						<label>
+							<checkbox :value="1111" :checked="allChecked" style="transform:scale(0.7)" color="#203885" /><text class="font-size-base">全选</text>
+						</label>
+					</checkbox-group>
 				</view>
 				<view class="moneyCount">
 					<text class="zonghe">合计</text>
-					<text class='money'>￥368.00</text>
+					<text class='money'>￥{{totalPrice}}</text>
 				</view>
 				<view class="btnList">
 					<button class="btn btn1" @click="toPay">领券结算</button>
@@ -60,6 +68,7 @@
 </template>
 
 <script>
+	import { shopList, addShopCart, editShopCart,addCollageCart } from '@/api/store.js'
 	import{uniNumberBox,uniTag,uniGoodsNav} from '@dcloudio/uni-ui'
 	export default {
 		components: {
@@ -70,81 +79,136 @@
 		data() {
 			return {
 				isEmptyCart: false,
-				goodsList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					originMoney: '¥1642',
-					count: '1',
-					checked: true,
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					originMoney: '¥1642',
-					count: '1',
-					checked: false,
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					originMoney: '¥1642',
-					count: '1',
-					checked: false,
-				}],
+				goodsList: [],
 				tabTitle: '太空灰;256GB',
-				allChecked: false
+				allChecked: false,
+				deleteIds:[],
+				goodsActiveList: [],
+				chooseList: []
 			}
 		},
+		computed: {
+			totalPrice() {
+				let totalPrice = 0
+				this.goodsList.map(item => {
+					item.checked ? totalPrice += Number(item.goods.price)*Number(item.goods_num) : totalPrice += 0
+				})
+				return totalPrice
+			}
+		},
+		created() {
+			this.initGoosList()
+		},
 		methods: {
+			//购物车列表
+			async initGoosList() {
+				let query = {
+					member_id: uni.getStorageSync("member_id"),
+					page: 1
+				} 
+				let data = await shopList(query)
+				if(data.code === 1) {
+					data.data.rows.forEach(item=>{
+						item.checked = false
+					})
+					this.goodsList = data.data.rows
+					if(this.goodsList.length === 0) {
+						this.isEmptyCart = true
+					}
+				}
+			},
+			//修改商品数量
+			onNumberBoxChange(v,e) {
+				console.log(v,e)
+			},
 			//删除商品
-			deleteShop() {
-				
+			deleteShop(type,e,i) {
+				let query;
+				if(type === 'delete') {
+					query = {
+						member_id: uni.getStorageSync('member_id'),
+						act: 'delete',
+						cart_list: this.deleteIds.join(','),
+						value: ''
+					}
+				}else {
+					query = {
+						member_id: uni.getStorageSync('member_id'),
+						act: 'change',
+						cart_list: e.id,
+						value: i
+					}
+				}
+				editShopCart(query).then(res=>{
+					uni.showToast({
+					    title: res.msg,
+					    icon: 'none',
+					    duration: 2000
+					});
+					this.initGoosList()
+				})
 			},
 			//领券结算
 			toPay() {
 				uni.navigateTo({
-					url: '/pages/store/confirmOrder/confirmOrder'
+					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
 				})
 			},
 			chooseShop(e,i) {
-				console.log(e,i)
-				this.goodsList.forEach((item,index)=>{
-					if(index === i) {
-						item.checked = true
-					}
-					if(item.checked === false) {
-						this.allChecked = false
-					}else {
+				e.checked = !e.checked
+				if (!e.checked) {
+					this.allChecked = false
+				} else {
+					console.log(e)
+					// 判断每一个商品是否是被选择的状态
+					const cartList = this.goodsList.every(item => {
+						return item.checked === true
+					})
+					this.goodsActiveList = []
+					this.deleteIds = []
+					let goodsIndex = i
+					this.deleteIds.push(e.goods.id)
+					this.goodsActiveList.push({goods_id: e.id, goods_sku_price_id:e.sku_price.id, num:e.goods_num})
+					if (cartList) {
 						this.allChecked = true
+					} else {
+						this.allChecked = false
 					}
-				})
-				console.log(this.goodsList)
+				}
 			},
 			//全选
-			checkedAll() {
-				console.log(this.allChecked,111)
-				if(this.allChecked === true) {
-					this.goodsList.forEach((item,index)=>{
+			checkedAll(e) {
+				this.allChecked = !this.allChecked
+				if (this.allChecked) {
+					this.goodsList.map(item => {
 						item.checked = true
-					})
-					this.allChecked = true
-				}else {
-					this.goodsList.forEach((item,index)=>{
+					}) 
+				} else {
+					this.goodsList.map(item => {
 						item.checked = false
 					})
-					this.allChecked = false
 				}
-				console.log(this.allChecked,2222)
 			},
 			//拼团活动
 			toActivity() {
-				uni.navigateTo({
-					url: '/pages/store/groupActivity/groupActivity'
+				// console.log(this.goodsActiveList,87878)
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					goods_list: JSON.stringify(this.goodsActiveList),
+					address_id: 2
+				}
+				console.log(query,87878)
+				addCollageCart(query).then(res=>{
+					uni.showToast({
+					    title: res.msg,
+					    icon: 'none',
+					    duration: 2000
+					});
+					uni.navigateTo({
+						url: '/pages/home/groupBooking/groupBooking'
+					})
 				})
+				
 			}
 		}
 	}
@@ -153,6 +217,7 @@
 <style lang="scss" scoped>
 .shoppingCart {
 	width: 750rpx;
+	height: 100%;
 	// padding: 0 30rpx;
 	.shopDelete {
 		height: 90rpx;
@@ -166,9 +231,15 @@
 			color: #7D0016;
 		}
 	}
-	.shopList {
+	.shopListM {
 		width: 750rpx;
 		background: #FFFFFF;
+		.empty {
+			text-align: center;
+			position: absolute;
+			left: 40%;
+			top: 35%;
+		}
 		.shopItem {
 			// width: 750rpx;
 			// height: 230rpx;
@@ -177,10 +248,12 @@
 			align-items: center;
 			// flex-direction: column;
 			// justify-content: center;
-			.shopcheckbox {
+			::v-deep .shopcheckbox {
 				// border: 1rpx solid #A9A9A9;
 				// border-radius: 16rpx;
-				margin-right: 35rpx;
+				radio-group label, checkbox-group label {
+					padding-right: 0rpx;
+				}
 				.choose {
 					width: 32rpx;
 					height: 32rpx;
@@ -327,10 +400,10 @@
 			.btnList {
 				width: 55%;
 				display: flex;
-				justify-content: space-between;
+				justify-content: space-around;
 				.btn {
 					// width: 155rpx;
-					width: 48%;
+					// width: 48%;
 					height: 78rpx;
 					display: inline-block;
 					margin: 0;

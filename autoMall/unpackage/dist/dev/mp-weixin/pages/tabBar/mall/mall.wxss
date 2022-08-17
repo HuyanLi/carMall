@@ -28,12 +28,6 @@
 .body-view.data-v-96a7abd2 {
   height: 100%;
   width: 100%;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  overflow: hidden;
-  align-items: flex-start;
-  justify-content: center;
 }
 .top-menu-view.data-v-96a7abd2 {
   display: flex;
@@ -69,7 +63,7 @@
   margin-right: 80rpx;
 }
 .top-menu-view .menu-topic-view .menu-topic .menu-topic-txt.data-v-96a7abd2 {
-  color: #303133;
+  color: #7c8089;
   margin-bottom: 30rpx;
 }
 .top-menu-view .menu-topic-view .menu-topic .menu-topic-bottom.data-v-96a7abd2 {
@@ -119,7 +113,6 @@
   flex: 1;
   width: 100%;
   height: auto;
-  margin-bottom: 120rpx;
 }
 .swiper-topic-list.data-v-96a7abd2 {
   height: 100%;
@@ -152,18 +145,27 @@
   height: 20rpx;
   margin-left: 10rpx;
 }
+.tryGoods .shihuoLogo.data-v-96a7abd2 {
+  position: fixed;
+  right: 20rpx;
+  bottom: 300rpx;
+}
+.tryGoods .shihuoLogo image.data-v-96a7abd2 {
+  width: 80px;
+  height: 80px;
+}
 .goodsList.data-v-96a7abd2 {
   border-radius: 16rpx;
-  margin: -10rpx 30rpx 200rpx;
-  height: 100%;
+  margin: 20rpx 30rpx;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 20rpx 30rpx;
   justify-content: space-between;
 }
 .goodsList .goodsItem.data-v-96a7abd2 {
   width: 48%;
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
   margin-bottom: 20rpx;
 }

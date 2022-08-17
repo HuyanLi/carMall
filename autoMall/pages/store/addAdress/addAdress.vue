@@ -12,8 +12,6 @@
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">选择地区</text>
-				<!-- <input disabled="disabled" v-model="address" @blur="consigneeRegionInput" placeholder="请选择省市区" placeholder-style="color:#CCCCCC;" type="text" /> -->
-				<!-- <input class="info-item-content ipt right" v-model="address" type="text"> -->
 				<input @tap="handleAddress" class="info-item-content ipt right" readonly v-model="address" type="text">
 			</view>
 			<view class="info-item">
@@ -28,106 +26,68 @@
 		<view class="info-btn">
 			<button type="default" @click="saveAddress">保存</button>
 		</view>
-		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="dataTree" v-model="address"
-			@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
+		<uni-data-picker ref="picker" :step-searh="true" parent-field="id" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressList"
+			@change="onchange" @nodeclick="onnodeclick"  @popupclosed="onpopupclosed">
 		</uni-data-picker>
-		<!-- <simple-address ref="mySimpleAddress" :pickerValueDefault="cityPickerValueDefault" @onConfirm="onConfirm" themeColor="#007AFF"></simple-address> -->
 	</view>
 </template>
 
 <script>
-	// import simpleAddress from '@/components/simple-address/simple-address.vue'
+	// import { addressList } from '@/components/address.js'
+	import { getCity } from '@/api/store.js'
 	export default {
-		// components:{
-		// 	simpleAddress
-		// },
 		data() {
 			return {
 				tel: '',
 				userName: '',
-				address: '重庆重庆市渝中区',
+				address: '',
 				detailAddress: '',
-				addressValue: [],
-				// addressName: [],
 				switchState: false,
-				// cityPickerValueDefault: [0,0,0],
 				pickerVisible: false,
-				dataTree: [{
-					text: "河北省",
-					value: "1-0",
-					children: [{
-						text: "石家庄市",
-						value: "1-1",
-						children: [{
-							text: "长安区",
-							value: '1-1-1'
-						},{
-							text: "雨花区",
-							value: '1-1-2'
-						},{
-							text: "桥东区",
-							value: '1-1-3'
-						},{
-							text: "桥南区",
-							value: '1-1-4'
-						}]
-					},
-					{
-						text: "保定市",
-						value: "1-2"
-					}]
-				},
-				{
-					text: "山西省",
-					value: "2-0",
-					children: [{
-						text: "太原市",
-						value: "2-1"
-					},
-					{
-						text: "大同市",
-						value: "2-2"
-					}]
-				},
-				{
-					text: "辽宁省",
-					value: "3-0",
-					children: [{
-						text: "沈阳市",
-						value: "3-1"
-					},
-					{
-						text: "朝阳市",
-						value: "3-2"
-					}]
-				}]
+				addressList: [],
+				multiIndex: [0,0,0],
+				newCategotyDataList:[[],[],[]],
+			    categoryArr: {},
+			    select:"请选择地区",
+				id:'',
+				tempClasses : '',
 			}
 		},
+		created() {
+			this.initCity('init')
+		},
 		methods: {
-			// handleAddress() {
-			// 	this.pickerVisible = true
-			// 	this.$nextTick(() => {
-			// 		this.$refs.picker.show()
-			// 	})
-			// },
-			// selects: function() {
-			// 	this.$refs.mySimpleAddress.open();
-			// },
-			// onConfirm(e) {
-			// 	// console.log(e)
-			// 	this.address = e.label;
-			// 	this.addressValue = e.value;
-			// 	this.addressName = e.labelArr;
-			// },
-			// switch1Change: function (e) {
-			// 	this.switchState = e.detail.value;
-			// },
-			// consigneeRegionInput() {
+			initCity(e,i) {
+				let query
+				if(e == 'init') {
+				    query = {
+						
+					}
+					getCity(query).then(res=>{
+						res.data.forEach(item=>{
+							item.text = item.name
+							item.value = item.id
+						})
+						this.addressList=res.data
+					})
+				}else {
+					query = {
+						parent_id: this.id
+					}
+					getCity(query).then(res=>{
+						res.data.forEach(item=>{
+							item.text = item.name
+							item.value = item.id
+						})
+						this.addressList[i] = res.data
+					})
+					console.log(this.addressList)
+				}
 				
-			// },
-			// switch1Change() {
-			// 	this.switchState = !this.switchState
-			// },
+			},
+			switch1Change: function (e) {
+				this.switchState = e.detail.value;
+			},
 			handleAddress() {
 				this.pickerVisible = true
 				this.$nextTick(() => {
@@ -136,21 +96,25 @@
 			},
 			onnodeclick(e) {
 				console.log(e);
+				this.id = e.id
+				this.initCity('e')
 			},
 			onpopupopened(e) {
 				console.log('popupopened');
 			},
 			onpopupclosed(e) {
-				this.pickerVisible = false
+				console.log(e)
+				// this.pickerVisible = false
 				console.log('popupclosed');
+				this.$refs.picker.close()
 			},
 			onchange(e) {
-				console.log('onchange:', e);
-				let address = ''
-				e.detail.value.forEach(i => {
-					address+=i.text
-				})
-				this.address = address
+				console.log(e,22)
+				// let address = ''
+				// e.value.forEach(i => {
+				// 	address+=i.text
+				// })
+				// this.address = address
 			},
 			saveAddress() {
 				let _this = this
@@ -194,22 +158,26 @@
 					});
 					return false;
 				}
-				var pages = getCurrentPages();
-				var prepage = pages[pages.length - 2]; //上一个页面
-				prepage.$vm.addressList.push({
-					name: _this.userName,
-					number: _this.tel,
-					addres: _this.address,
-					default: _this.switchState,
-					detailAdress: _this.detailAddress
-				});
-				uni.showToast({
-				    title: '新增成功',
-				    icon: 'none',
-				    duration: 2000
-				});
-				uni.navigateBack({
-					delta:1,//返回层数，2则上上页
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					province_name: '',
+					city_name: '',
+					area_name: '',
+					address: _this.detailAddress,
+					province_id: '',
+					city_id: '',
+					area_id: '',
+					is_default: _this.switchState
+				}
+				addressList(query).then(res=>{
+					uni.showToast({
+					    title: '新增成功',
+					    icon: 'none',
+					    duration: 2000
+					});
+					uni.navigateBack({
+						delta:1,//返回层数，2则上上页
+					})
 				})
 			}
 		}

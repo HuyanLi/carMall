@@ -26,10 +26,11 @@
 /* 文章场景相关 */
 .approve.data-v-1b43b7d4 {
   width: 750rpx;
+  margin-bottom: 230rpx;
 }
 .approve .content.data-v-1b43b7d4 {
   margin-top: 20rpx;
-  padding: 30rpx;
+  padding: 30rpx 30rpx 10rpx 30rpx;
   background: #FFFFFF;
   border-radius: 16rpx;
   box-shadow: 0px 4rpx 28rpx 0px rgba(0, 0, 0, 0.12);
@@ -37,19 +38,33 @@
   font-size: 28rpx;
   color: #999999;
 }
+.approve .content.data-v-1b43b7d4  .uni-section .uni-section-header {
+  padding: 0;
+}
+.approve .content.data-v-1b43b7d4  .uni-select__selector {
+  z-index: 99;
+}
+.approve .content .selectOption.data-v-1b43b7d4 {
+  margin-bottom: 20rpx;
+}
 .approve .content .uploadImg.data-v-1b43b7d4 {
   width: 158rpx;
   height: 158rpx;
 }
 .approve .bottom.data-v-1b43b7d4 {
+  width: 100%;
   background: #FFFFFF;
-  padding: 30rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 210rpx;
 }
 .approve .bottom .title.data-v-1b43b7d4 {
   line-height: 40rpx;
   margin-bottom: 34rpx;
   display: flex;
   flex-direction: row;
+  margin: 30rpx 0 30rpx 30rpx;
 }
 .approve .bottom .title .text.data-v-1b43b7d4 {
   width: 36rpx;
@@ -72,6 +87,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin: 30rpx;
 }
 .approve .bottom .btnList button.data-v-1b43b7d4 {
   width: 331rpx;

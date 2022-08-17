@@ -1,12 +1,6 @@
 <script>
-	import {
-		mapMutations
-	} from 'vuex'
-	import {
-		version
-	} from './package.json'
-	import checkUpdate from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
-
+	import { getWXJsCode } from '@/utils/index.js'
+	import { getOpenIds, getUserInfo } from '@/api/user.js'
 	export default {
 		onLaunch: function() {
 			// #ifdef H5
@@ -24,7 +18,7 @@
 			if (plus.runtime.appid !== 'HBuilder') { // 真机运行不需要检查更新，真机运行时appid固定为'HBuilder'，这是调试基座的appid
 				checkUpdate()
 			}
-
+			
 			// 一键登录预登陆，可以显著提高登录速度
 			uni.preLogin({
 				provider: 'univerify',
@@ -41,6 +35,12 @@
 				}
 			})
 			// #endif
+			
+			if (Object.prototype.toString.call(opation.query) === '[object Object]') {
+				const { inviteCode } = opation.query;
+				console.log('上级inviteCode'+inviteCode)
+			    uni.setStorageSync('inviteCode', inviteCode || '')
+			}
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -52,7 +52,7 @@
 			test: ''
 		},
 		methods: {
-			...mapMutations(['setUniverifyErrorMsg', 'setUniverifyLogin'])
+			// ...mapMutations(['setUniverifyErrorMsg', 'setUniverifyLogin'])
 		}
 	}
 </script>

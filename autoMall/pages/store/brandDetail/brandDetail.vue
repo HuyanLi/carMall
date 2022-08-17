@@ -1,4 +1,4 @@
-<!-- 商品详情 -->
+<!-- 品牌详情 -->
 <template>
 	<view class="brandDetail">
 		<view class="myContainer">
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {

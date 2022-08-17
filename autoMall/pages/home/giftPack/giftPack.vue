@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="topCon">
-			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/top.png" mode=""></image>
+			<image :src="bgcIMG" mode=""></image>
 		</view>
 		<view class="yhq">
 			<view class="textCou">
@@ -9,8 +9,9 @@
 			</view>
 			<view class="coupons">
 				<view class="couponsItem" v-for="(item,index) in couponsList" :key='index'>
-					<text class="title">${{item.dollars}}</text>
-					<text class="money">满{{item.money}}元可使用</text>
+					<text v-if="item.type === '2'" class="title">{{item.reduce_price}}</text>
+					<text v-else="item.type === '1'" class="title">￥{{item.reduce_price}}</text>
+					<text class="money">满{{item.full_price}}元可使用</text>
 					<text class="getC" @click="getCoupons">立即领取</text>
 				</view>
 			</view>
@@ -32,29 +33,31 @@
 </template>
 
 <script>
+	import { registerGift, approveCoupon } from '@/api/home.js'
 	export default {
 		data() {
 			return {
-				couponsList:[{
-					dollars: 15,
-					money: 50,
-					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
-				},{
-					dollars: 15,
-					money: 50,
-					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
-				},{
-					dollars: 15,
-					money: 50,
-					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
-				},{
-					dollars: 15,
-					money: 50,
-					image: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png'
-				}]
+				bgcIMG: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/top.png',
+				couponsList:[],
+				testData: {}
 			}
 		},
+		created() {
+			//注册礼包
+			this.initRegisterGift()
+			//优惠券
+			this.initCoupon()
+		},
 		methods: {
+			async initRegisterGift() {
+				let data = await registerGift()
+				this.bgcIMG = data.data.gift_bag_long_image
+				this.testData = data.data
+			},
+			async initCoupon() {
+				let data = await approveCoupon()
+				this.couponsList = data.data
+			},
 			//试货页面
 			getCoupons(e) {
 				uni.navigateTo({
@@ -140,7 +143,7 @@
 					.money {
 						font-size: 24rpx;
 						color: #FFFFFF;
-						margin-bottom: 25rpx;
+						margin-bottom: 20rpx;
 					}
 					.getC {
 						font-size: 24rpx;

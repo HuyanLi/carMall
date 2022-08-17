@@ -76,6 +76,9 @@
 		letter-spacing: 0;
 		text-align: center;
 		margin: 40rpx auto 30rpx;
+		position: fixed;
+		bottom: 100rpx;
+		left: 30rpx;
 	}
 }
 </style>

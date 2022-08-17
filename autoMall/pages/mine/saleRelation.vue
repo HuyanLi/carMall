@@ -1,7 +1,7 @@
 <template>
 	<view class="sale-relation">
 		<view class="sale-relation-user">
-			<img src="https://via.placeholder.com/42x42" />
+			<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
 			<view class="sale-relation-user-msg">
 				<view class="sale-relation-user-msg-name">
 					Latte今天喝拿铁
@@ -55,19 +55,19 @@
 				current: 0,
 				contactState: [{title: '平级代理商'},{title: '下级团长'},{title: '下级团员'}],
 				contacts: [{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				}]

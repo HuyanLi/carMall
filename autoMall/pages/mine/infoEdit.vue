@@ -4,7 +4,7 @@
 			<view class="info-item">
 				<text class="info-item-title">头像</text>
 				<view class="info-item-content right">
-					<image class="img" src="https://via.placeholder.com/100x100"/>
+					<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"/>
 				</view>
 			</view>
 			<view class="info-item">
@@ -24,13 +24,14 @@
 				<input class="info-item-content ipt" v-model="company" type="text">
 			</view>
 		</view>
-		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="dataTree" v-model="address"
+		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressList" v-model="address"
 			@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
 		</uni-data-picker>
 	</view>
 </template>
 
 <script>
+	import { addressList } from '@/components/address.js'
 	export default {
 		data() {
 			return {
@@ -39,55 +40,7 @@
 				userName: '张三',
 				address: '重庆重庆市渝中区郭守敬大道831号',
 				company: '北京多咖科技有限公司',
-				dataTree: [{
-					text: "河北省",
-					value: "1-0",
-					children: [{
-						text: "石家庄市",
-						value: "1-1",
-						children: [{
-							text: "长安区",
-							value: '1-1-1'
-						},{
-							text: "雨花区",
-							value: '1-1-2'
-						},{
-							text: "桥东区",
-							value: '1-1-3'
-						},{
-							text: "桥南区",
-							value: '1-1-4'
-						}]
-					},
-					{
-						text: "保定市",
-						value: "1-2"
-					}]
-				},
-				{
-					text: "山西省",
-					value: "2-0",
-					children: [{
-						text: "太原市",
-						value: "2-1"
-					},
-					{
-						text: "大同市",
-						value: "2-2"
-					}]
-				},
-				{
-					text: "辽宁省",
-					value: "3-0",
-					children: [{
-						text: "沈阳市",
-						value: "3-1"
-					},
-					{
-						text: "朝阳市",
-						value: "3-2"
-					}]
-				}]
+				addressList,
 			}
 		},
 		methods: {

@@ -6,24 +6,28 @@
 			<text class="empty-text1">当前地址为空,</text>
 			<text class="empty-text2" @click="addAddress('/pages/store/addAdress/addAdress')">去添加</text>
 		</view>
-		<view v-if="addressList.length !== 0" class="addressContent" v-for="(item,index) in addressList" :key="index">
+		<view v-if="addressList.length > 0" class="addressContent" v-for="(item,index) in addressList" :key="index">
 			<view class="addItem">
 				<view class="peoinfo" @click="activeAdress(item,index)">
-					<text class="fontS fontN">{{item.name}}</text>
-					<text class="fontS fontNum">{{item.number}}</text>
-					<view v-if='item.default' class="defaultBtn">
+					<text class="fontS fontN">{{item.consignee}}</text>
+					<text class="fontS fontNum">{{item.phone}}</text>
+					<view v-if='item.checked' class="defaultBtn">
 						<text>默认</text>
 					</view>
 				</view>
 				<view class="addressInfo">
-					<text>{{item.addres}}</text>
+					<text>{{item.province_name}}{{item.city_name}}{{item.area_name}}</text>
 					<image @tap="addAddress('/pages/store/addAdress/addAdress',item)" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/edit.png" mode=""></image>
 				</view>
 				<view class="delet">
 					<view class="oprtLft" @click="setMr(item)">
-						<image v-if="item.default == true" src="https://baiyuechangxiong-pic.luobo.info/static/mr.png" mode=""></image>
-						<image v-else src="https://baiyuechangxiong-pic.luobo.info/static/wmr.png" mode=""></image>
-						<text>默认地址</text>
+						<!-- <image v-if="item.default == true" src="https://baiyuechangxiong-pic.luobo.info/static/mr.png" mode=""></image>
+						<image v-else src="https://baiyuechangxiong-pic.luobo.info/static/wmr.png" mode=""></image> -->
+						<checkbox-group>
+							<label>
+								<checkbox :checked="item.checked" color="#203885" style="transform:scale(0.7)" /><text>默认地址</text>
+							</label>
+						</checkbox-group>
 					</view>
 					<text class="oprtRgt" @click="deleteAddress">删除</text>
 				</view>
@@ -36,14 +40,29 @@
 </template>
 
 <script>
-	
+	import { getAddress, addAddress } from '@/api/store.js'
 	export default {
 		data() {
 			return {
 				addressList: [],
 			}
 		},
+		created() {
+			this.initAddress()
+		},
 		methods: {
+			initAddress() {
+				getAddress({member_id: uni.getStorageSync('member_id')}).then(res=>{
+					res.data.forEach(item=>{
+						if(item.is_default === 0) {
+							item.checked = false
+						}else {
+							item.checked = true
+						}
+					})
+					this.addressList = res.data
+				})
+			},
 			setMr(e) {
 				console.log(e)
 				uni.showToast({
@@ -63,7 +82,6 @@
 					sex: '先生',
 					area: ids.addres
 				}
-				console.log(111111111,prepage.$vm.person)
 				uni.navigateBack({
 					delta: 1
 				})
@@ -77,7 +95,6 @@
 			},
 			addAddress(src,item) {
 				if(item) {
-					console.log(111111111)
 					uni.navigateTo({
 						url: src + '?adsId=' + item
 					})

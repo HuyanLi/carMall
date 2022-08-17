@@ -35,6 +35,7 @@
 
 <style lang="scss" scoped>
 .checkWard {
+	margin-bottom: 160rpx;
 	&-img {
 		width: 750rpx;
 		height: 406rpx;
@@ -44,14 +45,14 @@
 	}
 	&-btn {
 		position: fixed;
-		bottom: 0;
+		bottom: 0rpx;
 		left: 0;
 		width: 750rpx;
 		height: 141rpx;
 		background: #FFFFFF;
 		box-shadow: 0 -1px 4px 0 rgba(234,234,234,0.50);
 		button {
-			margin: 25rpx auto;
+			margin: 30rpx auto;
 			width: 690rpx;
 			height: 90rpx;
 			background: #202425;

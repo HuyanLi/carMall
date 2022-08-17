@@ -2,7 +2,7 @@
 	<view class="warehistory">
 		<view class="warehistory-title">
 			<view>当前库存/时间</view>
-			<view class="warehistory-title-right" @tap="handleFilter"><img src="../../static/image/mine/filter@2x.png" /><text>历史筛选</text></view>
+			<view class="warehistory-title-right" @tap="handleFilter"><img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/filter@2x.png" /><text>历史筛选</text></view>
 		</view>
 		<view class="warehouse-content">
 			<view class="warehouse-content-item" v-for="(item,index) in data" :key="index">
@@ -18,9 +18,9 @@
 		</view>
 		<uni-popup class="pop" ref="popup" background-color="#fff">
 			<view class="popup-content">
-				<view class="filter-title">选择修改历史 <img src="../../static/image/mine/bacha.png" @tap="handleClosePop"/></view>
+				<view class="filter-title">选择修改历史 <img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/bacha.png" @tap="handleClosePop"/></view>
 				<view class="filter-item" v-for="(item, index) in filter" :key="index" @tap="handleChoose(index)">
-					<img :src="item.selected ? '../../static/image/mine/duigou.png' : '../../static/image/mine/empty.png'"/>
+					<img :src="item.selected ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/duigou.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/empty.png'"/>
 					<text>{{item.time}}</text>
 				</view>
 				
@@ -86,27 +86,27 @@
 					selected: false
 				}],
 				data: [{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					storage: '1000',
 					price: '368'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					storage: '1000',
 					price: '368'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					storage: '1000',
 					price: '368'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					storage: '1000',
 					price: '368'
 				},{
-					img: 'https://via.placeholder.com/100x100',
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
 					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
 					storage: '1000',
 					price: '368'

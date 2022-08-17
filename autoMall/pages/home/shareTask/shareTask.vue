@@ -4,15 +4,15 @@
 		<view class="textList">
 			<view class="uni-flex uni-row textItem" v-for="(item,index) in textList" :key='index'>
 				<view class="text uni-flex" style="-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
-					<image :src="item.imgSrc"></image>
+					<image :src="item.image"></image>
 				</view>
 				<view class="uni-flex uni-column">
 					<view class="text title" style="text-align: left;">
 						{{item.title}}
 					</view>
-					<view class="text content">{{item.text}}</view>
+					<view class="text content">{{item.upper_note}}</view>
 					<view class="text" style="text-align: right;">
-						<button class="btn" type="default" plain="true" @click="toDetail">查看</button>
+						<button class="btn" type="default" plain="true" @click="toDetail(item)">查看</button>
 					</view>
 				</view>
 			</view>
@@ -22,43 +22,28 @@
 </template>
 
 <script>
+	import {contentList} from '@/api/home.js'
 	export default {
 		data() {
 			return {
-				textList:[
-					{
-						imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-						title: '文章标题文字占位sdrtrdsterterteteryeuyrtywer',
-						text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有'
-					},
-					{
-						imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-						title: '文章标题文字占位',
-						text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有'
-					},
-					{
-						imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-						title: '文章标题文字占位',
-						text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有'
-					},
-					{
-						imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-						title: '文章标题文字占位',
-						text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有'
-					},
-					{
-						imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-						title: '文章标题文字占位',
-						text: '内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘要文字占位内容摘问自己好几回还有'
-					},
-				]
+				textList:[]
 			}
 		},
+		created() {
+			this.initTestList()
+		},
 		methods: {
-			toDetail() {
-				console.log('124312')
+			async initTestList() {
+				let query = {
+					status: 1,
+					page: 1
+				}
+				let data = await contentList(query)
+				this.textList = data.data.rows
+			},
+			toDetail(e) {
 				uni.navigateTo({
-					url: './shareDetail'
+					url: '/pages/home/shareTask/shareDetail?id=' + e.id
 				})
 			}
 		}
@@ -75,6 +60,7 @@
 		.textItem{
 			// height: 212rpx;
 			background: #FFFFFF;
+			margin-bottom: 20rpx;
 			border-radius: 16rpx;
 			image {
 				margin: 30rpx 20rpx;

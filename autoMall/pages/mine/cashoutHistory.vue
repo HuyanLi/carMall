@@ -104,7 +104,7 @@
 	background: #f6f6f6;
 	&-header {
 		height: 340rpx;
-		background: url("../../static/image/mine/background-blue.png") no-repeat;
+		background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/background-blue.png") no-repeat;
 		transform: translate3d(0,-3rpx,0);
 		background-size: cover;
 		color: #ffffff;

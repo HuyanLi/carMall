@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "首页",
+  "navigationStyle": "custom",
   "usingComponents": {
+    "auth": "/components/auth",
     "tab-bar": "/components/tabBar"
   }
 }

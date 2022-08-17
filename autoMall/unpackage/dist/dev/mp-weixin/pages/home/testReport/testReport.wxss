@@ -71,11 +71,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  padding: 25rpx 0;
   width: 100%;
   position: fixed;
   bottom: 0;
   left: 0;
+  height: 140rpx;
 }
 .data-v-4d0eec38.report-btnList button {
   width: 325rpx;
@@ -83,6 +83,7 @@
   line-height: 90rpx;
   border-radius: 8rpx;
   font-size: 24rpx;
+  margin: 25rpx auto;
 }
 .data-v-4d0eec38.report-btnList-btn1 {
   background: #EDEDED;

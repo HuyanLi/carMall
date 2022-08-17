@@ -33,6 +33,7 @@
 }
 .share .textList .textItem.data-v-6e623d82 {
   background: #FFFFFF;
+  margin-bottom: 20rpx;
   border-radius: 16rpx;
 }
 .share .textList .textItem image.data-v-6e623d82 {

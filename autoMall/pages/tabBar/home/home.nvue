@@ -6,14 +6,15 @@
 				<swiper class="swiper image-container" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 					<swiper-item v-for="(item, index) in imgList" :key="index">
 						<view class="item" :class="currentIndex == index ? 'item-img' : 'item-img-side'">
-							<image :src="item.bannerUrl" mode=""></image>
+							<image :src="item.image" mode=""></image>
 						</view>
 					</swiper-item>
 				</swiper>
 			</view>	
 		</view>
-		<view class="midTab">
-			<view v-if="!beforeapprove" class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
+		<view v-if="showNav === '1'" class="midTab">
+			<!-- 未认证 -->
+			<view  class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
 				<view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
 					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/reg.png" mode=""></image>
 				</view>
@@ -24,7 +25,10 @@
 					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/rzsq.png" mode=""></image>
 				</view>
 			</view>
-			<view v-if="beforeapprove" class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
+		</view>
+		<view v-else-if="showNav === '2'" class="midTab">
+			<!-- 已认证 -->
+			<view  class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
 			  <view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
 			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/reg.png" mode=""></image>
 			  </view>
@@ -42,6 +46,43 @@
 			  </view>
 			</view>
 		</view>		
+		<!-- 已签约 -->
+		<view v-else="showNav === '3'" class="showTab">
+			<view  class="showApp">
+					<view class="showOrder">
+						<view class="showbgc">
+							<image class="leftIMG" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/211铃铛-线性.png" mode=""></image>
+							<text v-if="type === 'sales'">有未支付订单，请前往订单中心打款</text>
+							<text v-else>库存不足，请前往**补充库存</text>
+							<image @click="toOrderCenter" class="rightIMG" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/xiangyou.png" mode=""></image>
+						</view>
+					</view>
+					<view class="showXS">
+						<text class="showXS-title">销售任务</text>
+						<view class="showXS-text" v-for="(item,index) in salesTask" :key='index'>
+							<text class="showXS-text-name">{{item.taskName}}</text>
+							<text class="showXS-text-task">{{item.task}}</text>
+						</view>
+					</view>
+					<image v-if="type === 'sales'" class="showIMG" @tap='toPTactivity' src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/拼团.png" mode=""></image>
+					<view v-else class="showAll">
+						<view class="showAll-left">
+							<text class="showAll-left-title">668</text>
+							<text class="showAll-left-text">全部订单</text>
+						</view>
+						<image class="showAll-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/dailishang.png" mode=""></image>
+						<view class="showAll-right">
+							<text class="showAll-right-title">668</text>
+							<text class="showAll-right-text">全部订单</text>
+						</view>
+						<view class="showAll-right">
+							<text class="showAll-right-title">668</text>
+							<text class="showAll-right-text">全部订单</text>
+						</view>
+					</view>
+				</view>
+			
+		</view>
 		<!-- 商品类型tab -->
 		<view class="goodsTab">
 			<view class="flex-wrap" style="flex-direction: row;">
@@ -54,102 +95,119 @@
 		</view>
 		<!-- 文章列表 -->
 		<view class="wyList">
-			<view class="uni-flex uni-row wyItem" v-for="(item,index) in wyList" :key='index' @click="toDetail(item)">
-					<view class="uni-flex uni-column" style="-webkit-flex: 1;flex: 1;-webkit-justify-content: space-between;justify-content: space-between;">
-						<view class="text title">
-							{{item.title}}
-						</view>
-						<view class="text textContent">{{item.text}}</view>
+			<view class="wyItem" v-for="(item,index) in wyList" :key='index' @click="toDetail(item)">
+					<view class="wyItem-text">
+						<view class="text title">{{item.title}}</view>
+						<view class="text textContent">{{item.upper_note}}</view>
 					</view>
-					<view class="text uni-flex" style="float:left;width: 200rpx;height: 220rpx;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
-						<image :src="item.img"></image>
+					<view class="wyItem-img">
+						<image :src="item.image"></image>
 					</view>
-					
 			</view>
 		</view>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" :approve='approve' tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<auth v-if='showAuth'></auth>
 	</view>
 </template>
 
 <script>
-	import tabBar from "../../../components/tabBar.vue"
+	import auth from '@/components/auth.vue'
+	import tabBar from "@/components/tabBar.vue"
+	import { slideShow, contentType, contentList } from '@/api/home.js'
 	export default {
 		components: {
+			auth,
 		    tabBar
+		},
+		created() {
+			let memberId = uni.getStorageSync("member_id")
+			if (memberId !== '') {
+				this.showAuth = false
+			}
+		},
+		watch:{
+			'$store.state.user.showNav': {
+			  deep: true, //深度监听
+			  handler(newValue, oldValue) {
+				  console.log(newValue, oldValue, 'store.state //watch')
+				  this.showNav = newValue
+			  },
+			  immediate: true
+			},
+			'$store.state.user.type': {
+			  deep: true, //深度监听
+			  handler(newValue, oldValue) {
+				  console.log(newValue, oldValue, 'store.state //watch')
+				  this.type = newValue
+			  },
+			  immediate: true
+			},
 		},
 		data() {
 			return {
-				approve: false,
-				beforeapprove:false,
+				salesTask: [{
+					taskName: '当前任务',
+					task: '2022-09-01之前消费¥60000'
+				},{
+					taskName: '当前进度',
+					task: '467899/60000'
+				},{
+					taskName: '当前百分比',
+					task: '68%'
+				}],
+				showNav:'1',
+				type: 'sales',
 				currentTabIndex: 0,
 				currentIndex: 0,
-				imgList: [{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				}
-				],
+				//轮播图
+				imgList: [],
 				tabbarHeights: '100',
-				goodsList: [{
-					name: '发动机'
-				},{
-					name: '润滑油'
-				},{
-					name: '轮胎'
-				},{
-					name: '润滑油'
-				},{
-					name: '轮胎'
-				}],
+				goodsList: [],
 				goodsIndex: 0,
-				wyList: [{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '产值千万的关键在于坚定心中信念！',
-					text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
-					date: '2022-09-21'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '产值千万的关键在于坚定心中信念！',
-					text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
-					date: '2022-09-21'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '产值千万的关键在于坚定心中信念！',
-					text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
-					date: '2022-09-21'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '产值千万的关键在于坚定心中信念！',
-					text: '为什么同样是普通人，同样是干汽配，她就能如此迅猛发展？',
-					date: '2022-09-21'
-				},],
+				//内容列表
+				wyList: [],
 				background: ['color1', 'color2', 'color3'],
 				indicatorDots: true,
 				autoplay: true,
 				interval: 2000,
-				duration: 500
+				duration: 500,
+				showAuth: true,
+				memberId: ''
 			}
+		},
+		mounted() {
+			this.approve = true
+			//轮播图
+			this.initSlide()
+			//内容分类
+			this.initContent()
+			//内容列表
+			this.initContentList()
 		},
 		onShow() {
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length-1];
-			if(currPage.data.approve == undefined){
-				
-			}else{
-				this.approve = currPage.data.approve
-				this.beforeapprove = currPage.data.beforeapprove
-				// this.address_id = currPage.data.detailAddress
-			}
 		},
 		methods: {
+			async initSlide() {
+				let data = await slideShow()
+				this.imgList = data.data
+			},
+			async initContent() {
+				let data = await contentType()
+				this.goodsList = data.data
+			},
+			async initContentList() {
+				let query = {
+					category_id: this.goodsIndex,
+					status: 2,
+					is_share: 1,
+					page: 1
+				}
+				let data = await contentList(query)
+				this.wyList = data.data.rows
+			},
 			tabClick(index){
 				this.currentTabIndex = index
 			},
@@ -174,20 +232,35 @@
 				
 			},
 			changeType(e) {
-				this.goodsIndex = e
+				if(e !== this.goodsIndex) {
+					this.goodsIndex = e
+					this.initContentList()
+				}
 			},
 			toDetail(e) {
 				uni.navigateTo({
-					url: '/pages/home/articleDetail/articleDetail?title=' + e.title + '&date='+ e.date
+					url: '/pages/home/articleDetail/articleDetail?content_id=' + e.id
+				})
+			},
+			//订单中心
+			toOrderCenter() {
+				uni.navigateTo({
+					url: '/pages/mine/orderDetail'
+				})
+			},
+			//拼团活动
+			toPTactivity() {
+				uni.navigateTo({
+					url: '/pages/home/groupBooking/groupBooking'
 				})
 			}
+			
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	.home {
-		// padding-bottom: 40rpx !important;
 		padding-bottom: 120rpx;
 		.myContainer{
 			height: 420rpx;
@@ -202,7 +275,6 @@
 				width: 750rpx;
 				height: 438rpx;
 				.item {
-					// background: linear-gradient(30deg, #FFCC8F, #FFA657);
 					position: relative;
 					overflow: hidden;
 					image{
@@ -214,9 +286,6 @@
 				.item-img {
 					width: 750rpx;
 					height: 438rpx;
-					// border-radius: 24rpx;
-					// animation: to-big .2s;
-					// box-shadow: 5rpx 10rpx 10rpx rgba($color: #FFAB5E, $alpha: .4);
 					margin: 0 auto;
 				}
 				.swiper-item {
@@ -233,27 +302,9 @@
 					// animation: to-mini .2s;
 					margin: 15rpx auto;
 				}
-				// @keyframes to-mini
-				// {
-				// 	from {
-				// 		height: 380rpx;
-				// 	}
-				// 	to {
-				// 		height: 350rpx;
-				// 	}
-				// }
-				// @keyframes to-big
-				// {
-				// 	from {
-				// 		height: 350rpx;
-				// 	}
-				// 	to {
-				// 		height: 380rpx;
-				// 	}
-				// }
 			}
 		}
-		.midTab{
+		.midTab {
 			width: 690rpx;
 			margin: 30rpx auto 20rpx;
 			text-align: center;
@@ -261,12 +312,113 @@
 			background: #FFFFFF;
 			border-radius: 16rpx;
 			.tabMain{
+				background: #FFFFFF;
 				width: 20%;
 				image{
 					display: inline-block;
 					width: 125rpx;
 					height: 125rpx;
 					margin: 25rpx auto;
+				}
+			}
+		}
+		.showTab{
+			text-align: center;
+			overflow: hidden;
+			.showApp {
+				.showOrder {
+					background: #fff;
+					.showbgc {
+						width: 690rpx;
+						margin: 30rpx auto;
+						display: flex;
+						flex-direction: row;
+						padding: 25rpx;
+						background: #FEF9E7;
+						justify-content: space-between;
+						image {
+							width: 40rpx;
+							height: 40rpx;
+						}
+						text {
+							font-weight: 600;
+							font-size: 28rpx;
+							color: #FFAD53;
+							float: left;
+							display: inline-block;
+						}
+					}
+				}
+				.showXS {
+					width: 690rpx;
+					margin: 20rpx auto;
+					background: #fff;
+					display: flex;
+					flex-direction: column;
+					// justify-content: ;
+					padding: 30rpx;
+					border-radius: 16rpx;
+					&-title {
+						font-size: 30rpx;
+						color: #000000;
+						font-weight: 600;
+						text-align: left;
+						margin-bottom: 15rpx;
+					}
+					&-text {
+						display: inline-block;
+						font-size: 26rpx;
+						margin-bottom: 15rpx;
+						&-name {
+							color: #4D515D;
+							float:left;
+						}
+						&-task {
+							color: #000000;
+							float: right;
+						}
+					}
+				}
+				.showAll {
+					width: 690rpx;
+					margin: 20rpx auto;
+					background: #fff;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					padding: 40rpx;
+					border-radius: 16rpx;
+					&-left {
+						&-title {
+							font-weight: 600;
+							font-size: 42rpx;
+							color: #7D0016;
+						}
+						&-text {
+							font-weight: 400;
+							font-size: 26rpx;
+							color: #7D0016;
+						}
+					}
+					&-img {
+						width: 17rpx;
+						height: 63rpx;
+					}
+					&-right {
+						&-title {
+							font-size: 36rpx;
+							color: #0C047D;
+						}
+						&-text {
+							font-size: 24rpx;
+							color: #565C68;
+						}
+					}
+				}
+				.showIMG {
+					width: 690rpx;
+					margin: 0rpx auto 20rpx;
+					height: 300rpx;
 				}
 			}
 		}
@@ -303,48 +455,60 @@
 			margin: 0rpx auto;
 			.wyItem {
 				border-bottom: 1rpx solid #EAEAEA;
-				// padding:  0 10rpx;
+				padding:  30rpx 0rpx;
 				width: 650rpx;
 				margin: 0 auto;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
 				// width: 650px;
 				// height: 1px;
 				// border: 1px solid #DCDCDC;
-				.title {
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					font-size: 28rpx;
-					color: #333333;
-					letter-spacing: 0;
-					text-align: justify;
-					margin-top: 40rpx;
-					// height: 120rpx;
-					text-align: left;
-					padding-left: 20rpx;
-					padding-top: 10rpx;
+				&-text {
+					width: 70%;
+					.title {
+						font-family: PingFangSC-Regular;
+						font-weight: 400;
+						font-size: 28rpx;
+						color: #333333;
+						margin-bottom: 10rpx;
+						letter-spacing: 0;
+						text-align: justify;
+						// height: 120rpx;
+						text-align: left;
+						padding-left: 20rpx;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						/* text-wrap: inherit; */
+						-webkit-line-clamp: 2;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+					}
+					.textContent {
+						// width:  450rpx;
+						font-family: PingFangSC-Regular;
+						font-weight: 400;
+						font-size: 24rpx;
+						color: #888888;
+						text-align: left;
+						padding-left: 20rpx;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						/* text-wrap: inherit; */
+						-webkit-line-clamp: 2;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+					}
 				}
-				.textContent {
-					// width:  450rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					font-size: 24rpx;
-					color: #888888;
-					letter-spacing: 0;
-					text-align: justify;
-					word-wrap: break-word;
-					white-space: normal;
-					word-break: break-all;
-					-webkit-flex: 1;
-					flex: 1;
-					text-align: left;
-					padding-left: 20rpx;
-					padding-top: 10rpx;
+				&-img {
+					image {
+						width: 150rpx;
+						height: 150rpx;
+						background: #D8D8D8;
+					}	
 				}
-				image {
-					width: 162rpx;
-					height: 150rpx;
-					background: #D8D8D8;
-					margin: 40rpx 0 30rpx;
-				}	
+				
+				
 			}
 			
 		}

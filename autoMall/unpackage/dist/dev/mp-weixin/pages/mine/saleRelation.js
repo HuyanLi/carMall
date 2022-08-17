@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _saleRelation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./saleRelation.vue?vue&type=script&lang=js& */ 239);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _saleRelation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _saleRelation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _saleRelation_vue_vue_type_style_index_0_id_569b90f6_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./saleRelation.vue?vue&type=style&index=0&id=569b90f6&lang=scss&scoped=true& */ 241);
-/* harmony import */ var _D_HBuilderX3_3_11_20220209_HBuilderX_3_3_11_20220209_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 22);
+/* harmony import */ var _D_HBuilderX3_3_11_20220209_HBuilderX_3_3_11_20220209_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 24);
 
 var renderjs
 
@@ -187,19 +187,19 @@ var _default =
       current: 0,
       contactState: [{ title: '平级代理商' }, { title: '下级团长' }, { title: '下级团员' }],
       contacts: [{
-        img: 'https://via.placeholder.com/100x100',
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: '用户名称',
         date: '2020-08-18 23:02:31' },
       {
-        img: 'https://via.placeholder.com/100x100',
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: '用户名称',
         date: '2020-08-18 23:02:31' },
       {
-        img: 'https://via.placeholder.com/100x100',
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: '用户名称',
         date: '2020-08-18 23:02:31' },
       {
-        img: 'https://via.placeholder.com/100x100',
+        img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: '用户名称',
         date: '2020-08-18 23:02:31' }] };
 

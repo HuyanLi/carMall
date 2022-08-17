@@ -31,6 +31,11 @@
   font-size: 44rpx;
   color: #000000;
   display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 .articleDetail .text .text2.data-v-7e4008f0 {
   margin: 30rpx auto;
@@ -45,6 +50,9 @@
   margin-bottom: 30rpx;
 }
 .articleDetail .nextBtn.data-v-7e4008f0 {
+  position: fixed;
+  bottom: 30rpx;
+  left: 30rpx;
   margin: 0 auto;
   width: 690rpx;
   height: 90rpx;

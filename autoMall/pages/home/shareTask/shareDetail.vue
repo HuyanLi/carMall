@@ -10,31 +10,25 @@
 </template>
 
 <script>
+	import { content } from '@/api/home.js'
 	export default {
 		data() {
 			return {
 				content:''
 			}
 		},
-		onShow(){
-			
+		onLoad(option) {
+			console.log(option)
+			this.initCont(option.id)
 		},
 		methods:{
+			async initCont(e) {
+				let data =	await content({content_id: e})
+				this.content = data.data.upper_note
+			},
 			toShare() {
 				console.log('2222222222')
 			},
-			onShareAppMessage(res) {
-			    	if (res.from === 'button') {
-						// 来自页面内分享按钮
-						console.log(res.target);
-					}
-					return {
-						title: '棱接龙',//标题
-						path: '/page/index/index',//可以指定动态路径
-						imageUrl: 'https://cdn.uviewui.com/uview/swiper/1.jpg',//分享图
-						desc: '描述'
-					};
-			  },
 			// 分享给好友
 			onShareAppMessage(options){
 			　　var that = this;

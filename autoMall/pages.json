@@ -4,7 +4,17 @@
 		{
 			"path": "pages/tabBar/home/home",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom", // 取消本页面的导航栏
+				"app-plus": {
+					"animationType": "fade-in", // 设置fade-in淡入动画，为最合理的动画类型
+					"background": "transparent", // 背景透明
+					"backgroundColor": "rgba(0,0,0,0)", // 背景透明
+					"webviewBGTransparent": true,
+					"mask": "none",
+					"opacity": 0.9,
+					"popGesture": "none" // 关闭IOS屏幕左边滑动关闭当前页面的功能
+				}
 			}
 		},
 		{
@@ -85,10 +95,11 @@
             
         }
         ,{
+			//与试货共用同页面
             "path" : "pages/home/contrac/contrac",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "签约"
                 // "enablePullDownRefresh": false
             }
             
@@ -137,7 +148,7 @@
             "path" : "pages/store/shipAddress/shipAddress",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "收获地址"
+                "navigationBarTitleText": "收货地址"
             }
             
         }
@@ -145,7 +156,9 @@
             "path" : "pages/store/confirmOrder/confirmOrder",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "确认订单"
+                "navigationBarTitleText": "确认订单",
+				"navigationBarBackgroundColor": "#003488",
+				"navigationBarTextStyle": "white"
             }
             
         }
@@ -244,7 +257,7 @@
             "path" : "pages/store/completePay/completePay",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "完成支付",
                 "enablePullDownRefresh": false
             }
             
@@ -262,7 +275,7 @@
             "path" : "pages/home/checkWard/checkWard",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "查看奖励",
                 "enablePullDownRefresh": false
             }
             
@@ -304,6 +317,40 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
+		}
+        ,{
+            "path" : "pages/home/groupBooking/groupBooking",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "拼团活动",
+                "enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/home/equities/equities",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/mine/sendout",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "订单发货",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/mine/info",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "用户详情",
+		        "enablePullDownRefresh": false
+		    }
 		}
     ],
 	"globalStyle": {

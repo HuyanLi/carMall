@@ -26,7 +26,7 @@
 /* 文章场景相关 */
 .mine.data-v-18398977 {
   padding-bottom: 120rpx;
-  padding-top: 124rpx;
+  padding-top: 164rpx;
   position: relative;
 }
 .edit.data-v-18398977 {
@@ -38,6 +38,36 @@
   -webkit-transform: translate3d(0, -50%, 0);
           transform: translate3d(0, -50%, 0);
 }
+.wallet.data-v-18398977 {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 0 0 30rpx !important;
+}
+.wallet .coins.data-v-18398977 {
+  width: 154rpx;
+  height: 135rpx;
+}
+.wallet-title.data-v-18398977 {
+  font-weight: 500;
+  font-size: 30rpx;
+  color: #000000;
+}
+.wallet-money.data-v-18398977 {
+  font-weight: 500;
+  font-size: 42rpx;
+  color: #7D0016;
+}
+.wallet-btn.data-v-18398977 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: 400;
+  font-size: 24rpx;
+  color: #999999;
+}
 .top-bg.data-v-18398977 {
   background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineBackground.png");
   background-position: center top;
@@ -48,6 +78,13 @@
   position: absolute;
   left: 0;
   top: 0;
+}
+.top-bg.blue.data-v-18398977 {
+  background: #003488;
+  color: #ffffff;
+}
+.top-bg.blue .head.data-v-18398977 {
+  color: #ffffff;
 }
 .head.data-v-18398977 {
   position: absolute;
@@ -69,7 +106,7 @@
   flex-direction: row;
   align-items: center;
   padding-left: 50rpx;
-  margin-top: 128rpx;
+  margin-top: 168rpx;
   position: relative;
 }
 .info-img.data-v-18398977 {
@@ -96,16 +133,16 @@
   height: 35rpx;
   margin-left: 17rpx;
 }
-.order.data-v-18398977, .tool.data-v-18398977 {
+.order.data-v-18398977, .tool.data-v-18398977, .wallet.data-v-18398977 {
   -webkit-transform: translate3d(0, 120rpx, 0);
           transform: translate3d(0, 120rpx, 0);
-  margin: 50rpx 30rpx 0;
+  margin: 20rpx 30rpx 0;
   border-radius: 16rpx;
   background: #ffffff;
   padding: 36rpx 0;
   z-index: 9999;
 }
-.order-title.data-v-18398977, .tool-title.data-v-18398977 {
+.order-title.data-v-18398977, .tool-title.data-v-18398977, .wallet-title.data-v-18398977 {
   height: 64rpx;
   display: flex;
   flex-direction: row;
@@ -113,12 +150,12 @@
   padding: 0 31rpx;
   line-height: 64rpx;
 }
-.order-mine.data-v-18398977, .tool-mine.data-v-18398977 {
+.order-mine.data-v-18398977, .tool-mine.data-v-18398977, .wallet-mine.data-v-18398977 {
   color: #000000;
   font-size: 30rpx;
   font-weight: 500;
 }
-.order-all.data-v-18398977, .tool-all.data-v-18398977 {
+.order-all.data-v-18398977, .tool-all.data-v-18398977, .wallet-all.data-v-18398977 {
   color: #777777;
   font-size: 26rpx;
   font-weight: 400;
@@ -126,32 +163,32 @@
   flex-direction: row;
   align-items: center;
 }
-.order-all-img.data-v-18398977, .tool-all-img.data-v-18398977 {
+.order-all-img.data-v-18398977, .tool-all-img.data-v-18398977, .wallet-all-img.data-v-18398977 {
   width: 15rpx;
   height: 25rpx;
   margin-left: 6rpx;
   display: block;
 }
-.order-item.data-v-18398977, .tool-item.data-v-18398977 {
+.order-item.data-v-18398977, .tool-item.data-v-18398977, .wallet-item.data-v-18398977 {
   width: 25%;
   text-align: center;
 }
-.order-content.data-v-18398977, .tool-content.data-v-18398977 {
+.order-content.data-v-18398977, .tool-content.data-v-18398977, .wallet-content.data-v-18398977 {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.order-image.data-v-18398977, .tool-image.data-v-18398977 {
+.order-image.data-v-18398977, .tool-image.data-v-18398977, .wallet-image.data-v-18398977 {
   width: 58rpx;
   height: 58rpx;
   margin-top: 28rpx;
 }
-.order-image-small.data-v-18398977, .tool-image-small.data-v-18398977 {
+.order-image-small.data-v-18398977, .tool-image-small.data-v-18398977, .wallet-image-small.data-v-18398977 {
   width: 42rpx;
   height: 42rpx;
   margin-top: 50rpx;
 }
-.order-name.data-v-18398977, .tool-name.data-v-18398977 {
+.order-name.data-v-18398977, .tool-name.data-v-18398977, .wallet-name.data-v-18398977 {
   font-weight: 400;
   font-size: 28rpx;
   color: #1A1A1A;

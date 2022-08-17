@@ -109,6 +109,7 @@ button {
   border-radius: 16rpx;
 }
 .home .midTab .tabMain.data-v-6a0a4107 {
+  background: #FFFFFF;
   width: 20%;
 }
 .home .midTab .tabMain image.data-v-6a0a4107 {
@@ -116,6 +117,99 @@ button {
   width: 125rpx;
   height: 125rpx;
   margin: 25rpx auto;
+}
+.home .showTab.data-v-6a0a4107 {
+  text-align: center;
+  overflow: hidden;
+}
+.home .showTab .showApp .showOrder.data-v-6a0a4107 {
+  background: #fff;
+}
+.home .showTab .showApp .showOrder .showbgc.data-v-6a0a4107 {
+  width: 690rpx;
+  margin: 30rpx auto;
+  display: flex;
+  flex-direction: row;
+  padding: 25rpx;
+  background: #FEF9E7;
+  justify-content: space-between;
+}
+.home .showTab .showApp .showOrder .showbgc image.data-v-6a0a4107 {
+  width: 40rpx;
+  height: 40rpx;
+}
+.home .showTab .showApp .showOrder .showbgc text.data-v-6a0a4107 {
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #FFAD53;
+  float: left;
+  display: inline-block;
+}
+.home .showTab .showApp .showXS.data-v-6a0a4107 {
+  width: 690rpx;
+  margin: 20rpx auto;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+  border-radius: 16rpx;
+}
+.home .showTab .showApp .showXS-title.data-v-6a0a4107 {
+  font-size: 30rpx;
+  color: #000000;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 15rpx;
+}
+.home .showTab .showApp .showXS-text.data-v-6a0a4107 {
+  display: inline-block;
+  font-size: 26rpx;
+  margin-bottom: 15rpx;
+}
+.home .showTab .showApp .showXS-text-name.data-v-6a0a4107 {
+  color: #4D515D;
+  float: left;
+}
+.home .showTab .showApp .showXS-text-task.data-v-6a0a4107 {
+  color: #000000;
+  float: right;
+}
+.home .showTab .showApp .showAll.data-v-6a0a4107 {
+  width: 690rpx;
+  margin: 20rpx auto;
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 40rpx;
+  border-radius: 16rpx;
+}
+.home .showTab .showApp .showAll-left-title.data-v-6a0a4107 {
+  font-weight: 600;
+  font-size: 42rpx;
+  color: #7D0016;
+}
+.home .showTab .showApp .showAll-left-text.data-v-6a0a4107 {
+  font-weight: 400;
+  font-size: 26rpx;
+  color: #7D0016;
+}
+.home .showTab .showApp .showAll-img.data-v-6a0a4107 {
+  width: 17rpx;
+  height: 63rpx;
+}
+.home .showTab .showApp .showAll-right-title.data-v-6a0a4107 {
+  font-size: 36rpx;
+  color: #0C047D;
+}
+.home .showTab .showApp .showAll-right-text.data-v-6a0a4107 {
+  font-size: 24rpx;
+  color: #565C68;
+}
+.home .showTab .showApp .showIMG.data-v-6a0a4107 {
+  width: 690rpx;
+  margin: 0rpx auto 20rpx;
+  height: 300rpx;
 }
 .home .goodsTab.data-v-6a0a4107 {
   width: 690rpx;
@@ -150,41 +244,51 @@ button {
 }
 .home .wyList .wyItem.data-v-6a0a4107 {
   border-bottom: 1rpx solid #EAEAEA;
+  padding: 30rpx 0rpx;
   width: 650rpx;
   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-.home .wyList .wyItem .title.data-v-6a0a4107 {
+.home .wyList .wyItem-text.data-v-6a0a4107 {
+  width: 70%;
+}
+.home .wyList .wyItem-text .title.data-v-6a0a4107 {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   font-size: 28rpx;
   color: #333333;
+  margin-bottom: 10rpx;
   letter-spacing: 0;
   text-align: justify;
-  margin-top: 40rpx;
   text-align: left;
   padding-left: 20rpx;
-  padding-top: 10rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* text-wrap: inherit; */
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
-.home .wyList .wyItem .textContent.data-v-6a0a4107 {
+.home .wyList .wyItem-text .textContent.data-v-6a0a4107 {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   font-size: 24rpx;
   color: #888888;
-  letter-spacing: 0;
-  text-align: justify;
-  word-wrap: break-word;
-  white-space: normal;
-  word-break: break-all;
-  flex: 1;
   text-align: left;
   padding-left: 20rpx;
-  padding-top: 10rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* text-wrap: inherit; */
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
-.home .wyList .wyItem image.data-v-6a0a4107 {
-  width: 162rpx;
+.home .wyList .wyItem-img image.data-v-6a0a4107 {
+  width: 150rpx;
   height: 150rpx;
   background: #D8D8D8;
-  margin: 40rpx 0 30rpx;
 }
 .home .shopList.data-v-6a0a4107 {
   width: 670rpx;

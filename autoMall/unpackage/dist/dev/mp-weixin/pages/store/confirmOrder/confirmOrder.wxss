@@ -28,7 +28,7 @@
   width: 750rpx;
   height: 590rpx;
   background-image: linear-gradient(1deg, rgba(255, 255, 255, 0) 0%, #003488 43%);
-  padding: 40rpx 0 120rpx;
+  padding: 40rpx 0;
 }
 .order .orderAdress.data-v-c8ec6a50 {
   margin: 0 30rpx;

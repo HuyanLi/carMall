@@ -1,19 +1,19 @@
 <template>
 	<view class="mine">
-		<view class="top-bg">
+		<view class="top-bg" :class="authentication ? 'blue' : ''">
 			<view id="head" class="head" :style="'padding-top:' + statusBarHeight + 'px'">我的</view>
 			<view class="info">
 				<view class="info-img">
-					<image class="img" src="https://via.placeholder.com/100x100">
+					<image @tap="handleInfoView" class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png">
 				</view>
 				<view class="info-content">
 					<view>
 						<text class="info-name">Latte今天喝拿铁</text>
-						<image class="info-title" src="https://via.placeholder.com/107x35">
+						<image class="info-title" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png">
 					</view>
 					<view class="info-invit-code">邀请码：S4SDF7</view>
 				</view>
-				<image @tap="handleInfo" class="edit" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png"/>
+				<image @tap="handleInfo" class="edit" :src="authentication ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/editWhite.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png'"/>
 			</view>
 		</view>
 
@@ -21,15 +21,23 @@
 		<view class="order">
 			<view class="order-title">
 				<view class="order-mine">我的订单</view>
-				<view class="order-all" @tap="handleAllOrder">全部订单<image class="order-all-img" src="https://via.placeholder.com/15x25"/></view>
+				<view class="order-all" @tap="handleAllOrder">全部订单<image class="order-all-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineRight.png"/></view>
 			</view>
 			<view class="order-content">
-				<view v-for="(item, index) in order" :key="index" class="order-item">
+				<view v-for="(item, index) in order" :key="index" @tap="handleOrder(index)" class="order-item">
 					<image class="order-image" :src="item.img">
 					<view class="order-name">{{item.name}}</view>
 				</view>
 			</view>
 		</view>
+		
+		<view class="wallet" @tap="handleTool('/pages/mine/wallet')">
+			<view class="wallet-title">我的钱包</view>
+			<view class="wallet-money">11634.00</view>
+			<view class="wallet-btn" @tap="handleAllOrder">可提现<image class="order-all-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineRight.png"/></view>
+			<img class="coins" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/coins.png"/>
+		</view>
+		
 		<view class="tool">
 			<view class="tool-title">
 				<view class="tool-mine">常用工具</view>
@@ -51,78 +59,55 @@
 	export default {
 		data() {
 			return {
+				authentication: true,
 				statusBarHeight: 0,
 				currentTabIndex: 3,
 				order: [
 					{
-						img: 'https://via.placeholder.com/58x58',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daifk.png',
 						name: '待付款',
 					},
 					{
-						img: 'https://via.placeholder.com/58x58',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daifh.png',
+						name: '待发货',
 					},
 					{
-						img: 'https://via.placeholder.com/58x58',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daish.png',
+						name: '待收货',
 					},
 					{
-						img: 'https://via.placeholder.com/58x58',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daipj.png',
+						name: '待评价',
 					},
 				],
 				tool: [
 					{
-						img: 'https://via.placeholder.com/42x42',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
 						name: '站内信',
 						url: '/pages/mine/message'
 					},
 					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
+						name: '我的权益',
 					},
 					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
+						name: '收货地址',
+						url: '/pages/store/shipAddress/shipAddress'
 					},
 					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '联系客服',
 					},
 					{
-						img: 'https://via.placeholder.com/42x42',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
 						name: '我的钱包',
 						url: '/pages/mine/wallet'
 					},
 					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '站内信',
-						url: '/pages/mine/message'
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '我的钱包',
-						url: '/pages/mine/wallet'
-					},
-					{
-						img: 'https://via.placeholder.com/42x42',
-						name: '待付款',
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '我的仓库',
+						url: '/pages/mine/warehouse'
 					},
 				]
 			}
@@ -143,9 +128,19 @@
 					url: "/pages/mine/infoEdit"
 				})
 			},
+			handleInfoView() {
+				uni.navigateTo({
+					url: "/pages/mine/info"
+				})
+			},
 			handleAllOrder() {
 				uni.navigateTo({
-					url: "/pages/mine/orderList"
+					url: "/pages/mine/orderList?activeIndex=0"
+				})
+			},
+			handleOrder(index) {
+				uni.navigateTo({
+					url: `/pages/mine/orderList?activeIndex=${index+1}`
 				})
 			},
 			handleTool(url) {
@@ -160,7 +155,7 @@
 <style lang="scss" scoped>
 .mine {
 	padding-bottom: 120rpx;
-	padding-top: 124rpx;
+	padding-top: 164rpx;
 	position: relative;
 }
 
@@ -173,6 +168,38 @@
 	transform: translate3d(0,-50%,0);
 }
 
+.wallet {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	padding: 0 0 0 30rpx !important;
+	.coins {
+		width: 154rpx;
+		height: 135rpx;
+	}
+	&-title {
+		font-weight: 500;
+		font-size: 30rpx;
+		color: #000000;
+	}
+	&-money {
+		font-weight: 500;
+		font-size: 42rpx;
+		color: #7D0016;
+	}
+	
+	&-btn {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-weight: 400;
+		font-size: 24rpx;
+		color: #999999;
+	}
+}
+
 .top-bg {
     background: url('https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineBackground.png');
     background-position: center top;
@@ -183,6 +210,13 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+}
+.top-bg.blue {
+	background: #003488;
+	color: #ffffff;
+	.head {
+		color: #ffffff;
+	}
 }
 .head {
   position: absolute;
@@ -204,7 +238,7 @@
 	flex-direction: row;
 	align-items: center;
 	padding-left: 50rpx;
-	margin-top: 128rpx;
+	margin-top: 168rpx;
 	position: relative;
 	&-img {
 		width: 100rpx;
@@ -232,12 +266,12 @@
 	}
 }
 
-.order, .tool {
+.order, .tool, .wallet {
 	transform: translate3d(0,120rpx,0);
-	margin: 50rpx 30rpx 0;
+	margin: 20rpx 30rpx 0;
 	border-radius: 16rpx;
 	background: #ffffff;
-	padding:36rpx 0;
+	padding: 36rpx 0;
 	z-index: 9999;
 	&-title {
 		height: 64rpx;

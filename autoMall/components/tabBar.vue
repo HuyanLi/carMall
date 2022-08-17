@@ -18,7 +18,6 @@
 <script>
 	export default {
 		props: {
-		//从父级继承过来的属性 需要在父级中使用:pagePath='pagePath',
 			current: Number,
 			approve: Boolean
 		},
@@ -27,70 +26,62 @@
 				// page: '',
 				showPage: false,
 				containerHeight: 400,
-				// approve: false,
 				//公共的tabbar
 				tabbar: [{
 						"pagePath": "pages/tabBar/home/home",
-						"iconPath": "/static/image/home/home1.png",
-						"selectedIconPath": "/static/image/home/home.png",
+						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
 						"text": "首页"
 					},{
 						"pagePath": "pages/tabBar/mall/mall",
-						"iconPath": "/static/image/home/mall.png",
-						"selectedIconPath": "/static/image/home/mall1.png",
+						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
 						"text": "品牌专区"
-					},
-					// {
-					// 	"pagePath": "pages/tabBar/mall/mall",
-					// 	"iconPath": "/static/image/home/mall.png",
-					// 	"selectedIconPath": "/static/image/home/mall1.png",
-					// 	"text": "商城"
-					// },
-					// {
-					// 	"pagePath": "pages/tabBar/service/service",
-					// 	"iconPath": "/static/image/home/service.png",
-					// 	"selectedIconPath": "/static/image/home/serviceActive.png",
-					// 	"text": "客服"
-					// },{
-					// 	"pagePath": "pages/tabBar/mine/mine",
-					// 	"iconPath": "/static/image/home/mine.png",
-					// 	"selectedIconPath": "/static/image/home/mineActive.png",
-					// 	"text": "我的"
-					// }
+					},{
+						"pagePath": "pages/tabBar/service/service",
+						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
+						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+						"text": "客服"
+					},{
+						"pagePath": "pages/tabBar/mine/mine",
+						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
+						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+						"text": "我的"
+					}
 				]
 			};
 		},
 		watch: {
 			pagePath: {
 				handler(pagePath) {
-					console.log('pagePath监听===val', pagePath)
 				},
 				immediate: true
 			},
 			approve: {
 				handler(newd,old) {
+					debugger
 					console.log(newd,2222222222222,old)
 					if(newd === true) {
 						this.tabbar = [{
 								"pagePath": "pages/tabBar/home/home",
-								"iconPath": "/static/image/home/home1.png",
-								"selectedIconPath": "/static/image/home/home.png",
+								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
 								"text": "首页"
 							},{
 								"pagePath": "pages/tabBar/mall/mall",
-								"iconPath": "/static/image/home/mall.png",
-								"selectedIconPath": "/static/image/home/mall1.png",
+								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
 								"text": "商城"
 							},
 							{
 								"pagePath": "pages/tabBar/service/service",
-								"iconPath": "/static/image/home/service.png",
-								"selectedIconPath": "/static/image/home/serviceActive.png",
+								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
+								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
 								"text": "客服"
 							},{
 								"pagePath": "pages/tabBar/mine/mine",
-								"iconPath": "/static/image/home/mine.png",
-								"selectedIconPath": "/static/image/home/mineActive.png",
+								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
+								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
 								"text": "我的"
 							}]
 					}
@@ -104,9 +95,6 @@
 		methods: {
 			changeTab(item) {
 				this.page = item.pagePath;
-				// 使用reLaunch关闭所有的页面，打开新的栏目页面
-				// console.log(item.pagePath)
-				// console.log(this.page)
 				uni.reLaunch({
 					url: '/' + this.page,
 				});
@@ -130,7 +118,6 @@
 		border-top: solid 1rpx #ccc;
 		background-color: #fff;
 		box-shadow: 0px 0px 17rpx 1rpx rgba(206, 206, 206, 0.32);
-
 		.uni-tabbar__item {
 			display: block;
 			line-height: 24rpx;
@@ -138,34 +125,27 @@
 			text-align: center;
 			flex: 1;
 		}
-
 		.uni-tabbar__icon {
 			height: 24px;
 			line-height: 24px;
 			text-align: center;
 			display: inline-block;
 		}
-
 		.icon {
 			display: inline-block;
 		}
-
 		.uni-tabbar__label {
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			font-size: 22rpx;
 			color: #C9CCDB;
-
 			&.active {
 			  color: #202425;
 			}
 		}
-
 		.icon-img {
 			height: 24px;
 			width: 24px;
 		}
 	}
 </style>
-
-

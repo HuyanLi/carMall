@@ -2,5 +2,7 @@
   "navigationBarTitleText": "我的仓库",
   "navigationBarBackgroundColor": "#003488",
   "navigationBarTextStyle": "white",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+  }
 }

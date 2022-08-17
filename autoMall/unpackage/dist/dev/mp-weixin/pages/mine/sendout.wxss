@@ -1,0 +1,204 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.sendout.data-v-2b719dfa {
+  box-sizing: border-box;
+  padding-bottom: 130rpx;
+}
+.btn.data-v-2b719dfa {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 23rpx 30rpx;
+  width: 100%;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.btn view.data-v-2b719dfa {
+  width: 330rpx;
+  height: 88rpx;
+  text-align: center;
+  line-height: 88rpx;
+  border-radius: 8rpx;
+}
+.btn .gray.data-v-2b719dfa {
+  color: #202425;
+  background: #ededed;
+}
+.btn .black.data-v-2b719dfa {
+  color: #ffffff;
+  background: #202425;
+}
+.fms.data-v-2b719dfa {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+}
+.fms text.data-v-2b719dfa {
+  color: #FF6B33;
+}
+.fms .title.data-v-2b719dfa {
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #373737;
+}
+.fms .input input.data-v-2b719dfa {
+  width: 690rpx;
+  height: 80rpx;
+  background: #F6F6F6;
+  border-radius: 8rpx;
+  margin: 20rpx 0;
+  padding: 28rpx 20rpx;
+  box-sizing: border-box;
+}
+.order.data-v-2b719dfa {
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  padding: 30rpx;
+  width: 90%;
+}
+.order-content.data-v-2b719dfa {
+  box-sizing: border-box;
+  margin-top: 30rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-content.data-v-2b719dfa:nth-of-type(1) {
+  margin-top: 0;
+}
+.order-content .img.data-v-2b719dfa {
+  display: block;
+  width: 180rpx;
+  height: 180rpx;
+}
+.order-content-info.data-v-2b719dfa {
+  margin-left: 21rpx;
+  font-weight: 400;
+  flex: 1;
+}
+.order-content-info-name.data-v-2b719dfa {
+  font-size: 26rpx;
+  color: #333333;
+}
+.order-content-info-tag.data-v-2b719dfa {
+  background: #F3F3F3;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  padding: 4rpx 15rpx;
+  font-size: 22rpx;
+  color: #757575;
+  margin: 13rpx 0 17rpx;
+}
+.order-content-info-total.data-v-2b719dfa {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.order-content-info-price.data-v-2b719dfa {
+  font-size: 28rpx;
+  color: #ED1C24;
+}
+.order-content-info-amount.data-v-2b719dfa {
+  font-size: 24rpx;
+  color: #757575;
+}
+.bg.data-v-2b719dfa {
+  box-sizing: border-box;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.bg-content.data-v-2b719dfa {
+  font-weight: 600;
+  font-size: 42rpx;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 30rpx;
+}
+.bg-content ._img.data-v-2b719dfa {
+  width: 48rpx;
+  height: 48rpx;
+}
+.bg-content text.data-v-2b719dfa {
+  margin-left: 24rpx;
+}
+.bg .address.data-v-2b719dfa {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  padding: 30rpx 30rpx 0;
+  font-weight: 300;
+  font-size: 24rpx;
+  color: #666666;
+  position: relative;
+  height: 200rpx;
+  width: 90%;
+  margin: 20rpx auto;
+}
+.bg .address text.data-v-2b719dfa {
+  margin-left: 30rpx;
+}
+.bg .address .right.data-v-2b719dfa {
+  font-weight: 500;
+  font-size: 36rpx;
+  color: #333333;
+  margin: 13rpx 0;
+  width: 100%;
+}
+.bg .address .right.data-v-2b719dfa::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  right: 30rpx;
+  width: 22rpx;
+  height: 22rpx;
+  border-top: 2px solid #333333;
+  border-right: 2px solid #333333;
+  -webkit-transform: rotate(45deg) translate3d(0, -50%, 0);
+          transform: rotate(45deg) translate3d(0, -50%, 0);
+}
+.bg .address ._img.data-v-2b719dfa {
+  width: 100%;
+  height: 6rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+

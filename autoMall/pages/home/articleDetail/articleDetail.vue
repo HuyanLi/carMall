@@ -20,21 +20,21 @@
 </template>
 
 <script>
+	import { content } from '@/api/home.js'
 	export default {
 		data() {
 			return {
 				content:'',
-				title: '无症状的高尿酸更可怕？医生：记住三招降尿酸，事半功倍！',
-				date: '2022-09-21',
-				showNext: true
+				title: '',
+				date: '',
+				showNext: true,
+				id: ''
 			}
 		},
 		onLoad(option){
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
-			this.title = option.title
-			this.date = option.date
+			this.id = option.content_id
+			console.log(this.id)
+			this.initContent(this.id)
 		},
 		onShow(e) {
 			// console.log(e)
@@ -49,6 +49,17 @@
 			// }
 		},
 		methods: {
+			async initContent(e) {
+				let that = this
+				console.log(that.id,'id')
+				let data = await content({content_id: e})
+				that.title = data.data.title
+				that.date = data.data.createtime
+				var cont = data.data.upper_note;
+				cont = cont.replace(/\<img/g, "<img style='width: 100%;'")
+				this.content= cont;
+				
+			},
 			nextArticle() {
 				this.$refs.alertDialog.open()
 			},
@@ -82,6 +93,11 @@
 			font-size: 44rpx;
 			color: #000000;
 			display: block;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			-webkit-line-clamp: 2;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
 		}
 		.text2 {
 			margin: 30rpx auto;
@@ -97,9 +113,9 @@
 		margin-bottom: 30rpx;
 	}
 	.nextBtn {
-		// position: fixed;
-		// bottom: 30rpx;
-		// left: 30rpx;
+		position: fixed;
+		bottom: 30rpx;
+		left: 30rpx;
 		margin: 0 auto;
 		width: 690rpx;
 		height: 90rpx;

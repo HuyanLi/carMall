@@ -27,6 +27,7 @@
 </template>
 
 <script>
+	import{ myCoupon } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -53,7 +54,22 @@
 				}],
 			}
 		},
+		created() {
+			this.initcoupon()
+		},
 		methods: {
+			async initcoupon() {
+				let query = {
+					member_id: uni.getStorageInfoSync('member_id'),
+					page: 1,
+					status: '',
+					coupon_type: '',
+					
+				}
+				await myCoupon(query).then(res=>{
+					console.log(res)
+				})
+			},
 			choosecoupon(e) {
 				var pages = getCurrentPages();
 				var prepage = pages[pages.length - 2]; //上一个页面

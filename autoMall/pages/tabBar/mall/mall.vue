@@ -3,9 +3,9 @@
 		<!-- 头部 -->
 		<scroll-view class="top-menu-view" scroll-x="true" :scroll-left="scrollLeft">
 			<block v-for="(menuTab,index) in menuTabs" :key="index">
-				<view class="menu-topic-view" v-bind:id="'tabNum'+index" @click="swichMenu(index)">
+				<view class="menu-topic-view" v-bind:id="'tabNum'+index" @click="swichMenu(menuTab,index)">
 					<view class="uni-flex uni-column" :class="[currentTab==index ? 'menu-topic-act' : 'menu-topic']">
-						<image :src="menuTab.imgSrc" mode=""></image>
+						<image :src="menuTab.image" mode=""></image>
 						<view class="menu-topic-txt">{{menuTab.name}}</view>
 					</view>
 				</view>
@@ -22,131 +22,60 @@
 			</view>
 		</view>
 		<!-- 显示区域 -->
-		<swiper :current="currentTab" class="swiper-box-list" duration="300" @change="swiperChange">
-			<block v-for="(swiperDate,index1) in swiperDateList" :key="index1">
-				<swiper-item>
-					<scroll-view class="swiper-topic-list" scroll-y="true" @scrolltolower="loadMore(index1)">
-						<block v-for="(swiperDate2,index2) in swiperDate" :key="index2">
-							<view class="goodsList" @click="toGoodsDetail()">
-								<view class="uni-flex uni-column goodsItem" v-for="(item,index) in goodsList"
-									:key='index'>
-									<view class="text">
-										<image :src="item.imgSrc"></image>
-									</view>
-									<view class="text fontText" style="-webkit-flex: 1;flex: 1;">{{item.text}}</view>
-									<view class="text money" style="-webkit-flex: 1;flex: 1;">￥{{item.money}}</view>
-								</view>
-							</view>
-						</block>
-					</scroll-view>
-				</swiper-item>
-			</block>
-		</swiper>
+		<view :current="currentTab"  class="goodsList" >
+			<view  @click="toGoodsDetail(item)" v-for="(item,index) in goodsList" :key='index' class="goodsItem">
+				<view class="text">
+					<image :src="item.image"></image>
+				</view>
+				<view class="text fontText">{{item.title}}</view>
+				<view class="text money">￥{{item.price}}</view>
+			</view>
+		</view>
+		<!-- 悬浮按钮 -->
+		<view class="tryGoods">
+			<view class="shihuoLogo" @click="toshoppingCart">
+				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/sh.png" ></image>
+			</view>
+		</view>
 		<!-- tabBar -->
 		<tab-bar :current="currentTabIndex" :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
 </template>
 
 <script>
-	export default {
+	import { bransList, goodsList } from '@/api/store.js'
+ 	export default {
 		data() {
 			return {
 				approve: true,
 				currentTabIndex: 1,
 				scrollLeft: 0,
 				isClickChange: false,
-				currentTab: 0,
+				currentTab: 1,
 				type: '',
-				goodsList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
-					money: '2538.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
-					money: '2538.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
-					money: '111.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
-					money: '222.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
-					money: '33.00'
-				}],
+				goodsList: [
+					{
+					id: 10,
+					image: "https://carshop.duoka361.cn/assets/img/qrcode.png",
+					original_price: "222.00",
+					price: "111",
+					title: "222",
+					},{
+					id: 10,
+					image: "https://carshop.duoka361.cn/assets/img/qrcode.png",
+					original_price: "222.00",
+					price: "111",
+					title: "222",
+					},
+				],
 				// Tab分类标题
-				menuTabs: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					name: '今日热点',
-				}],
-				// menuTabs: [{
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'),
-				// 	name: '今日热点'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '医疗'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '交通'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '住房'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '社会保障'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '教育'
-				// }, {
-				// 	imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-				// 	name: '民生热点'
-				// }],
+				menuTabs: [],
+				//品牌id
+				brandId: '',
 				// Tab切换内容
-				swiperDateList: [
-					[],
-					[],
-					[],
-					[],
-					[],
-					[],
-					[]
-				],
+				swiperDateList: [],
 				// 接口列表模拟数据
-				list: [{
-						title: "2019“中国最好学科排名” 四川3所高校各有1个学科点入",
-						hot: "热",
-						type: "教育",
-						time: "2016.11.21"
-					},
-					{
-						title: "BW成都站2019有哪些b站up主嘉宾(时间+地点+门票)",
-						hot: "",
-						type: "民生热点",
-						time: "2016.11.21"
-					},
-					{
-						title: "成都：公积金贷款系统升级 最快15个工作日左右到账  最快15个工作日左右到账",
-						hot: "",
-						type: "住房",
-						time: "2016.11.21"
-					},
-					{
-						title: "成灌线刷天府通坐高铁预计 明年5月可实现",
-						hot: "",
-						type: "名生热点",
-						time: "2016.11.21"
-					},
-					{
-						title: "成都车主朋友注意!未安装ETC走成都绕城、成温邛...",
-						hot: "",
-						type: "交通",
-						time: "2016.11.21"
-					}
-				],
+				list: [],
 			}
 		},
 		onLoad: function() {
@@ -159,22 +88,54 @@
 					this.type = v.name
 				}
 			})
-			console.log(this.type, 1111111111111)
+		},
+		created() {
+			//品牌
+			this.initBrandList()
+			//商品列表
+			// this.initGoods()
 		},
 		methods: {
-			swichMenu: async function(current) { //点击其中一个 menu
+			async initBrandList() {
+				let data = await bransList()
+				this.menuTabs = data.rows
+			},
+			async initGoods() {
+				let query = {
+					brand_id: this.currentTab,
+					type: 1,
+					page: 1
+				}
+				let data = await goodsList(query)
+				this.goodsList = data.rows
+				console.log(this.goodsList,'goodsList')
+			},
+			swichMenu: async function(current,index) { //点击其中一个 menu
+				debugger
+				console.log(current)
 				this.menuTabs.forEach((v, i) => {
-					if (current === i) {
+					if (index === i) {
+						this.brandId = v.id
 						this.type = v.name
+					}else {
+						this.brandId = v.id
+						this.type = v.name
+						
 					}
 				})
-				console.log(this.type, 111111222)
-				if (this.currentTab == current) {
+				if (this.currentTab == index) {
 					return false;
 				} else {
 					this.currentTab = current;
-					this.setScrollLeft(current);
+					this.initGoods()
+					// this.setScrollLeft(current);
 				}
+			},
+			// 购物车
+			toshoppingCart() {
+				uni.navigateTo({
+					url: '/pages/store/shoppingCart/shoppingCart'
+				})
 			},
 			//品牌详情
 			toDetail() {
@@ -183,12 +144,14 @@
 				})
 			},
 			//商品詳情
-			toGoodsDetail() {
+			toGoodsDetail(item) {
+				console.log(item,'detail')
 				uni.navigateTo({
-					url: '/pages/store/goodsDetail/goodsDetail'
+					url: '/pages/store/goodsDetail/goodsDetail?id=' + item.id
 				})
 			},
 			swiperChange: async function(e) {
+				console.log(e,999)
 				let index = e.target.current;
 				this.setScrollLeft(index);
 				this.currentTab = index;
@@ -216,6 +179,7 @@
 				console.log('正在加载更多数据。。。')
 			},
 			getDateList: function(tabIndex) {
+				debugger
 				for (var i = 0; i < 1; i++) {
 					var entity = this.menuTabs[tabIndex].name + (this.swiperDateList[tabIndex].length);
 					this.swiperDateList[tabIndex].push(entity);
@@ -231,12 +195,12 @@
 		// padding-bottom: 120rpx;
 		height: 100%;
 		width: 100%;
-		display: flex;
-		flex: 1;
-		flex-direction: column;
-		overflow: hidden;
-		align-items: flex-start;
-		justify-content: center;
+		// display: flex;
+		// flex: 1;
+		// flex-direction: column;
+		// overflow: hidden;
+		// align-items: flex-start;
+		// justify-content: center;
 	}
 
 	.top-menu-view {
@@ -282,7 +246,7 @@
 
 	.top-menu-view .menu-topic-view .menu-topic .menu-topic-txt {
 		// font-size: 30upx;
-		color: #303133;
+		color: #7c8089;
 		margin-bottom: 30rpx;
 	}
 
@@ -340,7 +304,7 @@
 		flex: 1;
 		width: 100%;
 		height: auto;
-		margin-bottom: 120rpx;
+		// margin-bottom: 120rpx;
 		// background-color: #FFFFFF;
 	}
 	.swiper-topic-list {
@@ -381,19 +345,28 @@
 			}
 		}
 	}
-
+	.tryGoods {
+		.shihuoLogo {
+			position: fixed;
+			right: 20rpx;
+			bottom: 300rpx;
+			image {
+				width: 80px;
+				height: 80px;
+			}
+		}
+	}
 	.goodsList {
 		border-radius: 16rpx;
-		margin: -10rpx 30rpx 200rpx;
-		height: 100%;
+		margin: 20rpx 30rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		margin: 20rpx 30rpx;
 		justify-content: space-between;
 		.goodsItem {
-			// padding: 20rpx 18rpx;
 			width: 48%;
+			display: flex;
+			flex-direction: column;
 			background-color: #fff;
 			margin-bottom: 20rpx;
 			.text {
@@ -405,7 +378,6 @@
 				height: 300rpx;
 				// margin: 20rpx 20rpx 30rpx;
 			}
-
 			.fontText {
 				font-family: PingFangSC-Regular;
 				font-weight: 400;

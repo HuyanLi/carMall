@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _saleOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./saleOrder.vue?vue&type=script&lang=js& */ 247);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _saleOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _saleOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 /* harmony import */ var _saleOrder_vue_vue_type_style_index_0_id_6fe58bc4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./saleOrder.vue?vue&type=style&index=0&id=6fe58bc4&lang=scss&scoped=true& */ 249);
-/* harmony import */ var _D_HBuilderX3_3_11_20220209_HBuilderX_3_3_11_20220209_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 22);
+/* harmony import */ var _D_HBuilderX3_3_11_20220209_HBuilderX_3_3_11_20220209_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue_cli_plugin_uni_packages_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js */ 24);
 
 var renderjs
 
@@ -169,30 +169,30 @@ var _default =
   data: function data() {
     return {
       orders: [{
-        headerImg: 'https://via.placeholder.com/42x42',
+        headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: 'Gerald Bryan',
         orderNumber: '0395325792',
-        orderImg: 'https://via.placeholder.com/42x42',
+        orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
         price: '368',
         count: '1',
         totalPrice: '368.00',
         commission: '20.00' },
       {
-        headerImg: 'https://via.placeholder.com/42x42',
+        headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: 'Gerald Bryan',
         orderNumber: '0395325792',
-        orderImg: 'https://via.placeholder.com/42x42',
+        orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
         price: '368',
         count: '1',
         totalPrice: '368.00',
         commission: '20.00' },
       {
-        headerImg: 'https://via.placeholder.com/42x42',
+        headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         name: 'Gerald Bryan',
         orderNumber: '0395325792',
-        orderImg: 'https://via.placeholder.com/42x42',
+        orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
         orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
         price: '368',
         count: '1',

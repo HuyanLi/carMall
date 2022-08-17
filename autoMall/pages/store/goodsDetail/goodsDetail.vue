@@ -7,7 +7,7 @@
 				<swiper class="swiper image-container" circular :indicator-dots="indicatorDots" :interval="interval" :duration="duration">
 					<swiper-item v-for="(item, index) in imgList" :key="index">
 						<view class="item" :class="currentIndex == index ? 'item-img' : 'item-img-side'">
-							<image :src="item.bannerUrl" mode=""></image>
+							<image :src="item" mode=""></image>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -15,10 +15,10 @@
 		</view>
 		<view class="goodsInfo">
 			<view class="money">
-				<text>￥368.00</text>
+				<text>￥{{price}}</text>
 			</view>
 			<view class="title">
-				<text>MICHELIN轮胎 性能三合一 都市畅行更放心</text>
+				<text>{{title}}</text>
 			</view>
 		</view>
 		<!-- 规格 -->
@@ -60,10 +60,10 @@
 					<view class="uni-flex uni-column goodsItem" v-for="(item,index) in goodsList"
 						:key='index'>
 						<view class="text">
-							<image :src="item.imgSrc"></image>
+							<image :src="item.image"></image>
 						</view>
-						<view class="text fontText" style="-webkit-flex: 1;flex: 1;">{{item.text}}</view>
-						<view class="text money" style="-webkit-flex: 1;flex: 1;">￥{{item.money}}</view>
+						<view class="text fontText" style="-webkit-flex: 1;flex: 1;">{{item.title}}</view>
+						<view class="text money" style="-webkit-flex: 1;flex: 1;">￥{{item.price}}</view>
 					</view>
 				</view>
 			</view>
@@ -111,26 +111,22 @@
 					<view class="buyMsg">
 						<image class="buyMsgLft" :src="shopDetail.productMainImg" mode=""></image>
 						<view class="buyMsgRgt">
-							<view class="buyMsgRgtTop">￥<text class="prcMid">{{ shopDetail.productPrice?shopDetail.productPrice.toString().split('.')[0]:'0' }}</text>.{{ shopDetail.productPrice&&shopDetail.productPrice.toString().split('.')[1]?shopDetail.productPrice.toString().split('.')[1]:'00' }}</view>
+							<view class="buyMsgRgtTop">￥<text class="prcMid">{{ shopDetail.productPrice }}</text></view>
 							<view class="buyMsgRgtBtm">{{ shopDetail.productName }}</view>
 						</view>
 					</view>
-					<view class="bugSpec">
-						<view class="buyTitle">
-							<text>款式</text>
+					<scroll-view scroll-y="true" >
+						<view class="" v-for="(item,index) in skuList" :key='index' >
+							<view class="bugSpec">
+								<view class="buyTitle">
+									<text>{{item.name}}</text>
+								</view>
+								<view class="specList" v-for="(e,i) in item.child" :key='i'  @click="changecTab(index,i)">
+									{{ e.name }}
+								</view>
+							</view>
 						</view>
-						<view class="specList" v-for="(e,i) in styleList" :key='i' :class="{btna:choosecTab == i}" @click="changecTab(e,i)">
-							<span type="default" >{{e.year}}</span>
-						</view>
-					</view>
-					<view class="bugSpec">
-						<view class="buyTitle">
-							<text>颜色</text>
-						</view>
-						<view class="specList" v-for="(e,i) in colorList" :key='i' :class="{btna:chooseTab == i}" @click="changeTab(e,i)">
-							<span type="default" >{{e.year}}</span>
-						</view>
-					</view>
+					</scroll-view>
 					<view class="buyNum">
 						<view class="numTit">数量</view>
 						<view class="numBtn">
@@ -149,20 +145,20 @@
 				<view class="couponsImage" v-for="(item,index) in couList" :key='index'>
 					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/detailC.png" mode=""></image>
 					<view class="couponsInfo">
-						<view class="copMoney" v-if="item.money">
-							<view class="money"> <text style="font-size: 28rpx;">￥</text> {{item.money}}</view>
-							<view class="useCop">{{item.info}}</view>
+						<view class="copMoney" v-if="item.reduce_price">
+							<view class="money"> <text style="font-size: 28rpx;">￥</text> {{item.reduce_price}}</view>
+							<view class="useCop">{{item.coupon_type_name}}</view>
 						</view>
-						<view class="copZKMoney" v-if="item.zhe">
-							<view class="zhekou">{{item.zhe}}折</view>
+						<view class="copZKMoney" v-if="item.discount">
+							<view class="zhekou">{{item.discount}}折</view>
 						</view>
-						<view class="coupDate" v-if="item.money">
-							<view>{{item.info}}</view>
-							<view>{{item.date}}</view>
+						<view class="coupDate" v-if="item.reduce_price">
+							<view>全场满{{item.full_price}}减{{item.reduce_price}}</view>
+							<view>{{item.endtime_text}}</view>
 						</view>
-						<view class="coupzkDate" v-if="item.zhe">
-							<view>{{item.info}}</view>
-							<view>{{item.date}}</view>
+						<view class="coupzkDate" v-if="item.discount">
+							<view>全场{{item.discount}}折</view>
+							<view>{{item.endtime_text}}</view>
 						</view>
 						<view class="couChoose" @click="changeRadio(item,index)">
 							<view class="radio" :class="{chooseRadio:chooseR == index}"></view>
@@ -178,6 +174,7 @@
 </template>
 
 <script>
+	import { goodsDetail, addShopCart, myCoupon} from '@/api/store.js'
 	import {uniPopup,uniNumberBox,uniPopupMessage} from '@dcloudio/uni-ui'
 	export default {
 		components: {
@@ -187,66 +184,19 @@
 		},
 		data() {
 			return {
-				msgType: 'success',
-				messageText: '加入购物车成功',
+				goodsId: '',
 				chooseR: 0,
-				style: '',
-				color: '',
+				price:'',
+				title: '',
 				coupTitle: '暂无优惠券',
 				chooseStyle: '选择',
-				chooseTab: 0,
-				choosecTab: 0,
-				radio1: 0,
-				couList: [{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-				},{
-					zhe: '8',
-					info: '全场8折',
-					date: '2022-03-01 至2022-03-31',
-				},{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-				},{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-				}],
-				sex: [],
-				nvueWidth: '670',
+				couList: [],
 				numberValue: 0,
-				styleList: [{
-					year: '2019',
-				},{
-					year: '2020',
-				},{
-					year: '2021',
-				},{
-					year: '2022',
-				}],
-				colorList: [{
-					year: '太空银',
-				},{
-					year: '深邃黑',
-				},{
-					year: '深空灰',
-				}],
+				skuList: [],
+				process_attribute: [],
+				selectSku: '',
 				currentIndex: 0,
-				imgList: [{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				}
-				],
+				imgList: [],
 				indicatorDots: true,
 				autoplay: false,
 				interval: 2000,
@@ -286,31 +236,146 @@
 					productName: '选择药品规格',
 					productPrice: '368'
 				},
-				bottomHight: 0
+				bottomHight: 0,
+				//商品类型
+				goodsType: 1,
+				sku_price_id: ''
 			}
 		},
-		onLoad() {
-			this.money = '368.00'
-			this.type = 'MICHELIN轮胎 性能三合一 都市畅行更放心'
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content = data;
+		onLoad(option) {
+			this.goodsId = option.id
+			this.initgoods(this.goodsId)
+		},
+		created() {
 		},
 		methods: {
+			async initgoods(e) {
+				let that = this
+				let data = await goodsDetail({goods_id: e})
+				console.log(data)
+				that.imgList = data.data.images
+				that.price = data.data.price
+				that.title = data.data.title
+				that.content = data.data.content
+				that.shopDetail.productMainImg = data.data.image
+				that.shopDetail.productPrice = data.data.price
+				that.skuList = data.data.sku
+				that.goodsList = data.data.relevant_recommend_goods
+				that.skuList.forEach(attr=>{
+					let temp = {
+							name: attr.name
+						}
+					temp.child = attr.child.map(item => {
+						return {
+							name: item.name,
+							actived: false,
+							disabled: false,
+							id: item.id
+						}
+					})
+					that.process_attribute.push(temp)
+				})
+				console.log(that.process_attribute,11)
+				that.goodsType = data.data.type
+				that.sku_price = data.data.sku_price
+			},
+			getItem(item) {
+				var c;
+				// item_disable item_select
+				if (this.disableSelects.has(item)) {
+					//没有库存
+					return 'item_disable'
+				}
+				if (this.selectTops._empty()) {
+					//没有选中顶点
+					c = 'item'
+				} else {
+					//有选中顶点
+					if (this.hasTop(this.selectTops, item)) {
+						//此顶点选中了
+						c = 'item_select'
+					} else {
+						//顶点没有选中, 没有选中顶点在可选顶点里面
+						if (this.canSelects.has(item)) {
+							//顶点在可选里面
+							c = 'item'
+						} else {
+							c = 'item_disable'
+						}
+					}
+				}
+				return c
+			},
+			//选择规格
+			changecTab(key,key2) {
+				let that = this;
+				that.selectSku = []
+				console.log(key,key2,that.process_attribute,'666')
+				if (!that.process_attribute[key].child[key2].disabled) {
+					that.process_attribute[key].child.forEach((item, index) => {
+						item.actived = index == key2 ? !item.actived : false
+					})
+				}
+				that.process_attribute.forEach((item,index)=>{
+					let selectData = item.child.filter(e=>{
+						return e.actived == true
+					})
+					if(selectData.length > 0) {
+						if(that.process_attribute.length - 1 === index) {
+							that.selectSku += selectData[0].id
+						}else {
+							that.selectSku += selectData[0].id+','
+						}
+					}
+				})
+				that.getPrice()
+			},
+			getPrice() {
+				let that = this;
+				let data = that.sku_price.filter(res=>{
+					console.log(res)
+					return res.goods_sku_ids === that.selectSku
+				})
+				console.log(data,2)
+				if(data.length > 0) {
+					that.shopDetail.productPrice = data[0].price
+					that.chooseStyle = data[0].goods_sku_text
+					that.sku_price_id = data[0].id
+				}
+			},
+			//规格确定
+			buyCart() {
+				this.$refs.popup.close();
+			},
 			toChoose() {
 				this.$refs.popup.open();
 			},
 			toCoup() {
+				let query;
+				if(this.goodsType === 1) {
+					query = {
+						member_id: uni.getStorageSync('member_id'),
+						page: 1,
+						status: 1,
+						coupon_type: 2,
+						price: this.shopDetail.productPrice
+					}
+				}else {
+					query = {
+						member_id: uni.getStorageSync('member_id'),
+						page: 1,
+						status: 1,
+						coupon_type: 1,
+						price: this.shopDetail.productPrice
+					}
+				}
+				myCoupon(query).then(res=>{
+					console.log(res,'090')
+					this.couList = res.data.rows
+				})
 				this.$refs.coup.open();
 			},
-			changeTab(e,i) {
-				this.chooseTab = i
-				this.style = e.year
-			},
-			changecTab(e,i) {
-				this.choosecTab = i
-				this.color = e.year
-			},
+			
 			//推荐详情
 			totjDetail() {
 				uni.navigateTo({
@@ -326,17 +391,14 @@
 			change(e) {
 				console.log(e)
 			},
-			buyCart() {
-				this.$refs.popup.close();
-				this.chooseStyle = '已选:' + this.style + '/'+ this.color
-			},
+			
 			buyTrue() {
 				
 			},
 			changeRadio(e,i) {
-				console.log(e,i)
+				console.log(e,i,'choose')
 				this.chooseR = i
-				this.coupTitle = e.info
+				this.coupTitle = '全场满'+ e.full_price + '减' + e.reduce_price
 			},
 			//优惠券确定按钮
 			chooseCoup() {
@@ -344,6 +406,7 @@
 			},
 			//加入购物车
 			addCart(e){
+				console.log(e)
 				if (e === '收藏') {
 					console.log(this.isShow)
 					if(this.isShow == true) {
@@ -365,14 +428,19 @@
 					// this.isShow = !this.isShow
 					// this.messageText = `收藏成功`
 				}else {
-					uni.showToast({
-					    title: '加入购物车成功',
-					    icon: 'none',
-					    duration: 2000
-					});
-					// this.messageText = `加入购物车成功`
-					// this.$refs.message.open()
-					
+					let query = {
+						member_id: uni.getStorageSync('member_id'),
+						goods_id: this.goodsId,
+						sku_price_id: this.sku_price_id,
+						goods_num: this.numberValue
+					}
+					addShopCart(query).then(res=>{
+						uni.showToast({
+						    title: '加入购物车成功',
+						    icon: 'none',
+						    duration: 2000
+						});
+					})
 				}
 			},
 			//拼团
@@ -563,6 +631,7 @@
 	}
 	.goodInfo {
 		text-align: center;
+		margin-bottom: 120rpx;
 		.title {
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
@@ -699,21 +768,23 @@
 				.specList {
 					display: inline-block;
 					margin-right: 20rpx;
-					padding: 10rpx 21rpx;
-					background: #F3F3F3;
+					// padding: 10rpx 21rpx;
 					border-radius: 4rpx;
-					font-family: PingFangSC-Regular;
+					// font-family: PingFangSC-Regular;
 					font-weight: 400;
 					font-size: 26rpx;
-					color: #565656;
 					width: 100rpx;
 					height: 57rpx;
-					line-height: 57rpx;
+					// line-height: 57rpx;
 					text-align: center;
 				}
-				.btna {
+				.choosebtna {
 					background: #003488;
 					color: #FFFFFF;
+				}
+				.btna {
+					background: #F3F3F3;
+					color: #565656;
 				}
 			}
 			.buyNum{

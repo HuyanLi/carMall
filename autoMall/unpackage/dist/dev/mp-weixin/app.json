@@ -35,7 +35,11 @@
     "pages/mine/cashoutHistory",
     "pages/mine/orderDetail",
     "pages/mine/warehouse",
-    "pages/mine/wareHistory"
+    "pages/mine/wareHistory",
+    "pages/home/groupBooking/groupBooking",
+    "pages/home/equities/equities",
+    "pages/mine/sendout",
+    "pages/mine/info"
   ],
   "subPackages": [],
   "window": {
@@ -56,6 +60,9 @@
     "enable": true
   },
   "usingComponents": {
-    "tab-bar": "/components/tabBar"
-  }
+    "tab-bar": "/components/tabBar",
+    "auth": "/components/auth",
+    "shopro-sku": "/components/shopro-sku"
+  },
+  "sitemapLocation": "sitemap.json"
 }

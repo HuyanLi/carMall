@@ -1,20 +1,32 @@
 <template>
 	<view class="order">
+		<img @tap="handleStorage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/viewStorage.png" alt="" class="float" />
 		<view class="order-state">
 			<view class="order-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(index)" v-for="(item, index) in orderState" :key="index">{{item.title}}</view>
 		</view>
 		<view class="order-swiper-wrap">
-			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
+			
+			<swiper v-for="(i, idx) in orderState" :key="idx" class="swiper" duration="500" :current="current" @change="handleSwipeChange">
 				<swiper-item>
 					<view class="swiper-item">
 						<view class="order-item" @tap="handleOrderDetail(item)" v-for="(item, index) in allOrder" :key="index">
+							<view class="order-header" v-if="isSale">
+								<view class="order-header-info">
+									<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" class="order-header-info-pic" />
+									<view class="order-header-info-name">张三</view>
+									<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png" class="order-header-info-tag" />
+								</view>
+								<img class="order-header-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tel.png" />
+								<!-- <text class="order-title-number">订单号 {{item.orderNumber}}</text>
+								<text class="order-title-state">{{item.orderStateName}}</text> -->
+							</view>
 							<view class="order-title">
 								<text class="order-title-number">订单号 {{item.orderNumber}}</text>
 								<text class="order-title-state">{{item.orderStateName}}</text>
 							</view>
 							
 							<view class="order-content" v-if="i.visible" v-for="(i, idx) in item.commodities" :key="idx">
-								<image class="img" src="https://via.placeholder.com/100x100" />
+								<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
 								<view class="order-content-info">
 									<view class="order-content-info-name">{{i.name}}</view>
 									<text class="order-content-info-tag">{{i.tags}}</text>
@@ -24,7 +36,7 @@
 									</view>
 								</view>
 							</view>
-							<view class="show-all" v-if="item.commodities.length > 2" v-show="item.show" @tap="handleShowAll(item)">
+							<view class="show-all" v-if="item.commodities.length > 2" v-show="item.show" @tap.stop="handleShowAll(item)">
 								显示剩余{{item.commodities.length - 2}}种商品
 							</view>
 							<view class="total-all">
@@ -33,40 +45,20 @@
 							</view>
 							<view class="order-item-btn">
 								<view class="gray">
-									取消订单
+									{{isSale ? '用户详情' : '取消订单'}}
 								</view>
 								<view class="gray">
-									联系客服
+									{{isSale ? '订单详情' : '联系客服'}}
 								</view>
-								<view class="black">
-									去打款
+								<view @tap.stop="handleBlack" class="black">
+									{{isSale ? '去发货' : '去打款'}}
 								</view>
 							</view>
 						</view>
 						
 					</view>
 				</swiper-item>
-				<swiper-item>
-					<view class="swiper-item">
-						
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view class="swiper-item">
-						
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view class="swiper-item">
-						
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view class="swiper-item">
-						
-						
-					</view>
-				</swiper-item>
+				
 			</swiper>
 		</view>
 	</view>
@@ -76,6 +68,7 @@
 	export default {
 		data() {
 			return {
+				isSale: true,
 				current: 0,
 				activeIndex: 0,
 				orderState: [{title: '全部'},{title: '待打款'},{title: '待发货'},{title: '待收货'},{title: '已完成'}],
@@ -86,21 +79,21 @@
 					totalAmount: '1',//总数
 					show: true,
 					commodities: [{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
 						amount: '1',//数量
 						visible: true
 					},{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
 						amount: '1',//数量
 						visible: true
 					},{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
@@ -113,7 +106,7 @@
 					totalPrice: '368.00',//总价
 					totalAmount: '1',//总数
 					commodities: [{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
@@ -126,7 +119,7 @@
 					totalPrice: '368.00',//总价
 					totalAmount: '1',//总数
 					commodities: [{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
@@ -139,7 +132,7 @@
 					totalPrice: '368.00',//总价
 					totalAmount: '1',//总数
 					commodities: [{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
@@ -152,7 +145,7 @@
 					totalPrice: '368.00',//总价
 					totalAmount: '1',//总数
 					commodities: [{
-						img: 'https://via.placeholder.com',//图片
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 						tags: '太空银;256GB',//标签
 						price: '368.00',//单价
@@ -163,7 +156,24 @@
 				
 			}
 		},
+		onLoad(opt) {
+			this.current = this.activeIndex = Number(opt.activeIndex)
+		},
 		methods: {
+			pay() {
+				// TODO:
+				console.log('付款')
+			},
+			handleBlack() {
+				this.isSale ? uni.navigateTo({
+					url: '/pages/mine/sendout'
+				}) : this.pay()
+			},
+			handleStorage() {
+				uni.navigateTo({
+					url: "/pages/mine/wareHistory"
+				})
+			},
 			handleStateTap(index) {
 				this.activeIndex = index
 				this.current = index
@@ -182,7 +192,7 @@
 					url: `/pages/mine/orderDetail?id=${item.orderNumber}`,
 					
 				})
-			}
+			},
 		}
 	}
 </script>
@@ -195,10 +205,56 @@
 		flex: 1;
 		flex-direction: column;
 		overflow: hidden;
+		position: relative;
+		&-header {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			box-sizing: border-box;
+			padding: 0 25rpx 22rpx;
+			border-bottom: 1px solid #E1E1E1;
+			margin-bottom: 20rpx;
+			&-info {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				&-pic {
+					width: 64rpx;
+					height: 64rpx;
+					border-radius: 50%;
+				}
+				&-name {
+					font-weight: 600;
+					font-size: 28rpx;
+					color: #333333;
+					margin: 0 24rpx 0 18rpx;
+				}
+				&-tag {
+					width: 107rpx;
+					height: 35rpx;
+				}
+			}
+			&-img {
+				width: 42rpx;
+				height: 42rpx;
+			}
+		}
+		.float {
+			width: 80rpx;
+			height: 80rpx;
+			position: absolute;
+			right: 30rpx;
+			bottom: 300rpx;
+			display: block;
+			z-index: 8000;
+		}
 		&-swiper-wrap {
 			box-sizing: border-box;
 			padding: 0 30rpx;
 			flex: 1;
+
+			
 		}
 		&-state {
 			display: flex;

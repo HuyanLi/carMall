@@ -2,7 +2,7 @@
 	<view class="detail">
 		<view class="bg">
 			<view class="bg-content">
-				<img src="../../static/image/mine/box.png" />
+				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/box.png" />
 				<text>待收货</text>
 			</view>
 			<view class="address">
@@ -17,7 +17,7 @@
 					<text>17524521452</text>
 				</view>
 				<view>
-					<img src="../../static/image/mine/address.png" />
+					<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/address.png" />
 				</view>
 			</view>
 		</view>
@@ -31,7 +31,7 @@
 		</view>
 		<view class="order">
 			<view class="order-content" v-for="(i, idx) in commodities" :key="idx">
-				<image class="img" src="https://via.placeholder.com/100x100" />
+				<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
 				<view class="order-content-info">
 					<view class="order-content-info-name">{{i.name}}</view>
 					<text class="order-content-info-tag">{{i.tags}}</text>
@@ -93,21 +93,21 @@
 		data() {
 			return {
 				commodities: [{
-					img: 'https://via.placeholder.com',//图片
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 					tags: '太空银;256GB',//标签
 					price: '368.00',//单价
 					amount: '1',//数量
 					visible: true
 				},{
-					img: 'https://via.placeholder.com',//图片
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 					tags: '太空银;256GB',//标签
 					price: '368.00',//单价
 					amount: '1',//数量
 					visible: true
 				},{
-					img: 'https://via.placeholder.com',//图片
+					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
 					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
 					tags: '太空银;256GB',//标签
 					price: '368.00',//单价

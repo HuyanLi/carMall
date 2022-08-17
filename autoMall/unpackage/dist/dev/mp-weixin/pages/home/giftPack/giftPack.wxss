@@ -75,7 +75,7 @@
 .container .yhq .coupons .couponsItem .money.data-v-66136e58 {
   font-size: 24rpx;
   color: #FFFFFF;
-  margin-bottom: 25rpx;
+  margin-bottom: 20rpx;
 }
 .container .yhq .coupons .couponsItem .getC.data-v-66136e58 {
   font-size: 24rpx;
