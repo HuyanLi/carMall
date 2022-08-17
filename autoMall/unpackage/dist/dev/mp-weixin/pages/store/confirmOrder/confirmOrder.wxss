@@ -169,14 +169,8 @@
   height: 20rpx;
   margin-left: 20rpx;
 }
-.order .goodsMoney .yunfei.data-v-c8ec6a50 {
-  padding: 30rpx;
-}
-.order .goodsMoney .yunfei .yfMon.data-v-c8ec6a50 {
-  float: right;
-}
 .order .goodsMoney .total.data-v-c8ec6a50 {
-  padding: 30rpx;
+  padding: 0 30rpx 30rpx;
   float: right;
 }
 .order .goodsMoney .total .totalNum.data-v-c8ec6a50 {

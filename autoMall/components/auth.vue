@@ -2,7 +2,7 @@
 	<view>
 		<button v-if="isLogin" open-type="getUserInfo" class="userLogin userLogin1" @click="getUserProfile"></button>
 		<button v-if="isPhone" class="userLogin userLogin2" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
-		<button v-if="isMap" class="userLogin userLogin2" @tap="getAddress"></button>
+		<!-- <button v-if="isMap" class="userLogin userLogin2" @tap="getAddress"></button> -->
 	</view>
 </template>
 
@@ -49,12 +49,11 @@
 				uni.login({
 					success: function(res) {
 						getOpenIds({code: res.code}).then(res=>{
-							uni.setStorageSync("openid",res.openid);
-							uni.setStorageSync("session_key",res.session_key);
+							uni.setStorageSync("openid",res.data.openid);
+							uni.setStorageSync("session_key",res.data.session_key);
 						})
 					},
 					fail: (res) => {
-						console.log(res)
 					}
 				})
 			},
@@ -72,15 +71,16 @@
 						let nickName = userInfo.userInfo.nickName;
 						let openid = uni.getStorageSync("openid");
 						getUserInfo({openid:openid}).then(res=>{
-							console.log(res)
-							if(res === '') {
+							if(res.code === 1) {
 								let query = {
 									openid: openid,
 									headimg: avatarUrl,
 									nickname: nickName
 								}
 								addUser(query).then(data=>{
-									uni.setStorageSync("member_id",data.member_id);
+									console.log(data)
+									uni.setStorageSync("member_id",data.data.member_id);
+									this.$store.commit('userInfo',data.data)
 									uni.showToast({
 										title: '添加成功'
 									})
@@ -125,23 +125,23 @@
 				})
 			},
 			//获取用户位置
-			getAddress() {
-				uni.getLocation({
-					type: 'wgs84',
-					altitude: true,
-					success: function(res) {
-						console.log(res)
-						const latitude = res.latitude;
-						const longitude = res.longitude;
-						uni.openLocation({
-							latitude: res.latitude,
-							longitude:res.longitude,
-							success:function(res){
-							}
-						})
-					}
-				})
-			}
+			// getAddress() {
+			// 	uni.getLocation({
+			// 		type: 'wgs84',
+			// 		altitude: true,
+			// 		success: function(res) {
+			// 			console.log(res)
+			// 			const latitude = res.latitude;
+			// 			const longitude = res.longitude;
+			// 			uni.openLocation({
+			// 				latitude: res.latitude,
+			// 				longitude:res.longitude,
+			// 				success:function(res){
+			// 				}
+			// 			})
+			// 		}
+			// 	})
+			// }
 		}
 	}
 </script>

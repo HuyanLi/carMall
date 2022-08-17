@@ -165,12 +165,11 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
       uni.login({
         success: function success(res) {
           (0, _user.getOpenIds)({ code: res.code }).then(function (res) {
-            uni.setStorageSync("openid", res.openid);
-            uni.setStorageSync("session_key", res.session_key);
+            uni.setStorageSync("openid", res.data.openid);
+            uni.setStorageSync("session_key", res.data.session_key);
           });
         },
         fail: function fail(res) {
-          console.log(res);
         } });
 
     },
@@ -188,15 +187,16 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
           var nickName = userInfo.userInfo.nickName;
           var openid = uni.getStorageSync("openid");
           (0, _user.getUserInfo)({ openid: openid }).then(function (res) {
-            console.log(res);
-            if (res === '') {
+            if (res.code === 1) {
               var query = {
                 openid: openid,
                 headimg: avatarUrl,
                 nickname: nickName };
 
               (0, _user.addUser)(query).then(function (data) {
-                uni.setStorageSync("member_id", data.member_id);
+                console.log(data);
+                uni.setStorageSync("member_id", data.data.member_id);
+                _this2.$store.commit('userInfo', data.data);
                 uni.showToast({
                   title: '添加成功' });
 
@@ -239,25 +239,26 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
         _this.isPhone = false;
         _this.isMap = true;
       });
-    },
+    }
     //获取用户位置
-    getAddress: function getAddress() {
-      uni.getLocation({
-        type: 'wgs84',
-        altitude: true,
-        success: function success(res) {
-          console.log(res);
-          var latitude = res.latitude;
-          var longitude = res.longitude;
-          uni.openLocation({
-            latitude: res.latitude,
-            longitude: res.longitude,
-            success: function success(res) {
-            } });
-
-        } });
-
-    } } };exports.default = _default;
+    // getAddress() {
+    // 	uni.getLocation({
+    // 		type: 'wgs84',
+    // 		altitude: true,
+    // 		success: function(res) {
+    // 			console.log(res)
+    // 			const latitude = res.latitude;
+    // 			const longitude = res.longitude;
+    // 			uni.openLocation({
+    // 				latitude: res.latitude,
+    // 				longitude:res.longitude,
+    // 				success:function(res){
+    // 				}
+    // 			})
+    // 		}
+    // 	})
+    // }
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

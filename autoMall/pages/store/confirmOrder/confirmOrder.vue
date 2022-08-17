@@ -43,10 +43,6 @@
 					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png" mode=""></image>
 				</view>
 			</view>
-			<view class="yunfei">
-				<text class="textS">运费</text>
-				<text class="testMon yfMon">{{freight}}</text>
-			</view>
 			<view class="total">
 				<text class="totalNum">共{{goodsnum}}件</text>
 				<text class="totalMoney">小计：</text>
@@ -78,17 +74,6 @@
 		</view>
 		<!-- 确认打款 -->
 		<view class="confirmMoney">
-			<!-- <view class="confirmC">
-				<text>共{{goodsnum}}件</text>
-				<view class="confirmPay">
-					<text>实付</text>
-					<text>￥</text>
-					<text>{{total}}</text>
-				</view>
-				<view class="confirmBtn">
-					<button class="confirmB" type="default">确认打款</button>
-				</view>
-			</view> -->
 			<text class="goodN">共{{goodsnum}}件</text>
 			<view class="confirmPay">
 				<text style="font-size: 26rpx;color: #333333;">实付</text>
@@ -103,7 +88,7 @@
 </template>
 
 <script>
-	import { getOrderPrice } from '@/api/store.js'
+	import { getOrderPrice, getBankInfo, } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -147,6 +132,7 @@
 			console.log(e)
 			let data = e.goodsData
 			this.initconfrom(data)
+			this.initBankInfo()
 		},
 		methods: {
 			initconfrom(e){
@@ -159,6 +145,16 @@
 				}
 				getOrderPrice(data).then(res=>{
 					console.log(res)
+					this.total = res.data.pay_fee
+					this.coupon = res.data.coupon_fee
+					this.company = res.data.goods_num
+				})
+			},
+			initBankInfo() {
+				getBankInfo().then(res=>{
+					this.account = res.data.pay_bank_code
+					this.bank = res.data.pay_bank_name
+					this.account = res.data.company_name
 				})
 			},
 			toAddress() {
@@ -174,11 +170,18 @@
 			},
 			//确认打款
 			toConfirm() {
-				console.log('2222')
-				//签约协议
-				uni.navigateTo({
-					url: '/pages/store/signAgreement/signAgreement'
-				})
+				//是否签约 1：未签约 2：已签约
+				if(this.$store.state.user.userInfo.is_signing === '1') {
+					//签约协议
+					uni.navigateTo({
+						url: '/pages/store/signAgreement/signAgreement'
+					})
+				}else {
+					uni.navigateTo({
+						url: '/pages/store/signAgreement/signAgreement'
+					})
+				}
+				
 			}
 		}
 	}
@@ -338,14 +341,8 @@
 			}
 			
 		}
-		.yunfei {
-			padding: 30rpx;
-			.yfMon {
-				float: right;
-			}
-		}
 		.total {
-			padding: 30rpx;
+			padding: 0 30rpx 30rpx;
 			float: right;
 			.totalNum{
 				font-size: 22rpx;

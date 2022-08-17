@@ -7,7 +7,6 @@
 			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
 				<swiper-item>
 					<view class="swiper-item">
-						
 						<view class="message-item" v-for="(item, index) in messageList" :key="index">
 							<view class="message-item-title">
 								{{item.title}}
@@ -34,6 +33,7 @@
 </template>
 
 <script>
+	import { getInfoList } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
@@ -75,7 +75,19 @@
 				}]
 			}
 		},
+		created() {
+			this.initInfo()
+		},
 		methods: {
+			initInfo(){
+				let query = {
+					member_id: this.$store.state.user.userInfo.member_id,
+					type: '1'
+				}
+				getInfoList(query).then(res=>{
+					console.log(res)
+				})
+			},
 			handleStateTap(index) {
 				this.activeIndex = index
 				this.current = index

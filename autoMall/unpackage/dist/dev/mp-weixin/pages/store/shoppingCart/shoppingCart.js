@@ -355,7 +355,6 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
         goods_list: JSON.stringify(this.goodsActiveList),
         address_id: 2 };
 
-      console.log(query, 87878);
       (0, _store.addCollageCart)(query).then(function (res) {
         uni.showToast({
           title: res.msg,

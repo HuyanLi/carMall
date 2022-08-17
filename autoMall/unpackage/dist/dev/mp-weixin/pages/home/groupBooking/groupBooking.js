@@ -130,81 +130,98 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      tabList: [{
-        name: '第一阶段' },
-      {
-        name: '第二阶段' },
-      {
-        name: '第三阶段' }],
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-      active: 0,
-      article: '技点际引利及快自空金效回动期往更标元得达利先之六术质于六国素率动热她志离头流。土断二大影角门包题类一育思酸西要老求史把并此至传动五几条被口前查全连上石何来你员圆往队周导政引色队程。以型但传七克难半产习光量根往立查式自使圆太办百接回阶空团安别改。' };
 
-  },
-  methods: {
-    changeActive: function changeActive(i, e) {
-      this.active = e;
-    },
-    //继续选货
-    chooseGoods: function chooseGoods() {
-      uni.navigateTo({
-        url: '/pages/tabBar/mall/mall' });
 
-    },
-    //确认打款
-    toConfirm: function toConfirm() {
-      uni.navigateTo({
-        url: '/pages/store/moneyCertificates/moneyCertificates' });
 
-    } } };exports.default = _default;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _store = __webpack_require__(/*! @/api/store.js */ 43); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { tabList: [{ name: '第一阶段' }, { name: '第二阶段' }, { name: '第三阶段' }], active: 0, article: '技点际引利及快自空金效回动期往更标元得达利先之六术质于六国素率动热她志离头流。土断二大影角门包题类一育思酸西要老求史把并此至传动五几条被口前查全连上石何来你员圆往队周导政引色队程。以型但传七克难半产习光量根往立查式自使圆太办百接回阶空团安别改。' };}, created: function created() {this.initPTList();}, methods: { initPTList: function initPTList() {(0, _store.getptList)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {console.log(res);});}, changeActive: function changeActive(i, e) {this.active = e;}, //继续选货
+    chooseGoods: function chooseGoods() {uni.navigateTo({ url: '/pages/tabBar/mall/mall' });}, //确认打款
+    toConfirm: function toConfirm() {uni.navigateTo({ url: '/pages/store/moneyCertificates/moneyCertificates' });} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

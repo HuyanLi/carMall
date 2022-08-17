@@ -10,3 +10,9 @@ export const warehouse = (data) => request(
 	data,
 	'POST'
 ) 
+//我的消息列表
+export const getInfoList = (data) => request(
+	'/index.php/api/user/msgList',
+	data,
+	'POST'
+) 

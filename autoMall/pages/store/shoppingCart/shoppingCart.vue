@@ -197,7 +197,6 @@
 					goods_list: JSON.stringify(this.goodsActiveList),
 					address_id: 2
 				}
-				console.log(query,87878)
 				addCollageCart(query).then(res=>{
 					uni.showToast({
 					    title: res.msg,

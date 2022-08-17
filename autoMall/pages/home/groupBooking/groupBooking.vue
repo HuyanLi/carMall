@@ -43,6 +43,7 @@
 </template>
 
 <script>
+	import { getptList } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -57,7 +58,15 @@
 				article: '技点际引利及快自空金效回动期往更标元得达利先之六术质于六国素率动热她志离头流。土断二大影角门包题类一育思酸西要老求史把并此至传动五几条被口前查全连上石何来你员圆往队周导政引色队程。以型但传七克难半产习光量根往立查式自使圆太办百接回阶空团安别改。'
 			}
 		},
+		created() {
+			this.initPTList()
+		},
 		methods: {
+			initPTList() {
+				getptList({member_id: uni.getStorageSync('member_id')}).then(res=>{
+					console.log(res)
+				})
+			},
 			changeActive(i,e) {
 				this.active = e
 			},

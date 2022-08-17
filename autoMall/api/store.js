@@ -70,3 +70,15 @@ export const addAddress = (data) => request(
 	data,
 	'POST'
 )
+//获取拼团详情
+export const getptList = (data) => request(
+	'/index.php/api/index/getCollageInfo',
+	data,
+	'POST'
+)
+//获取商城设置
+export const getBankInfo = (data) => request(
+	'/index.php/api/index/getShopSet',
+	data,
+	'POST'
+)

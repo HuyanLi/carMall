@@ -130,7 +130,42 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _mine = __webpack_require__(/*! @/api/mine.js */ 305); //
 //
 //
 //
@@ -164,42 +199,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
-var _default =
-{
-  data: function data() {
-    return {
-      current: 0,
-      activeIndex: 0,
-      messageState: [{ title: '系统消息' }, { title: '后台通知' }],
-      messageList: [{
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
-      {
-        title: '消息标题',
-        date: '2022-02-17 18:00',
-        content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
+var _default = { data: function data() {return { current: 0, activeIndex: 0, messageState: [{ title: '系统消息' }, { title: '后台通知' }], messageList: [{ title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' }, { title: '消息标题', date: '2022-02-17 18:00', content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位' },
       {
         title: '消息标题',
         date: '2022-02-17 18:00',
@@ -207,7 +207,19 @@ var _default =
 
 
   },
+  created: function created() {
+    this.initInfo();
+  },
   methods: {
+    initInfo: function initInfo() {
+      var query = {
+        member_id: this.$store.state.user.userInfo.member_id,
+        type: '1' };
+
+      (0, _mine.getInfoList)(query).then(function (res) {
+        console.log(res);
+      });
+    },
     handleStateTap: function handleStateTap(index) {
       this.activeIndex = index;
       this.current = index;

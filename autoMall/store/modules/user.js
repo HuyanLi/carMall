@@ -7,10 +7,10 @@ const state = {
 }
 
 const mutations = {
-	// UPDATE_STORE_INFO(state, userInfo) {
-	// 	console.log(userInfo)
-	// 	state.userInfo = userInfo;
-	// },
+	userInfo(state, userInfo) {
+		console.log(userInfo)
+		state.userInfo = userInfo;
+	},
 	setApprove(state,app) {
 		state.approve = app
 	},
@@ -18,18 +18,17 @@ const mutations = {
 		state.showNav = nav
 	}
 }
-
-const actions = {
-	// setStoreInfo: async ({ commit, state }, params) => {
-	// 	commit('UPDATE_STORE_INFO', params)
-	// },
-}
+// const actions = {
+// 	setStoreInfo: async ({ commit, state }, params) => {
+// 		commit('UPDATE_STORE_INFO', params)
+// 	},
+// }
 
 const getters = {} 
 
 export default {
 	state,
-	actions,
+	// actions,
 	getters,
 	mutations,
 }
