@@ -1,1 +1,0 @@
-<view class="groupA data-v-51f53f94"><view class="box data-v-51f53f94"><rich-text nodes="{{content}}" class="data-v-51f53f94"></rich-text><button type="default" data-event-opts="{{[['tap',[['toShare',['$event']]]]]}}" bindtap="__e" class="data-v-51f53f94">去签约</button></view></view>

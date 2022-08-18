@@ -1,1 +1,0 @@
-<block wx:if="{{isCanUse}}"><view><view><view class="header"><image src="../../static/images/logins.png"></image></view><view class="content"><view>申请获取以下权限</view><text>第一步：获得你的公开信息(昵称，头像、地区等)</text></view><button class="bottom" hover-class="none" type="primary" data-event-opts="{{[['tap',[['getUserProfile',['$event']]]]]}}" bindtap="__e">登录授权</button></view></view></block>

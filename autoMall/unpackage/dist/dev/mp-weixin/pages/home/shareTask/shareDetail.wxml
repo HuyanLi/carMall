@@ -1,1 +1,0 @@
-<view class="shareDetail data-v-2627750e"><view class="box data-v-2627750e"><rich-text nodes="{{content}}" class="data-v-2627750e"></rich-text><view class="buton data-v-2627750e"><button type="default" open-type="share" data-event-opts="{{[['tap',[['toShare',['$event']]]]]}}" bindtap="__e" class="data-v-2627750e">分享给好友</button></view></view></view>

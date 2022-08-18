@@ -1,1 +1,0 @@
-<view class="signAggrement"><view class="box"><rich-text nodes="{{content}}"></rich-text><view class="sign"></view><view class="btn"><button type="default" data-event-opts="{{[['tap',[['addCart']]]]}}" bindtap="__e">我已阅读并确认签署</button></view></view></view>
