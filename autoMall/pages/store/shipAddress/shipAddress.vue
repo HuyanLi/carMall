@@ -47,7 +47,8 @@
 				addressList: [],
 			}
 		},
-		created() {
+		onShow() {
+			this.addressList = []
 			this.initAddress()
 		},
 		methods: {

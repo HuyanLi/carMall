@@ -95,8 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    uniDataPicker: function() {
-      return Promise.all(/*! import() | uni_modules/uni-data-picker/components/uni-data-picker/uni-data-picker */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-data-picker/components/uni-data-picker/uni-data-picker")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-data-picker/components/uni-data-picker/uni-data-picker.vue */ 415))
+    uniPopup: function() {
+      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 437))
     }
   }
 } catch (e) {
@@ -192,7 +192,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _store = __webpack_require__(/*! @/api/store.js */ 43);function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _store = __webpack_require__(/*! @/api/store.js */ 43);function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
   data: function data() {
     return {
@@ -201,85 +220,96 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _toConsumabl
       address: '',
       detailAddress: '',
       switchState: false,
-      pickerVisible: false,
       addressList: [],
-      multiIndex: [0, 0, 0],
-      newCategotyDataList: [[], [], []],
       categoryArr: {},
       select: "请选择地区",
       id: '',
-      tempClasses: '',
-      addres: [],
-      addressAreaList: [] };
+      valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
+      province: [], // 数据列表
+      city: [],
+      area: [],
+      province_name: '',
+      city_name: '',
+      area_name: '' };
 
   },
   created: function created() {
-    this.initCity('init');
+    this.initCity();
   },
   methods: {
-    initCity: function initCity(e, i) {var _this2 = this;
+    initCity: function initCity() {var _this2 = this;
       (0, _store.getCity)().then(function (res) {
-        res.data.forEach(function (item) {
-          item.value = item.id;
-          item.text = item.name;
-        });var _res$data =
-        res.data,provinceData = _res$data.provinceData,cityData = _res$data.cityData,areaData = _res$data.areaData;
-        // let provinceData = res.data
-        // let cityData;
-        // let areaData;
-        console.log(provinceData);
-        provinceData.forEach(function (item, index) {var _this2$addressAreaLis;
-          _this2.addressAreaList.push(_objectSpread(_objectSpread({}, item), {}, { children: [] }));
-          (_this2$addressAreaLis = _this2.addressAreaList[index].children).push.apply(_this2$addressAreaLis, _toConsumableArray(cityData[index]));
-          _this2.addressAreaList[index].children.forEach(function (item1, index1) {var _item1$children;
-            item1['children'] = [];
-            (_item1$children = item1.children).push.apply(_item1$children, _toConsumableArray(areaData[index][index1]));
-          });
-        });
+        _this2.province = res.data;
+        _this2.loadCity(_this2.province[0].id);
       });
 
+    },
+    loadCity: function loadCity(pid) {var _this3 = this;
+      var query = {
+        parent_id: pid };
+
+      (0, _store.getCity)(query).then(function (res) {
+        _this3.city = res.data;
+        // this.area = res.data;
+        if (_this3.province[_this3.valueArr[0]].children === undefined) {
+          _this3.$set(_this3.province[_this3.valueArr[0]], 'children', []);
+          res.data.forEach(function (item) {
+            _this3.province[_this3.valueArr[0]].children.push(item);
+          });
+          _this3.loadArea(_this3.province[_this3.valueArr[0]].children[_this3.valueArr[1]].id);
+        }
+      });
+    },
+    loadArea: function loadArea(pid) {var _this4 = this;
+      var query = {
+        parent_id: pid };
+
+      (0, _store.getCity)(query).then(function (res) {
+        _this4.area = res.data;
+        if (_this4.province[_this4.valueArr[0]].children[_this4.valueArr[1]].children === undefined) {
+          _this4.$set(_this4.province[_this4.valueArr[0]].children[_this4.valueArr[1]], 'children', []);
+          res.data.forEach(function (item) {
+            _this4.province[_this4.valueArr[0]].children[_this4.valueArr[1]].children.push(item);
+          });
+        }
+      });
+    },
+    bindChange: function bindChange(e) {
+      var val = e.detail.value;
+      if (this.valueArr[0] !== val[0]) {
+        this.province_name = this.province[val[0]].name;
+        this.loadCity(this.province[val[0]].id);
+      } else if (this.valueArr[1] !== val[1]) {
+        console.log(this.province[val[0]].children[val[1]].name, 89898);
+        this.city_name = this.province[val[0]].children[val[1]].name,
+        this.loadArea(this.province[val[0]].children[val[1]].id);
+      }
+      this.valueArr = val;
+    },
+    confirm: function confirm(e) {var _this5 = this;
+      this.area.forEach(function (item, index) {
+        if (_this5.valueArr[2] === index) {
+          _this5.area_name = item.name;
+        }
+      });
+      this.address = this.province_name + this.city_name + this.area_name;
+      this.$refs.pupop.close();
+    },
+    cancel: function cancel() {
+      this.$refs.pupop.close();
     },
     switch1Change: function switch1Change(e) {
+      console.log(e);
       this.switchState = e.detail.value;
+      if (e.detail.value === true) {
+        this.switchState = 1;
+      } else {
+        this.switchState = 0;
+      }
     },
-    handleAddress: function handleAddress() {var _this3 = this;
-      this.pickerVisible = true;
-      this.$nextTick(function () {
-        _this3.$refs.picker.show();
-      });
-    },
-    onnodeclick: function onnodeclick(e) {
-      console.log(e);
-      this.id = e.id;
-      this.initCity('e');
-    },
-    onpopupopened: function onpopupopened(e) {
-      console.log('popupopened');
-    },
-    onpopupclosed: function onpopupclosed(e) {
-      console.log(e);
-      // this.pickerVisible = false
-      console.log('popupclosed');
-      this.$refs.picker.close();
-    },
-    onchange: function onchange(val) {var _this4 = this;
-      console.log(val, 222);
-      (0, _store.getCity)({ parent_id: val.detail.value[0].value }).then(function (res) {
-        // let { provinceData, cityData, areaData } = res.data;
-        var provinceData = res.data;
-        var cityData;
-        var areaData;
-        console.log(provinceData);
-        provinceData.forEach(function (item, index) {var _this4$addressAreaLis;
-          _this4.addressAreaList.push(_objectSpread(_objectSpread({}, item), {}, { children: [] }));
-          (_this4$addressAreaLis = _this4.addressAreaList[index].children).push.apply(_this4$addressAreaLis, _toConsumableArray(cityData[index]));
-          _this4.addressAreaList[index].children.forEach(function (item1, index1) {var _item1$children2;
-            item1['children'] = [];
-            (_item1$children2 = item1.children).push.apply(_item1$children2, _toConsumableArray(areaData[index][index1]));
-          });
-        });
-      });
-
+    handleAddress: function handleAddress() {
+      var that = this;
+      this.$refs.pupop.open('bottom');
     },
     saveAddress: function saveAddress() {
       var _this = this;
@@ -323,18 +353,22 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _toConsumabl
 
         return false;
       }
-      var query = {
+      var query = _defineProperty({
         member_id: uni.getStorageSync('member_id'),
-        province_name: '',
-        city_name: '',
-        area_name: '',
+        province_name: _this.province_name,
+        city_name: _this.city_name,
+        area_name: _this.area_name,
         address: _this.detailAddress,
-        province_id: '',
-        city_id: '',
-        area_id: '',
-        is_default: _this.switchState };
+        province_id: _this.valueArr[0],
+        city_id: _this.valueArr[1],
+        area_id: _this.valueArr[2],
+        is_default: _this.switchState,
+        consignee: _this.userName,
+        phone: _this.tel }, "address",
+      _this.detailAddress);
 
-      addressList(query).then(function (res) {
+      (0, _store.addAddress)(query).then(function (res) {
+        console.log(res, 989877);
         uni.showToast({
           title: '新增成功',
           icon: 'none',

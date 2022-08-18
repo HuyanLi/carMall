@@ -12,7 +12,7 @@
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">选择地区</text>
-				<input @tap="handleAddress" class="info-item-content ipt right" readonly v-model="address" type="text">
+				<input @tap="handleAddress" class="info-item-content ipt right" placeholder="请选择地区" readonly v-model="address" type="text">
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">详细地址</text>
@@ -26,18 +26,37 @@
 		<view class="info-btn">
 			<button type="default" @click="saveAddress">保存</button>
 		</view>
-		<uni-data-picker ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressAreaList" v-model="area"
+		<!-- <uni-data-picker ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressAreaList" v-model="area"
 			@change="onchange">
 			<text class="word13" v-if="!area.length">点击选择</text>
 			<text class="word13" v-else>{{ area[0] }}，{{ area[1] }}，{{ area[2] }}</text>
 			<text class="icon">&#xe70d;</text>
-		</uni-data-picker>
+		</uni-data-picker> -->
+		<uni-popup ref="pupop" type="bottom">
+			<view class="popup">
+				<view class="picker-btn">
+					<view class="left" @click="cancel">取消</view>
+					<view class="right" @click="confirm">确定</view>
+				</view>
+				<picker-view :indicator-style="indicatorStyle" :value="valueArr" @change="bindChange">
+					<picker-view-column>
+						<view class="item" v-for="(item,index) in province" :key="index">{{item.provinceName}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children[valueArr[1]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+				</picker-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	// import { addressList } from '@/components/address.js'
-	import { getCity } from '@/api/store.js'
+	import { getCity, addAddress } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -46,85 +65,96 @@
 				address: '',
 				detailAddress: '',
 				switchState: false,
-				pickerVisible: false,
 				addressList: [],
-				multiIndex: [0,0,0],
-				newCategotyDataList:[[],[],[]],
 			    categoryArr: {},
 			    select:"请选择地区",
 				id:'',
-				tempClasses : '',
-				addres: [],
-				addressAreaList: []
+				valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
+				province: [], // 数据列表
+				city: [],
+				area: [],
+				province_name: '',
+				city_name: '',
+				area_name: '',
 			}
 		},
 		created() {
-			this.initCity('init')
+			this.initCity()
 		},
 		methods: {
-			initCity(e,i) {
+			initCity() {
 				getCity().then(res=>{
-					res.data.forEach(item=>{
-						item.value = item.id
-						item.text = item.name
-					})
-					let { provinceData, cityData, areaData } = res.data;
-					// let provinceData = res.data
-					// let cityData;
-					// let areaData;
-					console.log(provinceData)
-					provinceData.forEach((item, index) => {
-						this.addressAreaList.push({ ...item, children: [] });
-						this.addressAreaList[index].children.push(...cityData[index]);
-						this.addressAreaList[index].children.forEach((item1, index1) => {
-							item1['children'] = [];
-							item1.children.push(...areaData[index][index1]);
-						});
-					});
+					this.province = res.data
+					this.loadCity(this.province[0].id)
 				})
 				
+			},
+			loadCity(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res =>{
+					this.city = res.data;
+					// this.area = res.data;
+					if (this.province[this.valueArr[0]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children.push(item)
+						})
+						this.loadArea(this.province[this.valueArr[0]].children[this.valueArr[1]].id)
+					}
+				})
+			},
+			loadArea(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res => {
+					this.area = res.data;
+					if (this.province[this.valueArr[0]].children[this.valueArr[1]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]].children[this.valueArr[1]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children[this.valueArr[1]].children.push(item)
+						})
+					}
+				})
+			},
+			bindChange(e) {
+				const val = e.detail.value;
+				if (this.valueArr[0] !== val[0]) {
+					this.province_name = this.province[val[0]].name
+					this.loadCity(this.province[val[0]].id)
+				} else if (this.valueArr[1] !== val[1]) {
+					console.log(this.province[val[0]].children[val[1]].name,89898)
+					this.city_name = this.province[val[0]].children[val[1]].name,
+					this.loadArea(this.province[val[0]].children[val[1]].id)
+				}
+				this.valueArr = val
+			},
+			confirm(e) {
+				this.area.forEach((item,index)=>{
+					if(this.valueArr[2] === index) {
+						this.area_name = item.name
+					}
+				})
+				this.address = this.province_name + this.city_name + this.area_name
+				this.$refs.pupop.close()
+			},
+			cancel() {
+				this.$refs.pupop.close()
 			},
 			switch1Change: function (e) {
+				console.log(e)
 				this.switchState = e.detail.value;
+				if(e.detail.value === true) {
+					this.switchState = 1
+				}else {
+					this.switchState = 0
+				}
 			},
 			handleAddress() {
-				this.pickerVisible = true
-				this.$nextTick(() => {
-					this.$refs.picker.show()
-				})
-			},
-			onnodeclick(e) {
-				console.log(e);
-				this.id = e.id
-				this.initCity('e')
-			},
-			onpopupopened(e) {
-				console.log('popupopened');
-			},
-			onpopupclosed(e) {
-				console.log(e)
-				// this.pickerVisible = false
-				console.log('popupclosed');
-				this.$refs.picker.close()
-			},
-			onchange(val) {
-				console.log(val,222)
-				getCity({parent_id: val.detail.value[0].value}).then(res=>{
-					// let { provinceData, cityData, areaData } = res.data;
-					let provinceData = res.data
-					let cityData;
-					let areaData;
-					console.log(provinceData)
-					provinceData.forEach((item, index) => {
-						this.addressAreaList.push({ ...item, children: [] });
-						this.addressAreaList[index].children.push(...cityData[index]);
-						this.addressAreaList[index].children.forEach((item1, index1) => {
-							item1['children'] = [];
-							item1.children.push(...areaData[index][index1]);
-						});
-					});
-				})
-				
+				let that = this
+				this.$refs.pupop.open('bottom')
 			},
 			saveAddress() {
 				let _this = this
@@ -170,16 +200,20 @@
 				}
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
-					province_name: '',
-					city_name: '',
-					area_name: '',
+					province_name: _this.province_name,
+					city_name: _this.city_name,
+					area_name: _this.area_name,
 					address: _this.detailAddress,
-					province_id: '',
-					city_id: '',
-					area_id: '',
-					is_default: _this.switchState
+					province_id: _this.valueArr[0],
+					city_id: _this.valueArr[1],
+					area_id: _this.valueArr[2],
+					is_default: _this.switchState,
+					consignee: _this.userName,
+					phone: _this.tel,
+					address: _this.detailAddress
 				}
-				addressList(query).then(res=>{
+				addAddress(query).then(res=>{
+					console.log(res,989877)
 					uni.showToast({
 					    title: '新增成功',
 					    icon: 'none',
@@ -287,6 +321,47 @@
 		border-top: 2px solid #999999;
 		border-right: 2px solid #999999;
 		transform: rotate(45deg) translate3d(0, -50%, 0);
+	}
+	.popup {
+		height: fit-content;
+		width: 100%;
+		background: #fff;
+	}
+	
+	.picker-btn {
+		display: flex;
+		height: 100upx;
+		width: 100%;
+		line-height: 100upx;
+		background: #fff;
+		font-size: 34upx;
+		z-index: 1;
+		border-bottom: 1rpx solid #f8f8f8;
+	
+		.left {
+			flex: 1;
+			color: #0076FF;
+			padding-left: 40upx;
+			box-sizing: border-box;
+		}
+	
+		.right {
+			flex: 1;
+			text-align: right;
+			padding-right: 40upx;
+			color: #FE4533;
+			box-sizing: border-box;
+		}
+	}
+	
+	picker-view {
+		width: 100%;
+		height: 500rpx;
+		display: relative;
+	}
+	.item {
+		line-height: 100rpx;
+		text-align: center;
 	}
 }
 </style>

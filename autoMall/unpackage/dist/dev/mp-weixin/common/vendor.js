@@ -4457,6 +4457,34 @@ var getters = {};var _default =
 
 /***/ }),
 
+/***/ 225:
+/*!****************************************!*\
+  !*** E:/autoMall/autoMall/api/mine.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getInfoList = exports.warehouse = exports.editUser = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+//编辑用户
+var editUser = function editUser() {return (0, _request.default)(
+  '/index.php/api/user/editUser',
+  'POST');};
+
+//我的仓库列表
+exports.editUser = editUser;var warehouse = function warehouse(data) {return (0, _request.default)(
+  '/index.php/api/user/getMyGoodsList',
+  data,
+  'POST');};
+
+//我的消息列表
+exports.warehouse = warehouse;var getInfoList = function getInfoList(data) {return (0, _request.default)(
+  '/index.php/api/user/msgList',
+  data,
+  'POST');};exports.getInfoList = getInfoList;
+
+/***/ }),
+
 /***/ 24:
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -10697,34 +10725,6 @@ internalMixin(Vue);
 /* harmony default export */ __webpack_exports__["default"] = (Vue);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 2)))
-
-/***/ }),
-
-/***/ 305:
-/*!****************************************!*\
-  !*** E:/autoMall/autoMall/api/mine.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getInfoList = exports.warehouse = exports.editUser = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-//编辑用户
-var editUser = function editUser() {return (0, _request.default)(
-  '/index.php/api/user/editUser',
-  'POST');};
-
-//我的仓库列表
-exports.editUser = editUser;var warehouse = function warehouse(data) {return (0, _request.default)(
-  '/index.php/api/user/getMyGoodsList',
-  data,
-  'POST');};
-
-//我的消息列表
-exports.warehouse = warehouse;var getInfoList = function getInfoList(data) {return (0, _request.default)(
-  '/index.php/api/user/msgList',
-  data,
-  'POST');};exports.getInfoList = getInfoList;
 
 /***/ }),
 

@@ -213,9 +213,10 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43); //
 //
 //
 //
-var _default = { data: function data() {return { addressList: [] };}, created: function created() {this.initAddress();}, methods: { initAddress: function initAddress() {var _this = this;(0, _store.getAddress)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {res.data.forEach(function (item) {if (item.is_default === 0) {item.checked = false;} else {item.checked = true;}});_this.addressList = res.data;});}, setMr: function setMr(e) {console.log(e);uni.showToast({ title: '设置成功', icon: 'none', duration: 2000 });}, //选择地址
+var _default = { data: function data() {return { addressList: [] };}, onShow: function onShow() {this.addressList = [];this.initAddress();}, methods: { initAddress: function initAddress() {var _this = this;(0, _store.getAddress)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {res.data.forEach(function (item) {if (item.is_default === 0) {item.checked = false;} else {item.checked = true;}});_this.addressList = res.data;});}, setMr: function setMr(e) {console.log(e);uni.showToast({ title: '设置成功', icon: 'none', duration: 2000 });}, //选择地址
     activeAdress: function activeAdress(ids, e) {var pages = getCurrentPages();var prepage = pages[pages.length - 2]; //上一个页面
-      prepage.$vm.person = { name: ids.name, number: ids.number, addres: ids.detailAdress, sex: '先生', area: ids.addres };uni.navigateBack({ delta: 1 });
+      prepage.$vm.person = { name: ids.name, number: ids.number, addres: ids.detailAdress, sex: '先生', area: ids.addres };uni.navigateBack({
+        delta: 1 });
 
     },
     deleteAddress: function deleteAddress() {
