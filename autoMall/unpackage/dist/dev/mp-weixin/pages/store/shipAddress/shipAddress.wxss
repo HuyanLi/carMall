@@ -26,7 +26,7 @@
 /* 文章场景相关 */
 .shippingAddress.data-v-161d624a {
   width: 750rpx;
-  padding: 20rpx 30rpx;
+  height: 90%;
 }
 .shippingAddress .empty.data-v-161d624a {
   width: 690rpx;
@@ -50,12 +50,15 @@
 }
 .shippingAddress .addressContent.data-v-161d624a {
   width: 690rpx;
-  background: #FFFFFF;
-  border-radius: 8rpx;
+  height: 100%;
+  padding: 20rpx 30rpx;
+  overflow-y: auto;
 }
 .shippingAddress .addressContent .addItem.data-v-161d624a {
-  padding: 30rpx;
+  background: #FFFFFF;
+  border-radius: 8rpx;
   margin-bottom: 20rpx;
+  padding: 30rpx;
 }
 .shippingAddress .addressContent .addItem .peoinfo .fontS.data-v-161d624a {
   color: #333333;

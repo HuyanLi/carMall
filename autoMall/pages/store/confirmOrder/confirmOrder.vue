@@ -2,7 +2,7 @@
 <template>
 	<view class="order">
 		<!-- 收货地址 -->
-		<view class="orderAdress" @click="toAddress">
+		<view class="orderAdress" @click="toAddress" v-if="showAddress">
 			<view class="orderArea">
 				<text>{{person.area}}</text>
 			</view>
@@ -12,8 +12,13 @@
 			</view>
 			<view class="adressPerson">
 				<text class="text1">{{person.name}}</text>
-				<text class="text2">{{person.sex}}</text>
 				<text class="text3">{{person.number}}</text>
+			</view>
+		</view>
+		<view class="orderAdress" @click="toAddress" v-else>
+			<view class="detailAddress">
+				<text>请添加收货地址</text>
+				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
 			</view>
 		</view>
 		<!-- 选购商品 -->
@@ -88,7 +93,7 @@
 </template>
 
 <script>
-	import { getOrderPrice, getBankInfo, } from '@/api/store.js'
+	import { getOrderPrice, getBankInfo, getDefault, addOrder} from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -97,8 +102,8 @@
 					addres:'动漫大厦五号楼3单元1101',
 					name: '账单',
 					number: '18210646937',
-					sex: '先生'
 				},
+				showAddress: false,
 				goodsList: [],
 				coupon: '',
 				goodsnum: '',
@@ -108,18 +113,45 @@
 				account: '',
 				bank:'',
 				company:'',
-				user: ''
+				user: '',
+				addId: ''
 			}
 		},
 		onLoad(e) {
 			let data = e.goodsData
 			this.goodsList = JSON.parse(e.goods)
+			this.goodsnum = e.goodsNum
 			this.initconfrom(data)
 			this.initBankInfo()
 			console.log(this.$store.state)
 			this.user = uni.getStorageSync('userInfo')
+			this.initDefault()
+		},
+		onShow() {
+			let pages = getCurrentPages();
+			let currPage = pages[pages.length - 1]; //当前页面
+			let json = currPage.data.person;
+			this.person.area = json.area;
+			this.person.addres = json.addres;
+			this.person.name = json.name;
+			this.person.number = json.number;
+			this.addId = json.id
 		},
 		methods: {
+			initDefault() {
+				getDefault({member_id: uni.getStorageSync('member_id')}).then(res=>{
+					if(res.code === 0) {
+						this.showAddress = false
+					}else {
+						this.showAddress = true
+						this.person.area = res.data.province_name +res.data.city_name + res.data.area_name
+						this.person.name = res.data.consignee
+						this.person.number = res.data.phone
+						this.person.addres = res.data.address
+					}
+					
+				})
+			},
 			initconfrom(e){
 				let data = {
 					member_id: uni.getStorageSync('member_id'),
@@ -155,6 +187,18 @@
 			},
 			//确认打款
 			toConfirm() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					goods_list: e,
+					address_id: this.addId,
+					is_cart: 2,
+					type: 'other',
+					remark: '',
+					coupon_id: ''
+				}
+				addOrder().then(res=>{
+					
+				})
 				//是否签约 
 				if( this.user.signing_image === null) {
 					//1：未签约   签约协议
@@ -222,8 +266,8 @@
 				color: #666666;
 				line-height: 36rpx;
 			}
-			.text2 {
-				margin: 0 20rpx;
+			.text3 {
+				margin-left: 20rpx;
 			}
 		}
 	}
@@ -404,6 +448,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: baseline;
+		justify-content: space-between;
 		.goodN {
 			// line-height: 100rpx;
 			// margin-left: 30rpx;

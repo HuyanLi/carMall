@@ -159,47 +159,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
 {
   data: function data() {
     return {
-      couList: [{
-        money: 5,
-        info: '全场满50减5',
-        date: '2022-03-01 至2022-03-31',
-        type: '满减券' },
-      {
-        zhe: '8',
-        info: '全场8折',
-        date: '2022-03-01 至2022-03-31',
-        type: '折扣券' },
-      {
-        money: 5,
-        info: '全场满50减5',
-        date: '2022-03-01 至2022-03-31',
-        type: '满减券' },
-      {
-        money: 5,
-        info: '全场满50减5',
-        date: '2022-03-01 至2022-03-31',
-        type: '满减券' }] };
-
+      couList: [] };
 
   },
   created: function created() {
     this.initcoupon();
   },
   methods: {
-    initcoupon: function initcoupon() {return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var query;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    initcoupon: function initcoupon() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var query;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 query = {
-                  member_id: uni.getStorageInfoSync('member_id'),
+                  member_id: uni.getStorageSync('member_id'),
                   page: 1,
-                  status: '',
-                  coupon_type: '' };_context.next = 3;return (
+                  status: 1,
+                  coupon_type: 2 };_context.next = 3;return (
 
 
                   (0, _store.myCoupon)(query).then(function (res) {
                     console.log(res);
+                    _this.couList = res.data.rows;
                   }));case 3:case "end":return _context.stop();}}}, _callee);}))();
     },
     choosecoupon: function choosecoupon(e) {

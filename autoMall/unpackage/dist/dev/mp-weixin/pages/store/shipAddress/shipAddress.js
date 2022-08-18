@@ -172,6 +172,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _store = __webpack_require__(/*! @/api/store.js */ 43); //
 //
 //
@@ -213,28 +214,43 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43); //
 //
 //
 //
-var _default = { data: function data() {return { addressList: [] };}, onShow: function onShow() {this.addressList = [];this.initAddress();}, methods: { initAddress: function initAddress() {var _this = this;(0, _store.getAddress)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {res.data.forEach(function (item) {if (item.is_default === 0) {item.checked = false;} else {item.checked = true;}});_this.addressList = res.data;});}, setMr: function setMr(e) {console.log(e);uni.showToast({ title: '设置成功', icon: 'none', duration: 2000 });}, //选择地址
-    activeAdress: function activeAdress(ids, e) {var pages = getCurrentPages();var prepage = pages[pages.length - 2]; //上一个页面
-      prepage.$vm.person = { name: ids.name, number: ids.number, addres: ids.detailAdress, sex: '先生', area: ids.addres };uni.navigateBack({
+//
+var _default = { data: function data() {return { addressList: [] };}, onShow: function onShow() {this.addressList = [];this.initAddress();}, methods: { initAddress: function initAddress() {var _this = this;(0, _store.getAddress)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {res.data.forEach(function (item) {if (item.is_default === '0') {item.checked = false;} else {item.checked = true;}});_this.addressList = res.data;});}, setMr: function setMr(e) {var _this2 = this;if (e.is_default === '0') {e.is_default = '1';} else {e.is_default = '0';}var query = { is_default: e.is_default, id: e.id };(0, _store.setDefault)(query).then(function (res) {uni.showToast({ title: '设置成功', icon: 'none', duration: 2000 });_this2.initAddress();});},
+    //选择地址
+    activeAdress: function activeAdress(ids, e) {
+      console.log(ids, e);
+      var pages = getCurrentPages();
+      var prepage = pages[pages.length - 2]; //上一个页面
+      prepage.$vm.person = {
+        name: ids.consignee,
+        number: ids.phone,
+        addres: ids.address,
+        area: ids.province_name + ids.city_name + ids.area_name,
+        id: ids.id };
+
+      uni.navigateBack({
         delta: 1 });
 
     },
-    deleteAddress: function deleteAddress() {
-      (0, _store.deleteAddress)().then(function (res) {
+    deleteAddress: function deleteAddress(e) {var _this3 = this;
+      var query = {
+        id: e };
+
+      (0, _store.deleteAddress)(query).then(function (res) {
         uni.showToast({
           title: '删除成功',
           icon: 'none',
           duration: 2000 });
 
+        _this3.initAddress();
       });
     },
     addAddress: function addAddress(src, item) {
       if (item) {
         uni.navigateTo({
-          url: src + '?adsId=' + item });
+          url: src + '?adsId=' + JSON.stringify(item) });
 
       } else {
-        console.log(222222222);
         uni.navigateTo({
           url: src });
 

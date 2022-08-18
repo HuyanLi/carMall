@@ -956,7 +956,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -10204,7 +10204,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -10225,14 +10225,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -10318,7 +10318,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"autoMall","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -12980,7 +12980,7 @@ var get_file_data = /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#_
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getBankInfo = exports.getptList = exports.deleteAddress = exports.editAddress = exports.addAddress = exports.getAddress = exports.getCity = exports.getOrderPrice = exports.addCollageCart = exports.editShopCart = exports.shopList = exports.addShopCart = exports.goodsDetail = exports.goodsList = exports.bransList = exports.myCoupon = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.addOrder = exports.getDefault = exports.getBankInfo = exports.getptList = exports.setDefault = exports.deleteAddress = exports.editAddress = exports.addAddress = exports.getAddress = exports.getCity = exports.getOrderPrice = exports.addCollageCart = exports.editShopCart = exports.shopList = exports.addShopCart = exports.goodsDetail = exports.goodsList = exports.bransList = exports.myCoupon = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 //我的优惠券
 var myCoupon = function myCoupon(data) {return (0, _request.default)(
   '/index.php/api/user/getMyCouponList',
@@ -13054,7 +13054,7 @@ exports.getAddress = getAddress;var addAddress = function addAddress(data) {retu
 
 //修改收货地址
 exports.addAddress = addAddress;var editAddress = function editAddress(data) {return (0, _request.default)(
-  '/index.php/api/address/delAddress',
+  '/index.php/api/address/editAddress',
   data,
   'POST');};
 
@@ -13064,8 +13064,14 @@ exports.editAddress = editAddress;var deleteAddress = function deleteAddress(dat
   data,
   'POST');};
 
+//设置默认地址
+exports.deleteAddress = deleteAddress;var setDefault = function setDefault(data) {return (0, _request.default)(
+  '/index.php/api/address/editDefaultAddress',
+  data,
+  'POST');};
+
 //获取拼团详情
-exports.deleteAddress = deleteAddress;var getptList = function getptList(data) {return (0, _request.default)(
+exports.setDefault = setDefault;var getptList = function getptList(data) {return (0, _request.default)(
   '/index.php/api/index/getCollageInfo',
   data,
   'POST');};
@@ -13074,7 +13080,19 @@ exports.deleteAddress = deleteAddress;var getptList = function getptList(data) {
 exports.getptList = getptList;var getBankInfo = function getBankInfo(data) {return (0, _request.default)(
   '/index.php/api/index/getShopSet',
   data,
-  'POST');};exports.getBankInfo = getBankInfo;
+  'POST');};
+
+//获取用户的默认地址
+exports.getBankInfo = getBankInfo;var getDefault = function getDefault(data) {return (0, _request.default)(
+  '/index.php/api/address/getDefaultAddress',
+  data,
+  'POST');};
+
+//添加订单
+exports.getDefault = getDefault;var addOrder = function addOrder(data) {return (0, _request.default)(
+  '/index.php/api/order/addOrder',
+  data,
+  'POST');};exports.addOrder = addOrder;
 
 /***/ }),
 

@@ -6,12 +6,12 @@
 			<text class="empty-text1">当前地址为空,</text>
 			<text class="empty-text2" @click="addAddress('/pages/store/addAdress/addAdress')">去添加</text>
 		</view>
-		<view v-if="addressList.length > 0" class="addressContent" v-for="(item,index) in addressList" :key="index">
-			<view class="addItem">
+		<view v-if="addressList.length > 0" class="addressContent" >
+			<view class="addItem" v-for="(item,index) in addressList" :key="index">
 				<view class="peoinfo" @click="activeAdress(item,index)">
 					<text class="fontS fontN">{{item.consignee}}</text>
 					<text class="fontS fontNum">{{item.phone}}</text>
-					<view v-if='item.checked' class="defaultBtn">
+					<view v-if='item.is_default === "1"' class="defaultBtn">
 						<text>默认</text>
 					</view>
 				</view>
@@ -21,15 +21,16 @@
 				</view>
 				<view class="delet">
 					<view class="oprtLft" @click="setMr(item)">
+						<radio :checked='item.checked' color="#203885"></radio>
 						<!-- <image v-if="item.default == true" src="https://baiyuechangxiong-pic.luobo.info/static/mr.png" mode=""></image>
 						<image v-else src="https://baiyuechangxiong-pic.luobo.info/static/wmr.png" mode=""></image> -->
-						<checkbox-group>
+						<!-- <checkbox-group>
 							<label>
 								<checkbox :checked="item.checked" color="#203885" style="transform:scale(0.7)" /><text>默认地址</text>
 							</label>
-						</checkbox-group>
+						</checkbox-group> -->
 					</view>
-					<text class="oprtRgt" @click="deleteAddress">删除</text>
+					<text class="oprtRgt" @click="deleteAddress(item.id)">删除</text>
 				</view>
 			</view>
 		</view>
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-	import { getAddress, addAddress, editAddress, deleteAddress } from '@/api/store.js'
+	import { getAddress, addAddress, deleteAddress, setDefault } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -55,7 +56,7 @@
 			initAddress() {
 				getAddress({member_id: uni.getStorageSync('member_id')}).then(res=>{
 					res.data.forEach(item=>{
-						if(item.is_default === 0) {
+						if(item.is_default === '0') {
 							item.checked = false
 						}else {
 							item.checked = true
@@ -65,44 +66,59 @@
 				})
 			},
 			setMr(e) {
-				console.log(e)
-				uni.showToast({
-				    title: '设置成功',
-				    icon: 'none',
-				    duration: 2000
-				});
+				if(e.is_default === '0') {
+					e.is_default = '1'
+				}else {
+					e.is_default = '0'
+				}
+				let query = {
+					is_default: e.is_default,
+					id: e.id
+				}
+				setDefault(query).then(res=>{
+					uni.showToast({
+					    title: '设置成功',
+					    icon: 'none',
+					    duration: 2000
+					});
+					this.initAddress()
+				})	
 			},
 			//选择地址
 			activeAdress(ids,e){
+				console.log(ids,e)
 				var pages = getCurrentPages();
 				var prepage = pages[pages.length - 2]; //上一个页面
 				prepage.$vm.person = {
-					name: ids.name,
-					number: ids.number,
-					addres: ids.detailAdress,
-					sex: '先生',
-					area: ids.addres
+					name: ids.consignee,
+					number: ids.phone,
+					addres: ids.address,
+					area: ids.province_name + ids.city_name + ids.area_name,
+					id: ids.id
 				}
 				uni.navigateBack({
 					delta: 1
 				})
 			},
-			deleteAddress() {
-				deleteAddress().then(res=> {
+			deleteAddress(e) {
+				let query = {
+					id: e
+				}
+				deleteAddress(query).then(res=> {
 					uni.showToast({
 					    title: '删除成功',
 					    icon: 'none',
 					    duration: 2000
 					});
+					this.initAddress()
 				})
 			},
 			addAddress(src,item) {
 				if(item) {
 					uni.navigateTo({
-						url: src + '?adsId=' + item
+						url: src + '?adsId=' + JSON.stringify(item)
 					})
 				}else {
-					console.log(222222222)
 					uni.navigateTo({
 						url: src
 					})
@@ -116,7 +132,7 @@
 <style lang="scss" scoped>
 .shippingAddress {
 	width: 750rpx;
-	padding: 20rpx 30rpx;
+    height: 90%;
 	.empty {
 		width: 690rpx;
 		text-align: center;
@@ -139,13 +155,16 @@
 	}
 	.addressContent {
 		width: 690rpx;
+		height: 100%;
+		padding: 20rpx 30rpx;
 		// height: 200rpx;
 		// padding: 30rpx;
-		background: #FFFFFF;
-		border-radius: 8rpx;
+		overflow-y: auto;
 		.addItem {
-			padding: 30rpx;
+			background: #FFFFFF;
+			border-radius: 8rpx;
 			margin-bottom: 20rpx;
+			padding: 30rpx;
 			.peoinfo {
 				.fontS {
 					color: #333333;

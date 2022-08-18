@@ -7,19 +7,23 @@
 		</view>
 		<view class="coupon-content">
 			<view class="coupon-content-image" @click="choosecoupon(item)" v-for="(item,index) in couList" :key='index'>
-				<view v-if="item.money" class="coupon-content-image-title">
-					<text class="money"><text style="font-size: 28rpx;">￥</text>{{item.money}}</text>
-					<text class="info">{{item.info}}</text>
+				<view v-if="item.type === 1" class="coupon-content-image-title">
+					<text class="money"><text style="font-size: 28rpx;">￥</text>{{item.reduce_price}}</text>
+					<text class="info">全场满{{item.full_price}}减{{item.reduce_price}}</text>
 				</view>
-				<view v-if="item.zhe" class="coupon-content-image-title">
-					<text class="zhe">{{item.zhe}}折</text>
+				<view v-if="item.type === 1" class="coupon-content-image-text">
+					<text class="info">全场满{{item.full_price}}减{{item.reduce_price}}</text>
+					<text class="date">{{item.endtime_text}}</text>
 				</view>
-				<view class="coupon-content-image-text">
-					<text class="info">{{item.info}}</text>
-					<text class="date">{{item.date}}</text>
+				<view v-if="item.type === 2" class="coupon-content-image-title">
+					<text class="zhe">{{item.discount}}折</text>
+				</view>
+				<view v-if="item.type === 2" class="coupon-content-image-text">
+					<text class="info">全场满{{item.full_price}}打{{item.reduce_price}}折</text>
+					<text class="date">{{item.endtime_text}}</text>
 				</view>
 				<view class="coupon-content-image-type">
-					<text>{{item.type}}</text>
+					<text>{{item.type_name}}</text>
 				</view>
 			</view>
 		</view>
@@ -31,27 +35,7 @@
 	export default {
 		data() {
 			return {
-				couList: [{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-					type: '满减券'
-				},{
-					zhe: '8',
-					info: '全场8折',
-					date: '2022-03-01 至2022-03-31',
-					type: '折扣券'
-				},{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-					type: '满减券'
-				},{
-					money: 5,
-					info: '全场满50减5',
-					date: '2022-03-01 至2022-03-31',
-					type: '满减券'
-				}],
+				couList: [],
 			}
 		},
 		created() {
@@ -60,14 +44,15 @@
 		methods: {
 			async initcoupon() {
 				let query = {
-					member_id: uni.getStorageInfoSync('member_id'),
+					member_id: uni.getStorageSync('member_id'),
 					page: 1,
-					status: '',
-					coupon_type: '',
+					status: 1,
+					coupon_type: 2,
 					
 				}
 				await myCoupon(query).then(res=>{
 					console.log(res)
+					this.couList = res.data.rows
 				})
 			},
 			choosecoupon(e) {

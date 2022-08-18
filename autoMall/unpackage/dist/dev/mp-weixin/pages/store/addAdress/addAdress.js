@@ -205,52 +205,60 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-var _store = __webpack_require__(/*! @/api/store.js */ 43);function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
-{
-  data: function data() {
-    return {
-      tel: '',
-      userName: '',
-      address: '',
-      detailAddress: '',
-      switchState: false,
-      addressList: [],
-      categoryArr: {},
-      select: "请选择地区",
-      id: '',
-      valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
+var _store = __webpack_require__(/*! @/api/store.js */ 43); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import { addressList } from '@/components/address.js'
+var _default = { data: function data() {return { tel: '', userName: '', address: '', detailAddress: '', switchState: 0, addressList: [], categoryArr: {}, select: "请选择地区", id: '', valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
       province: [], // 数据列表
-      city: [],
-      area: [],
-      province_name: '',
-      city_name: '',
-      area_name: '' };
-
-  },
-  created: function created() {
-    this.initCity();
-  },
-  methods: {
-    initCity: function initCity() {var _this2 = this;
-      (0, _store.getCity)().then(function (res) {
-        _this2.province = res.data;
-        _this2.loadCity(_this2.province[0].id);
-      });
-
-    },
-    loadCity: function loadCity(pid) {var _this3 = this;
-      var query = {
-        parent_id: pid };
-
-      (0, _store.getCity)(query).then(function (res) {
-        _this3.city = res.data;
-        // this.area = res.data;
+      city: [], area: [], province_name: '', city_name: '', area_name: '', addInfo: {}, change: false };}, onLoad: function onLoad(e) {this.addInfo = JSON.parse(e.adsId);this.userName = this.addInfo.consignee;this.tel = this.addInfo.phone;this.detailAddress = this.addInfo.address;this.address = this.addInfo.province_name + this.addInfo.city_name + this.addInfo.area_name;if (this.addInfo.is_default === '1') {this.switchState = 1;} else {this.switchState = 0;}}, created: function created() {this.initCity();}, methods: { initCity: function initCity() {var _this2 = this;(0, _store.getCity)().then(function (res) {_this2.province = res.data;_this2.loadCity(_this2.province[0].id);});}, loadCity: function loadCity(pid) {var _this3 = this;var query = { parent_id: pid };(0, _store.getCity)(query).then(function (res) {_this3.city = res.data; // this.area = res.data;
         if (_this3.province[_this3.valueArr[0]].children === undefined) {
           _this3.$set(_this3.province[_this3.valueArr[0]], 'children', []);
           res.data.forEach(function (item) {
@@ -299,8 +307,9 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _definePrope
       this.$refs.pupop.close();
     },
     switch1Change: function switch1Change(e) {
+      this.change = true;
       console.log(e);
-      this.switchState = e.detail.value;
+      // this.switchState = e.detail.value;
       if (e.detail.value === true) {
         this.switchState = 1;
       } else {
@@ -353,31 +362,74 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _definePrope
 
         return false;
       }
-      var query = _defineProperty({
-        member_id: uni.getStorageSync('member_id'),
-        province_name: _this.province_name,
-        city_name: _this.city_name,
-        area_name: _this.area_name,
-        address: _this.detailAddress,
-        province_id: _this.valueArr[0],
-        city_id: _this.valueArr[1],
-        area_id: _this.valueArr[2],
-        is_default: _this.switchState,
-        consignee: _this.userName,
-        phone: _this.tel }, "address",
-      _this.detailAddress);
+      var query;
+      if (_this.addInfo) {
+        if (_this.change === false) {
+          query = {
+            member_id: uni.getStorageSync('member_id'),
+            address: _this.detailAddress,
+            province_name: _this.addInfo.province_name,
+            city_name: _this.addInfo.city_name,
+            area_name: _this.addInfo.area_name,
+            province_id: _this.addInfo.province_id,
+            city_id: _this.addInfo.city_id,
+            area_id: _this.addInfo.area_id,
+            id: _this.addInfo.id,
+            is_default: _this.switchState,
+            consignee: _this.userName,
+            phone: _this.tel };
 
-      (0, _store.addAddress)(query).then(function (res) {
-        console.log(res, 989877);
-        uni.showToast({
-          title: '新增成功',
-          icon: 'none',
-          duration: 2000 });
+        } else {
+          query = {
+            member_id: uni.getStorageSync('member_id'),
+            province_name: _this.province_name,
+            city_name: _this.city_name,
+            area_name: _this.area_name,
+            province_id: _this.valueArr[0],
+            city_id: _this.valueArr[1],
+            area_id: _this.valueArr[2],
+            is_default: _this.switchState,
+            consignee: _this.userName,
+            phone: _this.tel,
+            address: _this.detailAddress,
+            id: _this.addInfo.id };
 
-        uni.navigateBack({
-          delta: 1 //返回层数，2则上上页
+        }
+        (0, _store.editAddress)(query).then(function (res) {
+          uni.showToast({
+            title: res.msg,
+            icon: 'none',
+            duration: 2000 });
+
+          uni.navigateBack({
+            delta: 1 //返回层数，2则上上页
+          });
         });
-      });
+      } else {
+        query = {
+          member_id: uni.getStorageSync('member_id'),
+          province_name: _this.province_name,
+          city_name: _this.city_name,
+          area_name: _this.area_name,
+          province_id: _this.valueArr[0],
+          city_id: _this.valueArr[1],
+          area_id: _this.valueArr[2],
+          is_default: _this.switchState,
+          consignee: _this.userName,
+          phone: _this.tel,
+          address: _this.detailAddress };
+
+        (0, _store.addAddress)(query).then(function (res) {
+          uni.showToast({
+            title: '新增成功',
+            icon: 'none',
+            duration: 2000 });
+
+          uni.navigateBack({
+            delta: 1 //返回层数，2则上上页
+          });
+        });
+      }
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

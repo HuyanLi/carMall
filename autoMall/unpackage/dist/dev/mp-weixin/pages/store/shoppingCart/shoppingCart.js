@@ -243,7 +243,8 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
       deleteIds: [],
       goodsActiveList: [],
       chooseList: [],
-      gods: [] };
+      gods: [],
+      goodsNum: '' };
 
   },
   computed: {
@@ -311,7 +312,7 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
     //领券结算
     toPay: function toPay() {
       uni.navigateTo({
-        url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) + '&goods=' + JSON.stringify(this.gods) });
+        url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) + '&goods=' + JSON.stringify(this.gods) + '&goodsNum=' + this.goodsNum });
 
     },
     chooseShop: function chooseShop(e, i) {
@@ -320,7 +321,7 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
       if (!e.checked) {
         this.allChecked = false;
       } else {
-        console.log(e);
+        console.log(e, 'chooseShop');
         this.gods.push({
           image: e.goods.image,
           price: e.goods.price,
@@ -338,6 +339,7 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43);function _interopRequ
         var goodsIndex = i;
         this.deleteIds.push(e.goods.id);
         this.goodsActiveList.push({ goods_id: e.goods_id, goods_sku_price_id: e.sku_price.id, num: e.goods_num });
+        this.goodsNum = e.goods_num;
         if (cartList) {
           this.allChecked = true;
         } else {

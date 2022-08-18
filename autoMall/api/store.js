@@ -72,13 +72,19 @@ export const addAddress = (data) => request(
 )
 //修改收货地址
 export const editAddress = (data) => request(
-	'/index.php/api/address/delAddress',
+	'/index.php/api/address/editAddress',
 	data,
 	'POST'
 )
 //删除收货地址
 export const deleteAddress = (data) => request(
 	'/index.php/api/address/delAddress',
+	data,
+	'POST'
+)
+//设置默认地址
+export const setDefault = (data) => request(
+	'/index.php/api/address/editDefaultAddress',
 	data,
 	'POST'
 )
@@ -91,6 +97,18 @@ export const getptList = (data) => request(
 //获取商城设置
 export const getBankInfo = (data) => request(
 	'/index.php/api/index/getShopSet',
+	data,
+	'POST'
+)
+//获取用户的默认地址
+export const getDefault = (data) => request(
+	'/index.php/api/address/getDefaultAddress',
+	data,
+	'POST'
+)
+//添加订单
+export const addOrder = (data) => request(
+	'/index.php/api/order/addOrder',
 	data,
 	'POST'
 )

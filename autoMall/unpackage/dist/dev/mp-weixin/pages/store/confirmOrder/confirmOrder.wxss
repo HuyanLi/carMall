@@ -73,8 +73,8 @@
   color: #666666;
   line-height: 36rpx;
 }
-.order .orderAdress .adressPerson .text2.data-v-c8ec6a50 {
-  margin: 0 20rpx;
+.order .orderAdress .adressPerson .text3.data-v-c8ec6a50 {
+  margin-left: 20rpx;
 }
 .order .chooseGoods.data-v-c8ec6a50 {
   margin: 30rpx 30rpx 20rpx;
@@ -242,6 +242,7 @@
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  justify-content: space-between;
 }
 .order .confirmMoney .goodN.data-v-c8ec6a50 {
   font-size: 24rpx;

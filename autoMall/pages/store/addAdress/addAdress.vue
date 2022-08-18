@@ -21,17 +21,11 @@
 		</view>
 		<view class="info-default">
 			<text class="info-default-title" v-model="defaultAdd">是否为默认地址</text>
-			<switch class="info-default-switch" :checked="switchState" color="#1F2425" @change="switch1Change" />
+			<switch class="info-default-switch"  :checked="switchState" color="#1F2425" @change="switch1Change" />
 		</view>
 		<view class="info-btn">
 			<button type="default" @click="saveAddress">保存</button>
 		</view>
-		<!-- <uni-data-picker ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressAreaList" v-model="area"
-			@change="onchange">
-			<text class="word13" v-if="!area.length">点击选择</text>
-			<text class="word13" v-else>{{ area[0] }}，{{ area[1] }}，{{ area[2] }}</text>
-			<text class="icon">&#xe70d;</text>
-		</uni-data-picker> -->
 		<uni-popup ref="pupop" type="bottom">
 			<view class="popup">
 				<view class="picker-btn">
@@ -56,7 +50,7 @@
 
 <script>
 	// import { addressList } from '@/components/address.js'
-	import { getCity, addAddress } from '@/api/store.js'
+	import { getCity, addAddress, editAddress } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -64,7 +58,7 @@
 				userName: '',
 				address: '',
 				detailAddress: '',
-				switchState: false,
+				switchState: 0,
 				addressList: [],
 			    categoryArr: {},
 			    select:"请选择地区",
@@ -76,6 +70,20 @@
 				province_name: '',
 				city_name: '',
 				area_name: '',
+				addInfo: {},
+				change: false
+			}
+		},
+		onLoad(e) {
+			this.addInfo = JSON.parse(e.adsId)
+			this.userName = this.addInfo.consignee
+			this.tel = this.addInfo.phone
+			this.detailAddress = this.addInfo.address
+			this.address = this.addInfo.province_name + this.addInfo.city_name + this.addInfo.area_name
+			if(this.addInfo.is_default === '1') {
+				this.switchState = 1
+			}else {
+				this.switchState = 0
 			}
 		},
 		created() {
@@ -144,8 +152,9 @@
 				this.$refs.pupop.close()
 			},
 			switch1Change: function (e) {
+				this.change = true
 				console.log(e)
-				this.switchState = e.detail.value;
+				// this.switchState = e.detail.value;
 				if(e.detail.value === true) {
 					this.switchState = 1
 				}else {
@@ -198,31 +207,74 @@
 					});
 					return false;
 				}
-				let query = {
-					member_id: uni.getStorageSync('member_id'),
-					province_name: _this.province_name,
-					city_name: _this.city_name,
-					area_name: _this.area_name,
-					address: _this.detailAddress,
-					province_id: _this.valueArr[0],
-					city_id: _this.valueArr[1],
-					area_id: _this.valueArr[2],
-					is_default: _this.switchState,
-					consignee: _this.userName,
-					phone: _this.tel,
-					address: _this.detailAddress
-				}
-				addAddress(query).then(res=>{
-					console.log(res,989877)
-					uni.showToast({
-					    title: '新增成功',
-					    icon: 'none',
-					    duration: 2000
-					});
-					uni.navigateBack({
-						delta:1,//返回层数，2则上上页
+				let query;
+				if(_this.addInfo) {
+					if(_this.change === false) {
+						query = {
+							member_id: uni.getStorageSync('member_id'),
+							address: _this.detailAddress,
+							province_name: _this.addInfo.province_name,
+							city_name: _this.addInfo.city_name,
+							area_name: _this.addInfo.area_name,
+							province_id: _this.addInfo.province_id,
+							city_id: _this.addInfo.city_id,
+							area_id: _this.addInfo.area_id,
+							id: _this.addInfo.id,
+							is_default: _this.switchState,
+							consignee: _this.userName,
+							phone: _this.tel,
+						}
+					}else {
+						query = {
+							member_id: uni.getStorageSync('member_id'),
+							province_name: _this.province_name,
+							city_name: _this.city_name,
+							area_name: _this.area_name,
+							province_id: _this.valueArr[0],
+							city_id: _this.valueArr[1],
+							area_id: _this.valueArr[2],
+							is_default: _this.switchState,
+							consignee: _this.userName,
+							phone: _this.tel,
+							address: _this.detailAddress,
+							id: _this.addInfo.id
+						}
+					}
+					editAddress(query).then(res=>{
+						uni.showToast({
+						    title: res.msg,
+						    icon: 'none',
+						    duration: 2000
+						});
+						uni.navigateBack({
+							delta:1,//返回层数，2则上上页
+						})
 					})
-				})
+				}else {
+					query = {
+							member_id: uni.getStorageSync('member_id'),
+							province_name: _this.province_name,
+							city_name: _this.city_name,
+							area_name: _this.area_name,
+							province_id: _this.valueArr[0],
+							city_id: _this.valueArr[1],
+							area_id: _this.valueArr[2],
+							is_default: _this.switchState,
+							consignee: _this.userName,
+							phone: _this.tel,
+							address: _this.detailAddress
+						}
+					addAddress(query).then(res=>{
+						uni.showToast({
+						    title: '新增成功',
+						    icon: 'none',
+						    duration: 2000
+						});
+						uni.navigateBack({
+							delta:1,//返回层数，2则上上页
+						})
+					})
+				}
 			}
 		}
 	}

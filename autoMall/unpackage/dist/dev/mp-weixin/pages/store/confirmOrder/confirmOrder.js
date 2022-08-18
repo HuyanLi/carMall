@@ -220,6 +220,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _store = __webpack_require__(/*! @/api/store.js */ 43); //
 //
 //
@@ -309,12 +314,37 @@ var _store = __webpack_require__(/*! @/api/store.js */ 43); //
 //
 //
 //
-var _default = { data: function data() {return { person: { area: '北京市朝阳区', addres: '动漫大厦五号楼3单元1101', name: '账单', number: '18210646937', sex: '先生' }, goodsList: [], coupon: '', goodsnum: '', total: '', payForType: '线下支付', bankInfo: null, account: '', bank: '', company: '', user: '' };}, onLoad: function onLoad(e) {var data = e.goodsData;this.goodsList = JSON.parse(e.goods);this.initconfrom(data);this.initBankInfo();console.log(this.$store.state);this.user = uni.getStorageSync('userInfo');}, methods: { initconfrom: function initconfrom(e) {var _this = this;var data = { member_id: uni.getStorageSync('member_id'), goods_list: e, address_id: 3, is_cart: 2, type: 'other' };(0, _store.getOrderPrice)(data).then(function (res) {_this.total = res.data.pay_fee;_this.coupon = res.data.coupon_fee;_this.company = res.data.goods_num;});}, initBankInfo: function initBankInfo() {var _this2 = this;(0, _store.getBankInfo)().then(function (res) {_this2.bankInfo = res.data;_this2.account = res.data.pay_bank_code;_this2.bank = res.data.pay_bank_name;_this2.account = res.data.company_name;});}, toAddress: function toAddress() {uni.navigateTo({ url: '/pages/store/shipAddress/shipAddress' });}, //优惠金额
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { person: { area: '北京市朝阳区', addres: '动漫大厦五号楼3单元1101', name: '账单', number: '18210646937' }, showAddress: false, goodsList: [], coupon: '', goodsnum: '', total: '', payForType: '线下支付', bankInfo: null, account: '', bank: '', company: '', user: '', addId: '' };}, onLoad: function onLoad(e) {var data = e.goodsData;this.goodsList = JSON.parse(e.goods);this.goodsnum = e.goodsNum;this.initconfrom(data);this.initBankInfo();console.log(this.$store.state);this.user = uni.getStorageSync('userInfo');this.initDefault();}, onShow: function onShow() {var pages = getCurrentPages();var currPage = pages[pages.length - 1]; //当前页面
+    var json = currPage.data.person;this.person.area = json.area;this.person.addres = json.addres;this.person.name = json.name;this.person.number = json.number;this.addId = json.id;}, methods: { initDefault: function initDefault() {var _this = this;(0, _store.getDefault)({ member_id: uni.getStorageSync('member_id') }).then(function (res) {if (res.code === 0) {_this.showAddress = false;} else {_this.showAddress = true;_this.person.area = res.data.province_name + res.data.city_name + res.data.area_name;_this.person.name = res.data.consignee;_this.person.number = res.data.phone;_this.person.addres = res.data.address;}});}, initconfrom: function initconfrom(e) {var _this2 = this;var data = { member_id: uni.getStorageSync('member_id'), goods_list: e, address_id: 3, is_cart: 2, type: 'other' };(0, _store.getOrderPrice)(data).then(function (res) {_this2.total = res.data.pay_fee;_this2.coupon = res.data.coupon_fee;_this2.company = res.data.goods_num;});}, initBankInfo: function initBankInfo() {var _this3 = this;(0, _store.getBankInfo)().then(function (res) {_this3.bankInfo = res.data;_this3.account = res.data.pay_bank_code;_this3.bank = res.data.pay_bank_name;_this3.account = res.data.company_name;});}, toAddress: function toAddress() {uni.navigateTo({ url: '/pages/store/shipAddress/shipAddress' });}, //优惠金额
     toCoupon: function toCoupon() {uni.navigateTo({ url: '/pages/store/coupon/coupon' });}, //确认打款
-    toConfirm: function toConfirm() {//是否签约 
-      if (this.user.signing_image === null) {//1：未签约   签约协议
-        uni.navigateTo({ url: '/pages/store/signAgreement/signAgreement?info=' + JSON.stringify(this.bankInfo) });} else {//2：已签约  提交打款凭证
-        uni.navigateTo({ url: '/pages/store/moneyCertificates/moneyCertificates' });}} } };exports.default = _default;
+    toConfirm: function toConfirm() {var query = { member_id: uni.getStorageSync('member_id'), goods_list: e, address_id: this.addId,
+        is_cart: 2,
+        type: 'other',
+        remark: '',
+        coupon_id: '' };
+
+      (0, _store.addOrder)().then(function (res) {
+
+      });
+      //是否签约 
+      if (this.user.signing_image === null) {
+        //1：未签约   签约协议
+        uni.navigateTo({
+          url: '/pages/store/signAgreement/signAgreement?info=' + JSON.stringify(this.bankInfo) });
+
+      } else {
+        //2：已签约  提交打款凭证
+        uni.navigateTo({
+          url: '/pages/store/moneyCertificates/moneyCertificates' });
+
+      }
+
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
