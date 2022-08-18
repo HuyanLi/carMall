@@ -81,7 +81,7 @@
 								}
 								addUser(query).then(data=>{
 									uni.setStorageSync('userInfo',data.data)
-									uni.setStorageSync("member_id",data.data.member_id);
+									uni.setStorageSync("member_id",data.data.id);
 									this.$store.commit('userInfo',data.data)
 									uni.showToast({
 										title: '添加成功'

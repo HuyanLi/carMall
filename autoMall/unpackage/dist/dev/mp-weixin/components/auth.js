@@ -197,7 +197,7 @@ var _default = { name: "auth", data: function data() {return { isLogin: true, is
 
               (0, _user.addUser)(query).then(function (data) {
                 uni.setStorageSync('userInfo', data.data);
-                uni.setStorageSync("member_id", data.data.member_id);
+                uni.setStorageSync("member_id", data.data.id);
                 _this2.$store.commit('userInfo', data.data);
                 uni.showToast({
                   title: '添加成功' });
