@@ -75,16 +75,19 @@
 			}
 		},
 		onLoad(e) {
-			this.addInfo = JSON.parse(e.adsId)
-			this.userName = this.addInfo.consignee
-			this.tel = this.addInfo.phone
-			this.detailAddress = this.addInfo.address
-			this.address = this.addInfo.province_name + this.addInfo.city_name + this.addInfo.area_name
-			if(this.addInfo.is_default === '1') {
-				this.switchState = 1
-			}else {
-				this.switchState = 0
+			if(e.adsId) {
+				this.addInfo = JSON.parse(e.adsId)
+				this.userName = this.addInfo.consignee
+				this.tel = this.addInfo.phone
+				this.detailAddress = this.addInfo.address
+				this.address = this.addInfo.province_name + this.addInfo.city_name + this.addInfo.area_name
+				if(this.addInfo.is_default === '1') {
+					this.switchState = 1
+				}else {
+					this.switchState = 0
+				}
 			}
+			
 		},
 		created() {
 			this.initCity()
@@ -208,7 +211,9 @@
 					return false;
 				}
 				let query;
-				if(_this.addInfo) {
+				console.log(_this.addInfo.id,'info')
+				if(_this.addInfo.id !== undefined) {
+					debugger
 					if(_this.change === false) {
 						query = {
 							member_id: uni.getStorageSync('member_id'),
@@ -251,6 +256,7 @@
 						})
 					})
 				}else {
+					debugger
 					query = {
 							member_id: uni.getStorageSync('member_id'),
 							province_name: _this.province_name,

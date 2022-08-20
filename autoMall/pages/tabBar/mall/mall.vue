@@ -38,7 +38,7 @@
 			</view>
 		</view>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" :tabbar='tabbar'  backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
 </template>
 
@@ -51,23 +51,9 @@
 				currentTabIndex: 1,
 				scrollLeft: 0,
 				isClickChange: false,
-				currentTab: 1,
+				currentTab: 0,
 				type: '',
-				goodsList: [
-					{
-					id: 10,
-					image: "https://carshop.duoka361.cn/assets/img/qrcode.png",
-					original_price: "222.00",
-					price: "111",
-					title: "222",
-					},{
-					id: 10,
-					image: "https://carshop.duoka361.cn/assets/img/qrcode.png",
-					original_price: "222.00",
-					price: "111",
-					title: "222",
-					},
-				],
+				goodsList: [],
 				// Tab分类标题
 				menuTabs: [],
 				//品牌id
@@ -76,6 +62,8 @@
 				swiperDateList: [],
 				// 接口列表模拟数据
 				list: [],
+				userInfo: null,
+				tabbar: uni.getStorageSync('tabbar')
 			}
 		},
 		onLoad: function() {
@@ -93,43 +81,32 @@
 			//品牌
 			this.initBrandList()
 			//商品列表
-			// this.initGoods()
+			this.initGoods()
 		},
 		methods: {
 			async initBrandList() {
 				let data = await bransList()
-				this.menuTabs = data.rows
+				this.menuTabs = data.data.rows
+				this.menuTabs.forEach((item,index)=>{
+					if(index === 0) {
+						this.brandId = item.id
+					}
+				})
 			},
 			async initGoods() {
 				let query = {
-					brand_id: this.currentTab,
+					brand_id: this.brandId,
 					type: 1,
 					page: 1
 				}
 				let data = await goodsList(query)
-				this.goodsList = data.rows
-				console.log(this.goodsList,'goodsList')
+				this.goodsList = data.data.rows
 			},
 			swichMenu: async function(current,index) { //点击其中一个 menu
-				debugger
-				console.log(current)
-				this.menuTabs.forEach((v, i) => {
-					if (index === i) {
-						this.brandId = v.id
-						this.type = v.name
-					}else {
-						this.brandId = v.id
-						this.type = v.name
-						
-					}
-				})
-				if (this.currentTab == index) {
-					return false;
-				} else {
-					this.currentTab = current;
-					this.initGoods()
-					// this.setScrollLeft(current);
-				}
+				console.log(current,index,'i')
+				this.currentTab = index
+				this.brandId = current.id
+				this.initGoods()
 			},
 			// 购物车
 			toshoppingCart() {
@@ -140,12 +117,11 @@
 			//品牌详情
 			toDetail() {
 				uni.navigateTo({
-					url: '/pages/store/brandDetail/brandDetail'
+					url: '/pages/store/brandDetail/brandDetail?brandId=' + this.brandId
 				})
 			},
 			//商品詳情
 			toGoodsDetail(item) {
-				console.log(item,'detail')
 				uni.navigateTo({
 					url: '/pages/store/goodsDetail/goodsDetail?id=' + item.id
 				})
@@ -193,14 +169,14 @@
 	/* Tab切换 */
 	.body-view {
 		// padding-bottom: 120rpx;
-		height: 100%;
+		// height: 100%;
 		width: 100%;
-		// display: flex;
-		// flex: 1;
-		// flex-direction: column;
-		// overflow: hidden;
-		// align-items: flex-start;
-		// justify-content: center;
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		overflow: hidden;
+		align-items: flex-start;
+		justify-content: center;
 	}
 
 	.top-menu-view {
@@ -357,14 +333,13 @@
 		}
 	}
 	.goodsList {
-		border-radius: 16rpx;
-		margin: 20rpx 30rpx;
+		width: 690rpx;
 		display: flex;
-		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-between;
+		padding: 20rpx 30rpx;
 		.goodsItem {
-			width: 48%;
+			width: 49%;
 			display: flex;
 			flex-direction: column;
 			background-color: #fff;

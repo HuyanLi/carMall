@@ -4,7 +4,7 @@
 			<view class="info-item">
 				<text class="info-item-title">头像</text>
 				<view class="info-item-content right">
-					<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"/>
+					<image class="img" :src="userInfo.head_img"/>
 				</view>
 			</view>
 			<view class="info-item">
@@ -36,10 +36,11 @@
 		data() {
 			return {
 				pickerVisible: false,
-				tel: '13112345678',
-				userName: '张三',
-				address: '重庆重庆市渝中区郭守敬大道831号',
-				company: '北京多咖科技有限公司',
+				userInfo: uni.getStorageSync('userInfo'),
+				tel: uni.getStorageSync('userInfo').mobile,
+				userName: uni.getStorageSync('userInfo').name,
+				address: uni.getStorageSync('userInfo').province_name + uni.getStorageSync('userInfo').city_name + uni.getStorageSync('userInfo').area_name,
+				company: uni.getStorageSync('userInfo').company_name,
 				addressList,
 			}
 		},

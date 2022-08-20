@@ -106,7 +106,7 @@
 			</view>
 		</view>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :tabbar='tabbar' :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
 		<auth v-if='showAuth'></auth>
 	</view>
 </template>
@@ -115,16 +115,11 @@
 	import auth from '@/components/auth.vue'
 	import tabBar from "@/components/tabBar.vue"
 	import { slideShow, contentType, contentList } from '@/api/home.js'
+	import { getUserInfo, getOpenIds } from '@/api/user.js'
 	export default {
 		components: {
 			auth,
 		    tabBar
-		},
-		created() {
-			let memberId = uni.getStorageSync("member_id")
-			if (memberId !== '') {
-				this.showAuth = false
-			}
 		},
 		watch:{
 			'$store.state.user.showNav': {
@@ -173,23 +168,120 @@
 				interval: 2000,
 				duration: 500,
 				showAuth: true,
-				memberId: ''
+				memberId: uni.getStorageSync('member_id'),
+				tabbar: [{
+						"pagePath": "pages/tabBar/home/home",
+						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+						"text": "首页"
+					}
+					// ,{
+					// 	"pagePath": "pages/tabBar/mall/mall",
+					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+					// 	"text": "品牌专区"
+					// }
+					// ,{
+					// 	"pagePath": "pages/tabBar/service/service",
+					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
+					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+					// 	"text": "客服"
+					// },{
+					// 	"pagePath": "pages/tabBar/mine/mine",
+					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
+					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+					// 	"text": "我的"
+					// }
+				]
 			}
 		},
 		mounted() {
-			this.approve = true
 			//轮播图
 			this.initSlide()
 			//内容分类
 			this.initContent()
 			//内容列表
 			this.initContentList()
-		},
-		onShow() {
-			let pages = getCurrentPages();
-			let currPage = pages[pages.length-1];
+			let query
+			console.log(uni.getStorageSync('member_id'),'member')
+			if(uni.getStorageSync('member_id') === '') {
+				this.getOpenId()
+			}else {
+				query = {
+					member_id :uni.getStorageSync('member_id')
+				}
+				this.initUserInfo(query)
+			}
 		},
 		methods: {
+			initUserInfo(data){
+				getUserInfo(data).then(res=>{
+					if(res.code === 1) {
+						this.showAuth = false
+						uni.setStorageSync('member_id',res.data.id)
+						uni.setStorageSync('userInfo',res.data)
+						if(res.data.id !== '') {
+							if(res.data.is_authentication === 1) {
+								this.showNav = '1'
+								this.tabbar = [{
+										"pagePath": "pages/tabBar/home/home",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+										"text": "首页"
+									}
+									,{
+										"pagePath": "pages/tabBar/mall/mall",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+										"text": "品牌专区"
+									}
+								]
+							}else {
+								this.showNav = '2'
+								this.tabbar = [{
+										"pagePath": "pages/tabBar/home/home",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+										"text": "首页"
+									}
+									,{
+										"pagePath": "pages/tabBar/mall/mall",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+										"text": "品牌专区"
+									}
+									,{
+										"pagePath": "pages/tabBar/service/service",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+										"text": "客服"
+									},{
+										"pagePath": "pages/tabBar/mine/mine",
+										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
+										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+										"text": "我的"
+									}]
+							}
+							uni.setStorageSync('tabbar',this.tabbar)
+						}
+					}
+				}) 
+			},
+			//获取openId
+			getOpenId() {
+				let that = this
+				uni.login({
+					success: function(res) {
+						getOpenIds({code: res.code}).then(res=>{
+							uni.setStorageSync("openid",res.data.openid);
+							uni.setStorageSync("session_key",res.data.session_key);
+							that.initUserInfo({openid: res.data.openid})
+						})
+					},
+					fail: (res) => {
+					}
+				})
+			},
 			async initSlide() {
 				let data = await slideShow()
 				this.imgList = data.data

@@ -4,27 +4,27 @@
 		<view class="content">
 			<uni-forms ref="baseForm" label-width='300rpx' :modelValue="approve" label-position="top">
 				<uni-forms-item label="姓名" required>
-					<uni-easyinput v-model="approve.member_id" placeholder="请输入您的姓名" />
+					<uni-easyinput v-model="approve.name" placeholder="请输入您的姓名" />
 				</uni-forms-item>
 				<uni-forms-item label="企业名称" required>
 					<uni-easyinput v-model="approve.company_name" placeholder="请输入企业名称" />
 				</uni-forms-item>
 				<uni-forms-item label="身份选择" required>
 					<uni-section class='selectOption'>
-					      <uni-data-select v-model="approve.identity" :localdata="range" @change="handleJob" ></uni-data-select>
-					    </uni-section>
+					  <uni-data-select v-model="approve.identity" :localdata="range" @change="handleJob" ></uni-data-select>
+					</uni-section>
 				</uni-forms-item>
 				<uni-forms-item label="所在地" required>
-					<uni-easyinput v-model="address" @tap="handleAddress" placeholder="请选择省/市/区" />
+					<uni-easyinput v-model="approve.address" disabled @tap="handleAddress" placeholder="请选择地区" />
 				</uni-forms-item>
 				<uni-forms-item label="职业" required>
 					<uni-easyinput v-model="approve.vocation" placeholder="请输入职业，如：总经理，销售" />
 				</uni-forms-item>
 				<uni-forms-item label="上传公司营业执照" required>
-					<uni-file-picker v-if='uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" >
+					<uni-file-picker v-if='uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
 						<image class="uploadImg" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/upload.png" mode=""></image>
 					</uni-file-picker>
-					<uni-file-picker v-if='!uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" >
+					<uni-file-picker v-if='!uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
 						<image class="uploadImg" :src="approve.company_iamges" mode=""></image>
 					</uni-file-picker>
 				</uni-forms-item>
@@ -43,9 +43,25 @@
 			</view>
 		</view>
 		<Dialog class="dialog" :cancleText='cancleText' :confirmText='confirmText' :title="title"  :visible="dialogVisible" @cancel="handleCancel" @confirm="handleConfirm"/>
-		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressList" v-model="address"
-			@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
-		</uni-data-picker>
+		<uni-popup ref="pupop" type="bottom">
+			<view class="popup">
+				<view class="picker-btn">
+					<view class="left" @click="cancel">取消</view>
+					<view class="right" @click="confirm">确定</view>
+				</view>
+				<picker-view :indicator-style="indicatorStyle" :value="valueArr" @change="bindChange">
+					<picker-view-column>
+						<view class="item" v-for="(item,index) in province" :key="index">{{item.provinceName}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children[valueArr[1]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+				</picker-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -53,6 +69,7 @@
 	import Dialog from '@/components/dialog.vue'
 	import { addressList } from '@/components/address.js'
 	import { approve } from '@/api/home.js'
+	import { getCity } from '@/api/store.js'
 	export default {
 		components: {
 			Dialog
@@ -70,8 +87,15 @@
 				filesList: [],
 				title: '',
 				pickerVisible: false,
-				addressList,
-				address: '',
+				select:"请选择地区",
+				id:'',
+				valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
+				province: [], // 数据列表
+				city: [],
+				area: [],
+				province_name: '',
+				city_name: '',
+				area_name: '',
 				status: '',
 				range: [
 					  { value: 1, text: "渠道贸易商" },
@@ -80,17 +104,22 @@
 				file: null,
 			}
 		},
+		created() {
+			this.initCity()
+		},
 		methods: {
-			//选择身份
+			// 选择身份
 			handleJob(e) {
+				console.log(e)
 				let that = this
+				this.approve.identity = e
 			},
 			toService() {
 				uni.navigateTo({
 				})
 			},
 			// 获取上传状态
-			async select(e){
+			async selectImg(e){
 				console.log('选择文件：',e)
 				if(e.tempFilePaths&&e.tempFiles){
 					this.file = e.tempFiles[0].file
@@ -128,48 +157,105 @@
 			fail(e){
 				console.log('上传失败：',e)
 			},
-			//下拉框选择
-			onchange(e) {
-				console.log('onchange:', e);
-				let address = ''
-				e.detail.value.forEach(i => {
-					address+=i.text
+			initCity() {
+				getCity().then(res=>{
+					this.province = res.data
+					this.loadCity(this.province[0].id)
 				})
-				this.address = address
-				this.approve.province_id = e.detail.value[0].value
-				this.approve.province_name =  e.detail.value[0].text
-				this.approve.city_id =  e.detail.value[1].value
-				this.approve.city_name =  e.detail.value[1].text
-				this.approve.area_id = e.detail.value[2].value
-				this.approve.area_name = e.detail.value[2].text
+				
+			},
+			loadCity(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res =>{
+					this.city = res.data;
+					// this.area = res.data;
+					if (this.province[this.valueArr[0]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children.push(item)
+						})
+						this.loadArea(this.province[this.valueArr[0]].children[this.valueArr[1]].id)
+					}
+				})
+			},
+			loadArea(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res => {
+					this.area = res.data;
+					if (this.province[this.valueArr[0]].children[this.valueArr[1]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]].children[this.valueArr[1]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children[this.valueArr[1]].children.push(item)
+						})
+					}
+				})
+			},
+			bindChange(e) {
+				const val = e.detail.value;
+				if (this.valueArr[0] !== val[0]) {
+					this.province_name = this.province[val[0]].name
+					this.province_id = this.province[val[0]].id
+					this.loadCity(this.province[val[0]].id)
+				} else if (this.valueArr[1] !== val[1]) {
+					console.log(this.province[val[0]].children[val[1]].name,89898)
+					this.city_name = this.province[val[0]].children[val[1]].name,
+					this.loadArea(this.province[val[0]].children[val[1]].id)
+					this.city_id = this.province[val[0]].children[val[1]].id
+				}
+				this.valueArr = val
 			},
 			handleAddress() {
-				this.pickerVisible = true
-				this.$nextTick(() => {
-					this.$refs.picker.show()
+				let that = this
+				this.$refs.pupop.open('bottom')
+			},
+			confirm(e) {
+				this.area.forEach((item,index)=>{
+					if(this.valueArr[2] === index) {
+						this.area_name = item.name
+						this.area_id = item.id
+					}
 				})
+				this.approve.address = this.province_name + this.city_name + this.area_name
+				this.$refs.pupop.close()
 			},
-			onnodeclick(e) {
-				console.log(e);
-			},
-			onpopupopened(e) {
-				console.log('popupopened');
-			},
-			onpopupclosed(e) {
-				this.pickerVisible = false
-				console.log('popupclosed');
+			cancel() {
+				this.$refs.pupop.close()
 			},
 			async toCommit() {
 				this.approve.member_id = uni.getStorageSync("member_id");
+				this.approve.province_id = this.province_id
+				this.approve.city_id = this.city_id
+				this.approve.area_id = this.area_id
+				this.approve.province_name = this.province_name
+				this.approve.city_name = this.city_name
+				this.approve.area_name = this.area_name
+				this.invitation_code = uni.getStorageSync('userInfo').invitation_code
 				let data = await approve(this.approve)
-				this.title='认证成功'
-				this.dialogVisible = true
+				if(data.code === 0) {
+					uni.showToast({
+						title: data.msg
+					})
+					uni.navigateTo({
+						url: '/pages/tabBar/home/home'
+					})
+				}else {
+					this.title= data.msg
+					this.dialogVisible = true
+					
+					uni.navigateTo({
+						url: '/pages/tabBar/home/home'
+					})
+				}
 			},
 			handleConfirm() {
 				this.dialogVisible = false
 				var pages = getCurrentPages();
 				var prepage = pages[pages.length - 2]; //上一个页面
-				prepage.$vm.showNext=false
+				prepage.$vm.showNext = false
 				this.$store.state.user.approve = true
 				this.$store.commit('user/approve', true);
 				this.$store.state.user.showNav = '2'
@@ -266,6 +352,49 @@
 				color: #fff;
 			}
 		}
+	}
+	.popup {
+		height: fit-content;
+		width: 100%;
+		background: #fff;
+		bottom: 0;
+		position: fixed;
+	}
+	
+	.picker-btn {
+		display: flex;
+		height: 100upx;
+		width: 100%;
+		line-height: 100upx;
+		background: #fff;
+		font-size: 34upx;
+		z-index: 1;
+		border-bottom: 1rpx solid #f8f8f8;
+	
+		.left {
+			flex: 1;
+			color: #0076FF;
+			padding-left: 40upx;
+			box-sizing: border-box;
+		}
+	
+		.right {
+			flex: 1;
+			text-align: right;
+			padding-right: 40upx;
+			color: #FE4533;
+			box-sizing: border-box;
+		}
+	}
+	
+	picker-view {
+		width: 100%;
+		height: 500rpx;
+		display: relative;
+	}
+	.item {
+		line-height: 100rpx;
+		text-align: center;
 	}
  }
 </style>

@@ -6,9 +6,10 @@
 		</view>
 		<view class="order-swiper-wrap">
 			
-			<swiper v-for="(i, idx) in orderState" :key="idx" class="swiper" duration="500" :current="current" @change="handleSwipeChange">
-				<swiper-item>
+			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
+				<swiper-item v-for="(i, idx) in orderState" :key="idx">
 					<view class="swiper-item">
+						<view class="empty" v-if="allOrder.length === 0">暂无数据</view>
 						<view class="order-item" @tap="handleOrderDetail(item)" v-for="(item, index) in allOrder" :key="index">
 							<view class="order-header" v-if="isSale">
 								<view class="order-header-info">
@@ -21,37 +22,57 @@
 								<text class="order-title-state">{{item.orderStateName}}</text> -->
 							</view>
 							<view class="order-title">
-								<text class="order-title-number">订单号 {{item.orderNumber}}</text>
-								<text class="order-title-state">{{item.orderStateName}}</text>
+								<text class="order-title-number">订单号 {{item.order_sn}}</text>
+								<text class="order-title-state">{{item.status_name}}</text>
 							</view>
 							
-							<view class="order-content" v-if="i.visible" v-for="(i, idx) in item.commodities" :key="idx">
-								<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
+							<view class="order-content" v-if="i.visible" v-for="(i, idx) in item.order_item" :key="idx">
+								<image class="img" :src="i.goods_image" />
 								<view class="order-content-info">
-									<view class="order-content-info-name">{{i.name}}</view>
-									<text class="order-content-info-tag">{{i.tags}}</text>
+									<view class="order-content-info-name">{{i.goods_title}}</view>
+									<text class="order-content-info-tag">{{i.goods_sku_text}}</text>
 									<view class="order-content-info-total">
-										<text class="order-content-info-price">¥{{i.price}}</text>
-										<text class="order-content-info-amount">X{{i.amount}}</text>
+										<text class="order-content-info-price">¥{{i.goods_price}}</text>
+										<text class="order-content-info-amount">X{{i.goods_num}}</text>
 									</view>
 								</view>
 							</view>
-							<view class="show-all" v-if="item.commodities.length > 2" v-show="item.show" @tap.stop="handleShowAll(item)">
-								显示剩余{{item.commodities.length - 2}}种商品
+							<view class="order-content" v-else v-for="(i, idx) in item.order_item" :key="idx">
+								<image class="img" :src="i.goods_image" />
+								<view class="order-content-info">
+									<view class="order-content-info-name">{{i.goods_title}}</view>
+									<text class="order-content-info-tag">{{i.goods_sku_text}}</text>
+									<view class="order-content-info-total">
+										<text class="order-content-info-price">¥{{i.goods_price}}</text>
+										<text class="order-content-info-amount">X{{i.goods_num}}</text>
+									</view>
+								</view>
+							</view>
+							<view class="show-all" v-if="item.order_item.length > 2" v-show="item.show" @tap.stop="handleShowAll(item)">
+								显示剩余{{item.order_item.length - 2}}种商品
 							</view>
 							<view class="total-all">
-								共{{item.commodities.length}}件商品，总金额
-								<text class="order-content-info-price">¥{{item.totalPrice}}</text>
+								共{{item.order_item.length}}件商品，总金额
+								<text class="order-content-info-price">¥{{item.total_amount}}</text>
 							</view>
 							<view class="order-item-btn">
-								<view class="gray">
-									{{isSale ? '用户详情' : '取消订单'}}
+								<view class="gray" @tap.stop="cancleBtn(item)" v-if="item.status == '0' || item.pay_voucher_status === '1' || item.pay_voucher_status === '4'">
+									取消订单
 								</view>
-								<view class="gray">
-									{{isSale ? '订单详情' : '联系客服'}}
+								<view class="gray" v-if="item.status == '0'" @tap.stop="toPay(item)">
+									去打款
 								</view>
-								<view @tap.stop="handleBlack" class="black">
+								<view class="gray" v-if="item.status === '1'" @tap.stop="toWL(item)">
+									查看物流
+								</view>
+								<view class="gray" v-if="item.status==='2'" @tap.stop='confirmGoods(item)'>
+									确认收货
+								</view>
+								<!-- <view v-if="item.status == '0'" @tap.stop="handleBlack" class="gray">
 									{{isSale ? '去发货' : '去打款'}}
+								</view> -->
+								<view class="black">
+									联系客服
 								</view>
 							</view>
 						</view>
@@ -65,104 +86,85 @@
 </template>
 
 <script>
+	import { getOrderList,cancleOrder,confirmOrder } from "@/api/mine.js"
 	export default {
 		data() {
 			return {
-				isSale: true,
+				isSale: false,
 				current: 0,
 				activeIndex: 0,
 				orderState: [{title: '全部'},{title: '待打款'},{title: '待发货'},{title: '待收货'},{title: '已完成'}],
-				allOrder: [{
-					orderNumber: '8479104811',
-					orderStateName: '待打款',
-					totalPrice: '368.00',//总价
-					totalAmount: '1',//总数
-					show: true,
-					commodities: [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					},{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					},{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: false
-					}]
-				},{
-					orderNumber: '8479104811',
-					orderStateName: '待打款',
-					totalPrice: '368.00',//总价
-					totalAmount: '1',//总数
-					commodities: [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					}]
-				},{
-					orderNumber: '8479104811',
-					orderStateName: '待打款',
-					totalPrice: '368.00',//总价
-					totalAmount: '1',//总数
-					commodities: [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					}]
-				},{
-					orderNumber: '8479104811',
-					orderStateName: '待打款',
-					totalPrice: '368.00',//总价
-					totalAmount: '1',//总数
-					commodities: [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					}]
-				},{
-					orderNumber: '8479104811',
-					orderStateName: '待打款',
-					totalPrice: '368.00',//总价
-					totalAmount: '1',//总数
-					commodities: [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',//图片
-						name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-						tags: '太空银;256GB',//标签
-						price: '368.00',//单价
-						amount: '1',//数量
-						visible: true
-					}]
-				}],
-				
+				allOrder: [],
 			}
 		},
 		onLoad(opt) {
+			
+			/**
+			 * this.current 
+			 * 0 全部
+			 * 1 待打款
+			 * 2 待发货
+			 * 3 待收货
+			 * 4 已完成
+			 */
 			this.current = this.activeIndex = Number(opt.activeIndex)
+			this.getOrderList()
 		},
 		methods: {
-			pay() {
-				// TODO:
-				console.log('付款')
+			async getOrderList() {
+				let param = {
+					member_id: uni.getStorageSync('member_id'),
+					page: '1',
+					status: (Number(this.current) - 1).toString()
+				}
+				if (this.current == 0) {
+					//全部订单不传status
+					delete param.status
+				}
+				console.log(param)
+				const res = await getOrderList(param)
+				this.allOrder = res.data.rows || [];
+				console.log(res)
+			},
+			//取消订单
+			cancleBtn(e) {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					order_id: e.id
+				}
+				cancleOrder(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration:2000
+					})
+					this.getOrderList()
+				})
+			},
+			toPay(item) {
+				//提交打款凭证
+				uni.navigateTo({
+					url: '/pages/store/moneyCertificates/moneyCertificates?id='+ item.id
+				})
+			},
+			//物流详情
+			toWL(e) {
+				uni.navigateTo({
+					url: `/pages/mine/orderDetail?id=${e.id}`,
+				})
+			},
+			//确认收货
+			confirmGoods(e) {
+				let query = {
+					order_id: e.id,
+					member_id: uni.getStorageSync('member_id'),
+				}
+				confirmOrder(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration:2000
+					})
+					this.getOrderList()
+				})
 			},
 			handleBlack() {
 				this.isSale ? uni.navigateTo({
@@ -175,14 +177,17 @@
 				})
 			},
 			handleStateTap(index) {
-				this.activeIndex = index
+				this.activeIndex = this.current = index
 				this.current = index
+				this.getOrderList()
 			},
 			handleSwipeChange(e) {
-				this.activeIndex = e.detail.current
+				this.activeIndex = this.current = e.detail.current
+				// this.current = e.detail.current
+				this.getOrderList()
 			},
 			handleShowAll(item) {
-				item.commodities.forEach(i => {
+				item.order_item.forEach(i => {
 					i.visible = true
 				})
 				item.show = false
@@ -193,6 +198,7 @@
 					
 				})
 			},
+			
 		}
 	}
 </script>
@@ -332,6 +338,7 @@
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			justify-content: flex-end;
 			padding-left: 160rpx;
 			box-sizing: border-box;
 			margin-top: 30rpx;

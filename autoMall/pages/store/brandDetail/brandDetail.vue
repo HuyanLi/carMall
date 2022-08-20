@@ -6,14 +6,14 @@
 				<swiper class="swiper image-container" circular :indicator-dots="indicatorDots" :interval="interval" :duration="duration">
 					<swiper-item v-for="(item, index) in imgList" :key="index">
 						<view class="item" :class="currentIndex == index ? 'item-img' : 'item-img-side'">
-							<image :src="item.bannerUrl" mode=""></image>
+							<image :src="item" mode=""></image>
 						</view>
 					</swiper-item>
 				</swiper>
 			</view>	
 		</view>
 		<view class="title">
-			<text>MICHELIN轮胎 性能三合一 都市畅行更放心</text>
+			<text>{{ title }}</text>
 		</view>
 		<view class="detailBox">
 			<text>商品详情</text>
@@ -23,37 +23,36 @@
 </template>
 
 <script>
-	
+	import { brandDetail } from '@/api/store.js'
 	export default {
 		data() {
 			return {
 				currentIndex: 0,
-				imgList: [{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				{
-					bannerUrl: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png'
-				},
-				],
+				imgList: [],
 				goodsIndex: 0,
 				indicatorDots: true,
 				autoplay: false,
 				interval: 2000,
 				duration: 500,
 				tabbarHeights: '100',
-				content: ''
+				content: '',
+				brandId: ''
 			}
 		},
-		onLoad(){
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
+		onLoad(e) {
+			this.brandId = e.brandId
+		},
+		onShow() {
+			this.initDetail()
 		},
 		methods: {
-			
+			initDetail() {
+				brandDetail({id: this.brandId}).then(res=>{
+					this.title = res.data.name
+					this.content = res.data.note
+					this.imgList = res.data.images
+				})
+			}
 		}
 	}
 </script>

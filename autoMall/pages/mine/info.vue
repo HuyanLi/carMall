@@ -54,6 +54,7 @@
 	export default {
 		data() {
 			return {
+				userInfo: uni.getStorageSync('userInfo'),
 				pickerVisible: false,
 				tel: '13112345678',
 				userName: '张三',

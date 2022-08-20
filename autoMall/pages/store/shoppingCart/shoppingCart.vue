@@ -84,9 +84,7 @@
 				allChecked: false,
 				deleteIds:[],
 				goodsActiveList: [],
-				chooseList: [],
-				gods: [],
-				goodsNum: ''
+				couponData: null
 			}
 		},
 		computed: {
@@ -98,8 +96,10 @@
 				return totalPrice
 			}
 		},
+		onShow() {
+			this.chooseGoods = []
+		},
 		created() {
-			console.log(this.$store.state)
 			this.initGoosList()
 		},
 		methods: {
@@ -119,10 +119,6 @@
 						this.isEmptyCart = true
 					}
 				}
-			},
-			//修改商品数量
-			onNumberBoxChange(v,e) {
-				console.log(v,e)
 			},
 			//删除商品
 			deleteShop(type,e,i) {
@@ -151,43 +147,42 @@
 					this.initGoosList()
 				})
 			},
-			//领券结算
-			toPay() {
-				uni.navigateTo({
-					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList) + '&goods=' + JSON.stringify(this.gods)+'&goodsNum=' +this.goodsNum
-				})
-			},
+			
 			chooseShop(e,i) {
-				this.gods = []
 				e.checked = !e.checked
 				if (!e.checked) {
 					this.allChecked = false
 				} else {
+					this.deleteIds = []
 					console.log(e,'chooseShop')
-					this.gods.push({
-						image: e.goods.image,
-						price: e.goods.price,
-						skuText: e.sku_price.goods_sku_text,
-						number: e.goods_num,
-						title: e.goods.title
-					})
-					console.log(this.gods)
+					this.goodsData = e
 					// 判断每一个商品是否是被选择的状态
 					const cartList = this.goodsList.every(item => {
 						return item.checked === true
 					})
 					this.goodsActiveList = []
-					this.deleteIds = []
 					let goodsIndex = i
-					this.deleteIds.push(e.goods.id)
-					this.goodsActiveList.push({goods_id: e.goods_id, goods_sku_price_id:e.sku_price.id, num:e.goods_num})
-					this.goodsNum = e.goods_num
+					console.log(cartList)
+					this.goodsList.forEach(item=>{
+						if(item.checked === true) {
+							this.deleteIds.push(item.id)
+						}
+					})
+					console.log(this.deleteIds,'delete')
+					//选中商品信息
+					this.goodsActiveList.push(e)
 					if (cartList) {
 						this.allChecked = true
 					} else {
 						this.allChecked = false
 					}
 				}
+			},
+			//领券结算
+			toPay() {
+				uni.navigateTo({
+					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
+				})
 			},
 			//全选
 			checkedAll(e) {
@@ -204,7 +199,6 @@
 			},
 			//拼团活动
 			toActivity() {
-				// console.log(this.goodsActiveList,87878)
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
 					goods_list: JSON.stringify(this.goodsActiveList),

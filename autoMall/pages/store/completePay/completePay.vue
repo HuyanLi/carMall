@@ -6,7 +6,7 @@
 			提交成功
 		</view>
 		<view class="compPay-money">
-			¥642.00
+			¥{{price}}
 		</view>
 		<view class="compPay-text">
 			<text>您的订单已提交成功</text>
@@ -22,24 +22,24 @@
 	export default {
 		data() {
 			return {
-				money: '642.00',
+				price: '',
 			}
+		},
+		onLoad(e) {
+			this.price = e.price
 		},
 		methods: {
 			goShop() {
-				console.log('1111111111')
 				uni.navigateTo({
 					url: '/pages/tabBar/mall/mall'
 				})
 			},
 			tomyOrder() {
-				console.log('2222222222')
 				uni.navigateTo({
 					url: '/pages/mine/orderList'
 				})
 			},
 			toContract() {
-				console.log('3333333333')
 				uni.navigateTo({
 					url: '/pages/tabBar/service/service'
 				})

@@ -24,16 +24,16 @@
 		<!-- 选购商品 -->
 		<view class="chooseGoods">
 			<view class="chooseItem" v-for="(item,index) in goodsList" :key='index'>
-				<image class="goodsImage" :src="item.image"></image>
+				<image class="goodsImage" :src="item.goods.image"></image>
 				<view class="goodsInfo">
-					<text class="shopTitle">{{item.title}}</text>
-					<text class="shopTag">{{item.skuText}}</text>
+					<text class="shopTitle">{{item.goods.title}}</text>
+					<text class="shopTag">{{item.sku_price.goods_sku_text}}</text>
 					<view class="moneyInfo">
 						<view class="">
-							<text class="shopMoney">{{item.price}}</text>
+							<text class="shopMoney">{{item.sku_price.price}}</text>
 						</view>
 						<view class="number-box">
-							<text>X {{item.number}}</text>
+							<text>X {{item.goods_num}}</text>
 						</view>
 					</view>
 				</view>
@@ -44,15 +44,16 @@
 			<view class="goodsCoupon">
 				<text class="textS">优惠金额</text>
 				<view class="money" @click="toCoupon">
-					<text class="testMon">-￥{{coupon}}</text>
+					<text class="testMon" v-if="showChoose">请选择优惠券</text>
+					<text class="testMon" v-else>-￥{{coupon}}</text>
 					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png" mode=""></image>
 				</view>
 			</view>
 			<view class="total">
 				<text class="totalNum">共{{goodsnum}}件</text>
 				<text class="totalMoney">小计：</text>
-				<text class="testMon">¥</text>
-				<text class="testMon money2">{{total}}</text>
+				<text class="testMon" >¥</text>
+				<text class="testMon money2">{{originTotal}}</text>
 			</view>
 		</view>
 		<!-- 付款方式 -->
@@ -97,45 +98,68 @@
 	export default {
 		data() {
 			return {
-				person: {
-					area: '北京市朝阳区',
-					addres:'动漫大厦五号楼3单元1101',
-					name: '账单',
-					number: '18210646937',
-				},
+				person: {},
 				showAddress: false,
 				goodsList: [],
 				coupon: '',
 				goodsnum: '',
 				total: '',
+				originTotal: '',
 				payForType: '线下支付',
 				bankInfo: null,
 				account: '',
 				bank:'',
 				company:'',
 				user: '',
-				addId: ''
+				addId: '',
+				couId: '',
+				comitGoods: '',
+				coupData: {},
+				confromData: [],
+				showChoose: true
 			}
 		},
 		onLoad(e) {
-			let data = e.goodsData
-			this.goodsList = JSON.parse(e.goods)
-			this.goodsnum = e.goodsNum
-			this.initconfrom(data)
-			this.initBankInfo()
-			console.log(this.$store.state)
+			this.goodsList = JSON.parse(e.goodsData)
+			this.goodsList.forEach(item=>{
+				this.goodsnum = item.goods_num
+				this.confromData.push({
+					goods_id: item.goods_id,
+					goods_sku_price_id: item.sku_price_id,
+					num: item.goods_num
+				})
+			})
 			this.user = uni.getStorageSync('userInfo')
-			this.initDefault()
 		},
 		onShow() {
+			this.initDefault()
+			this.initBankInfo()
+			this.initconfrom()
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1]; //当前页面
-			let json = currPage.data.person;
-			this.person.area = json.area;
-			this.person.addres = json.addres;
-			this.person.name = json.name;
-			this.person.number = json.number;
-			this.addId = json.id
+			//地址
+			if(currPage.data.person) {
+				console.log(currPage.data.person,'person')
+				let data = currPage.data.person;
+				//地址
+				this.person.area = data.area;
+				this.person.addres = data.addres;
+				this.person.name = data.name;
+				this.person.number = data.number;
+				this.addId = data.id
+			}
+			//优惠券
+			let list = currPage.data.coupon
+			console.log(list,'list')
+			if(list === 0) {
+				this.showChoose = true
+			}else if(list !== '') {
+				this.coupData = JSON.parse(list)
+				this.coupon = JSON.parse(list).reduce_price
+				this.couId = JSON.parse(list).id
+				this.initconfrom()
+				this.showChoose = false
+			}
 		},
 		methods: {
 			initDefault() {
@@ -148,22 +172,33 @@
 						this.person.name = res.data.consignee
 						this.person.number = res.data.phone
 						this.person.addres = res.data.address
+						this.addId = res.data.id
 					}
-					
 				})
 			},
-			initconfrom(e){
+			//计算金额
+			initconfrom(){
 				let data = {
 					member_id: uni.getStorageSync('member_id'),
-					goods_list: e,
-					address_id: 3,
+					goods_list: JSON.stringify(this.confromData),
 					is_cart: 2,
-					type: 'other'
+					coupon_id: this.couId
 				}
 				getOrderPrice(data).then(res=>{
-					this.total = res.data.pay_fee
-					this.coupon = res.data.coupon_fee
-					this.company = res.data.goods_num
+					if(res.code === 0) {
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						})
+						this.couId = ''
+						this.coupData = {}
+					}else {
+						this.originTotal = res.data.total_amount
+						this.total = res.data.pay_fee
+						this.coupon = res.data.coupon_fee
+						this.company = res.data.goods_num
+						this.needQY = res.data.is_signing
+					}
 				})
 			},
 			initBankInfo() {
@@ -187,30 +222,45 @@
 			},
 			//确认打款
 			toConfirm() {
+				if(this.couId ===undefined) {
+					this.couId = ''
+				}
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
-					goods_list: e,
+					goods_list: JSON.stringify(this.confromData),
 					address_id: this.addId,
 					is_cart: 2,
-					type: 'other',
 					remark: '',
-					coupon_id: ''
+					coupon_id: this.couId
 				}
-				addOrder().then(res=>{
+				addOrder(query).then(res=>{
+					this.orderId = res.data.order_id
+					if(this.needQY === '1') {
+						//不需要签约
+						uni.navigateTo({
+							url: '/pages/store/moneyCertificates/moneyCertificates?info='+ JSON.stringify(this.bankInfo) + '&goods=' + JSON.stringify(this.goodsList) + '&coupon=' + 
+							JSON.stringify(this.coupData) + '&price=' + this.originTotal + '&orderId='+ res.data.order_id
+						})
+					}else {
+						//需要签约
+						//是否签约
+						if( this.user.signing_image === null) {
+							//1：未签约   签约协议
+							
+							uni.navigateTo({
+								url: '/pages/store/signAgreement/signAgreement?info='+ JSON.stringify(this.bankInfo)
+							})
+						}else {
+							//2：已签约  提交打款凭证
+							uni.navigateTo({
+								url: '/pages/store/moneyCertificates/moneyCertificates?info='+ JSON.stringify(this.bankInfo) + '&goods=' + JSON.stringify(this.goodsList) + '&coupon=' + 
+								JSON.stringify(this.coupData) + '&price=' + this.originTotal + '&orderId='+ res.data.order_id
+							})
+						}
+					}
 					
 				})
-				//是否签约 
-				if( this.user.signing_image === null) {
-					//1：未签约   签约协议
-					uni.navigateTo({
-						url: '/pages/store/signAgreement/signAgreement?info='+ JSON.stringify(this.bankInfo)
-					})
-				}else {
-					//2：已签约  提交打款凭证
-					uni.navigateTo({
-						url: '/pages/store/moneyCertificates/moneyCertificates'
-					})
-				}
+				
 				
 			}
 		}

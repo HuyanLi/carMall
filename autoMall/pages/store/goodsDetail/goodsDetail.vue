@@ -79,7 +79,7 @@
 		</view>
 		<!-- 购物车 -->
 		<view class="shoppCar">
-			<view class="icon" @click="addCart('收藏')">
+			<!-- <view class="icon" @click="addCart('收藏')">
 				<template v-if="isShow">
 					<view>
 						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/already.png"></image>
@@ -93,7 +93,7 @@
 				<view class="text">
 					收藏
 				</view>
-			</view>
+			</view> -->
 			<view class="icon" @click="goShop">
 				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/shopCar.png"></image>
 				<view class="text">
@@ -149,14 +149,14 @@
 							<view class="money"> <text style="font-size: 28rpx;">￥</text> {{item.reduce_price}}</view>
 							<view class="useCop">{{item.coupon_type_name}}</view>
 						</view>
-						<view class="copZKMoney" v-if="item.discount">
+						<view class="copZKMoney" v-else="item.discount">
 							<view class="zhekou">{{item.discount}}折</view>
 						</view>
 						<view class="coupDate" v-if="item.reduce_price">
 							<view>全场满{{item.full_price}}减{{item.reduce_price}}</view>
 							<view>{{item.endtime_text}}</view>
 						</view>
-						<view class="coupzkDate" v-if="item.discount">
+						<view class="coupzkDate" v-else="item.discount">
 							<view>全场{{item.discount}}折</view>
 							<view>{{item.endtime_text}}</view>
 						</view>
@@ -188,10 +188,10 @@
 				chooseR: 0,
 				price:'',
 				title: '',
-				coupTitle: '暂无优惠券',
+				coupTitle: '请选择优惠券',
 				chooseStyle: '选择',
 				couList: [],
-				numberValue: 0,
+				numberValue: 1,
 				skuList: [],
 				process_attribute: [],
 				selectSku: '',
@@ -203,44 +203,18 @@
 				duration: 500,
 				tabbarHeights: '100',
 				money: '368.00',
-				type: 'MICHELIN轮胎 性能三合一 都市畅行更放心',
-				goodsList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
-					money: '2538.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
-					money: '2538.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
-					money: '111.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
-					money: '222.00'
-				}, {
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
-					money: '33.00'
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
-					money: '33.00'
-				}],
+				type: '',
+				goodsList: [],
 				content: '',
 				isShow: true,
-				shopDetail: {
-					productMainImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					productName: '选择药品规格',
-					productPrice: '368'
-				},
+				shopDetail: {},
 				bottomHight: 0,
 				//商品类型
 				goodsType: 1,
 				sku_price_id: '',
-				user: ''
+				user: '',
+				number: 1,
+				couponData: null
 			}
 		},
 		onLoad(option) {
@@ -254,7 +228,6 @@
 			async initgoods(e) {
 				let that = this
 				let data = await goodsDetail({goods_id: e})
-				console.log(data)
 				that.imgList = data.data.images
 				that.price = data.data.price
 				that.title = data.data.title
@@ -277,7 +250,6 @@
 					})
 					that.process_attribute.push(temp)
 				})
-				console.log(that.process_attribute,11)
 				that.goodsType = data.data.type
 				that.sku_price = data.data.sku_price
 			},
@@ -312,7 +284,6 @@
 			changecTab(key,key2) {
 				let that = this;
 				that.selectSku = []
-				console.log(key,key2,that.process_attribute,'666')
 				if (!that.process_attribute[key].child[key2].disabled) {
 					that.process_attribute[key].child.forEach((item, index) => {
 						item.actived = index == key2 ? !item.actived : false
@@ -326,7 +297,7 @@
 						if(that.process_attribute.length - 1 === index) {
 							that.selectSku += selectData[0].id
 						}else {
-							that.selectSku += selectData[0].id+','
+							that.selectSku += selectData[0].id + ','
 						}
 					}
 				})
@@ -362,7 +333,7 @@
 						coupon_type: 2,
 						price: this.shopDetail.productPrice
 					}
-				}else {
+				}else if(this.goodsType === 2){
 					query = {
 						member_id: uni.getStorageSync('member_id'),
 						page: 1,
@@ -370,9 +341,19 @@
 						coupon_type: 1,
 						price: this.shopDetail.productPrice
 					}
+				}else {
+					query = {
+						member_id: uni.getStorageSync('member_id'),
+						page: 1,
+						status: 1,
+						coupon_type: '',
+						price: this.shopDetail.productPrice
+					}
 				}
 				myCoupon(query).then(res=>{
-					console.log(res,'090')
+					res.data.rows.forEach((item,index)=>{
+						item.checked = false
+					})
 					this.couList = res.data.rows
 				})
 				this.$refs.coup.open();
@@ -386,12 +367,19 @@
 			},
 			//购物车
 			goShop() {
-				uni.navigateTo({
-					url: '/pages/store/shoppingCart/shoppingCart'
-				})
+				if(this.couponData === null) {
+					uni.navigateTo({
+						url: '/pages/store/shoppingCart/shoppingCart'
+					})
+				}else if(this.couponData.id !== undefined) {
+					uni.navigateTo({
+						url: '/pages/store/shoppingCart/shoppingCart'
+					})
+				}
 			},
 			change(e) {
 				console.log(e)
+				this.number = e
 			},
 			
 			buyTrue() {
@@ -399,6 +387,7 @@
 			},
 			changeRadio(e,i) {
 				console.log(e,i,'choose')
+				this.couponData = e
 				this.chooseR = i
 				this.coupTitle = '全场满'+ e.full_price + '减' + e.reduce_price
 			},
@@ -432,14 +421,23 @@
 						member_id: uni.getStorageSync('member_id'),
 						goods_id: this.goodsId,
 						sku_price_id: this.sku_price_id,
-						goods_num: this.numberValue
+						goods_num: this.number
 					}
 					addShopCart(query).then(res=>{
-						uni.showToast({
-						    title: '加入购物车成功',
-						    icon: 'none',
-						    duration: 2000
-						});
+						if(res.code === 0) {
+							uni.showToast({
+							    title: '请选择规格',
+							    icon: 'none',
+							    duration: 2000
+							});
+						}else {
+							uni.showToast({
+							    title: res.msg,
+							    icon: 'none',
+							    duration: 2000
+							});
+						}
+						
 					})
 				}
 			},
@@ -668,6 +666,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: space-between;
 		.icon {
 			display: flex;
 			flex-direction: column;
@@ -705,7 +704,7 @@
 	}
 	.pops{
 			width: 100%;
-			height: 912rpx;
+			// height: 912rpx;
 			background: white;
 			overflow: hidden;
 			border-radius: 24rpx 24rpx 0 0;
@@ -859,19 +858,19 @@
 			height: 190rpx;
 			background: #FFFFFF;
 			margin: 20rpx auto;
-			position: relative;
 			image {
 				width: 100%;
 				height: 100%;
 			}	
 			.couponsInfo {
-				position: absolute;
-				top: 0;
-				left: 0;
 				text-align: center;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+				transform: translate(0px, -81px);
 				.copMoney {
-					position: relative;
-					top: 30rpx;
+					
 					display: inline-block;
 					width: 190rpx;
 					height: 190rpx;
@@ -893,8 +892,7 @@
 					}
 				}
 				.copZKMoney {
-					position: relative;
-					top: 50rpx;
+					
 					display: inline-block;
 					width: 190rpx;
 					height: 190rpx;
@@ -914,28 +912,21 @@
 					width: 450rpx;
 					height: 190rpx;
 					text-align: left;
-					position: relative;
-					top: 20rpx;
-					left: 35rpx;
 					// margin: 20rpx 20rpx;
+					margin-left: 22rpx;
 				}
 				.coupzkDate {
 					display: inline-block;
 					width: 450rpx;
 					height: 190rpx;
 					text-align: left;
-					position: relative;
-					top: 50rpx;
-					left: 35rpx;
+					margin-left: 22rpx;
 				}
 				.couChoose {
 					display: inline-block;
 					width: 50rpx;
 					height: 190rpx;
 					text-align: left;
-					position: absolute;
-					top: 70rpx;
-					right: -15rpx;
 					// margin-left: 260rpx;
 					// margin-top: 30rpx;
 					.radio {
@@ -944,6 +935,7 @@
 						background: #FFFFFF;
 						border: 1rpx solid #969696;
 						border-radius: 18rpx;
+						margin-top: 30rpx;
 					}
 					.chooseRadio {
 						background: #1A2285;

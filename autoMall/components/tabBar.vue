@@ -13,13 +13,11 @@
 			</view>
 		</view>
 </template>
-
-
 <script>
 	export default {
 		props: {
 			current: Number,
-			approve: Boolean
+			tabbar: Array,
 		},
 		data() {
 			return {
@@ -27,28 +25,29 @@
 				showPage: false,
 				containerHeight: 400,
 				//公共的tabbar
-				tabbar: [{
-						"pagePath": "pages/tabBar/home/home",
-						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
-						"text": "首页"
-					},{
-						"pagePath": "pages/tabBar/mall/mall",
-						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
-						"text": "品牌专区"
-					},{
-						"pagePath": "pages/tabBar/service/service",
-						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
-						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
-						"text": "客服"
-					},{
-						"pagePath": "pages/tabBar/mine/mine",
-						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
-						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
-						"text": "我的"
-					}
-				]
+				// tabBar: [{
+				// 		"pagePath": "pages/tabBar/home/home",
+				// 		"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
+				// 		"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+				// 		"text": "首页"
+				// 	},{
+				// 		"pagePath": "pages/tabBar/mall/mall",
+				// 		"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
+				// 		"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+				// 		"text": "品牌专区"
+				// 	}
+				// 	// ,{
+				// 	// 	"pagePath": "pages/tabBar/service/service",
+				// 	// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
+				// 	// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+				// 	// 	"text": "客服"
+				// 	// },{
+				// 	// 	"pagePath": "pages/tabBar/mine/mine",
+				// 	// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
+				// 	// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+				// 	// 	"text": "我的"
+				// 	// }
+				// ]
 			};
 		},
 		watch: {
@@ -57,40 +56,20 @@
 				},
 				immediate: true
 			},
-			approve: {
+			tabbar: {
 				handler(newd,old) {
-					debugger
-					console.log(newd,2222222222222,old)
-					if(newd === true) {
-						this.tabbar = [{
-								"pagePath": "pages/tabBar/home/home",
-								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
-								"text": "首页"
-							},{
-								"pagePath": "pages/tabBar/mall/mall",
-								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
-								"text": "商城"
-							},
-							{
-								"pagePath": "pages/tabBar/service/service",
-								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
-								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
-								"text": "客服"
-							},{
-								"pagePath": "pages/tabBar/mine/mine",
-								"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
-								"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
-								"text": "我的"
-							}]
+					if(newd!==old) {
+						console.log(newd,old,'tabbar')
 					}
-				}
+				},
+				immediate: true
 			}
 		},
 		mounted() {
 			// 根据自己的业务需求判断条件为true，替换即可,根据权限设置的tabbar	
 			//第三个参数为插入项,第一个参数为第一项位置，第二个参数为要删除几个。
+			// this.userInfo = this.$store.state.user.userInfo
+			
 		},
 		methods: {
 			changeTab(item) {

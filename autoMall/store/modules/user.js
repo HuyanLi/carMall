@@ -4,6 +4,7 @@ const state = {
 	approve: false,
 	showNav: '1',
 	type: 'sales',
+	mobile: ''
 }
 
 const mutations = {
@@ -17,8 +18,11 @@ const mutations = {
 	setShowNav(state,nav) {
 		state.showNav = nav
 	},
-	setOpenId(state,nav) {
-		state.openId = nav
+	setOpenId(state,openId) {
+		state.openId = openId
+	},
+	mobile(state,mobile) {
+		state.mobile = mobile
 	}
 }
 const actions = {
@@ -30,6 +34,9 @@ const actions = {
 	},
 	setOpenId: async({ commit, state },params) => {
 		commit('openId', params)
+	},
+	setMobile: async({ commit, state },params) => {
+		commit('mobile', params)
 	},
 }
 

@@ -8,17 +8,18 @@
 		</view>
 		<button type="default" @click="toShare">在线客服</button>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" :tabbar='tabbar' :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
 </template>
 
 <script>
+	import { getQuestion } from '@/api/service.js'
 	export default {
 		data() {
 			return {
 				currentTabIndex: 2,
 				content: '',
-				approve: true
+				tabbar: uni.getStorageSync('tabbar')
 			}
 		},
 		onLoad() {
@@ -26,7 +27,17 @@
 			data = data.replace(/\<img/g, "<img style='width: 100%;'")
 			this.content= data;
 		},
+		created() {
+			this.initQuestion()
+		},
 		methods: {
+			initQuestion() {
+				getQuestion().then(res=>{
+					if(res.code === "1") {
+						
+					}
+				})
+			},
 			toShare() {
 				wx.openCustomerServiceChat({
 					extInfo: {

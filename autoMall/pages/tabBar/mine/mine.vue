@@ -4,16 +4,16 @@
 			<view id="head" class="head" :style="'padding-top:' + statusBarHeight + 'px'">我的</view>
 			<view class="info">
 				<view class="info-img">
-					<image @tap="handleInfoView" class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png">
+					<image @tap="handleInfoView" class="img" :src="userInfo.head_img">
 				</view>
 				<view class="info-content">
 					<view>
-						<text class="info-name">Latte今天喝拿铁</text>
+						<text class="info-name">{{userInfo.nickname}}</text>
 						<image class="info-title" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png">
 					</view>
-					<view class="info-invit-code">邀请码：S4SDF7</view>
+					<view class="info-invit-code">邀请码：{{userInfo.invitation_code}}</view>
 				</view>
-				<image @tap="handleInfo" class="edit" :src="authentication ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/editWhite.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png'"/>
+				<image @tap="handleInfo" class="edit" :src="authentication ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/editaddress.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png'"/>
 			</view>
 		</view>
 
@@ -31,9 +31,9 @@
 			</view>
 		</view>
 		
-		<view class="wallet" @tap="handleTool('/pages/mine/wallet')">
+		<view class="wallet" @tap="handleTool('/pages/mine/wallet')" v-if="this.showQY === true">
 			<view class="wallet-title">我的钱包</view>
-			<view class="wallet-money">11634.00</view>
+			<view class="wallet-money">{{userInfo.commission_price || '0.00'}}</view>
 			<view class="wallet-btn" @tap="handleAllOrder">可提现<image class="order-all-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineRight.png"/></view>
 			<img class="coins" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/coins.png"/>
 		</view>
@@ -50,18 +50,20 @@
 			</view>
 		</view>
 		<!-- tabBar -->
-		<tab-bar :current="currentTabIndex" backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
+		<tab-bar :current="currentTabIndex" :tabbar='tabbar' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 		
 	</view>
 </template>
 
 <script>
+	// import { getMyCommissionPriceList } from "@/api/mine.js"
 	export default {
 		data() {
 			return {
 				authentication: true,
 				statusBarHeight: 0,
 				currentTabIndex: 3,
+				userInfo: uni.getStorageSync('userInfo'),
 				order: [
 					{
 						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daifk.png',
@@ -109,10 +111,11 @@
 						name: '我的仓库',
 						url: '/pages/mine/warehouse'
 					},
-				]
+				],
+				showQY: false,
+				tabbar: uni.getStorageSync('tabbar')
 			}
 		},
-		
 		onLoad() {
 			const _this = this
 			wx.getSystemInfo({
@@ -121,7 +124,60 @@
 			  },
 			});
 		},
-		
+		created() {
+			console.log(this.$store.state.user,'userInfo')
+			if(this.userInfo.signing_image !== '') {
+				this.showQY = true
+				this.tool = [{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
+						name: '站内信',
+						url: '/pages/mine/message'
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
+						name: '我的权益',
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
+						name: '收货地址',
+						url: '/pages/store/shipAddress/shipAddress'
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '联系客服',
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '我的钱包',
+						url: '/pages/mine/wallet'
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '我的仓库',
+						url: '/pages/mine/warehouse'
+					}]
+			}else {
+				this.showQY = false
+				this.tool = [{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
+						name: '站内信',
+						url: '/pages/mine/message'
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
+						name: '我的权益',
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
+						name: '收货地址',
+						url: '/pages/store/shipAddress/shipAddress'
+					},
+					{
+						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						name: '联系客服',
+					}]
+			}
+		},
 		methods: {
 			handleInfo() {
 				uni.navigateTo({

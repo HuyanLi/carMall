@@ -6,19 +6,19 @@
 			<text>如何使用</text>
 		</view>
 		<view class="coupon-content">
-			<view class="coupon-content-image" @click="choosecoupon(item)" v-for="(item,index) in couList" :key='index'>
-				<view v-if="item.type === 1" class="coupon-content-image-title">
+			<view class="coupon-content-image" @click="choosecoupon(item,index)" v-for="(item,index) in couList" :key='index'>
+				<view v-if="item.type === '1'" class="coupon-content-image-title">
 					<text class="money"><text style="font-size: 28rpx;">￥</text>{{item.reduce_price}}</text>
 					<text class="info">全场满{{item.full_price}}减{{item.reduce_price}}</text>
 				</view>
-				<view v-if="item.type === 1" class="coupon-content-image-text">
+				<view v-if="item.type === '1'" class="coupon-content-image-text">
 					<text class="info">全场满{{item.full_price}}减{{item.reduce_price}}</text>
 					<text class="date">{{item.endtime_text}}</text>
 				</view>
-				<view v-if="item.type === 2" class="coupon-content-image-title">
+				<view v-if="item.type === '2'" class="coupon-content-image-title">
 					<text class="zhe">{{item.discount}}折</text>
 				</view>
-				<view v-if="item.type === 2" class="coupon-content-image-text">
+				<view v-if="item.type === '2'" class="coupon-content-image-text">
 					<text class="info">全场满{{item.full_price}}打{{item.reduce_price}}折</text>
 					<text class="date">{{item.endtime_text}}</text>
 				</view>
@@ -51,14 +51,13 @@
 					
 				}
 				await myCoupon(query).then(res=>{
-					console.log(res)
 					this.couList = res.data.rows
 				})
 			},
-			choosecoupon(e) {
+			choosecoupon(e,i) {
 				var pages = getCurrentPages();
 				var prepage = pages[pages.length - 2]; //上一个页面
-				prepage.$vm.coupon = e.money;
+				prepage.$vm.coupon = JSON.stringify(e);
 				uni.showToast({
 				    title: '选择成功',
 				    icon: 'none',

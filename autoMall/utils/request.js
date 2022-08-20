@@ -27,7 +27,9 @@ export default function request(url, params, method = 'GET',contentType) {
 				var datas = res.data;
                 if (datas.code == '1') {
                     reslove(datas);
-                } else if(datas.code == '-1') {
+                } else if(datas.code == '0') {
+					reslove(datas);
+				} else if(datas.code == '-1') {
 					reslove(datas);
 				}else if (datas.code == '30000') {//统一处理状态码 状态码根据自己项目设置即可
 					getWXJsCode().then(async function(userCode){
@@ -54,7 +56,7 @@ export default function request(url, params, method = 'GET',contentType) {
                 }else if(datas.code == '500'){
 					// console.log(datas)
 					reslove(datas) 
-				} else if (datas.code !== '1' && datas.code !== '30000'&& datas.code !== '500') {//统一处理状态码 状态码根据自己项目设置即可
+				} else if (datas.code !== '1' && datas.code !== '30000'&& datas.code !== '500' && datas.code !== '0') {//统一处理状态码 状态码根据自己项目设置即可
 					uni.showToast({
                         title: datas.message || '系统错误',
                         icon: 'none',

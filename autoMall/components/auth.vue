@@ -35,12 +35,14 @@
 					}
 				}
 			})
-			that.getOpenId()
 		},
 		mounted() {
+			this.getOpenId()
 			let member_id = uni.getStorageSync('member_id')
 			if(member_id){
 				this.isLogin = false;
+				this.isPhone = false;
+				this.isMap = false;
 			}
 		},
 		methods:{
@@ -50,7 +52,6 @@
 					success: function(res) {
 						getOpenIds({code: res.code}).then(res=>{
 							uni.setStorageSync("openid",res.data.openid);
-							// this.$store.commit('openid',res.data.openid)
 							uni.setStorageSync("session_key",res.data.session_key);
 						})
 					},
@@ -93,6 +94,8 @@
 								//已注册
 								uni.setStorageSync("member_id",res.data.id);
 								uni.setStorageSync("userInfo",res.data);
+								this.$store.commit('userInfo',res.data)
+								console.log(this.$store.state.user,'iuyuiyi')
 								this.isLogin = false
 								this.isPhone = true
 								this.isMap = false
@@ -124,12 +127,16 @@
 					uni.showToast({
 						title: '获取成功', 
 					})
+					uni.setStorageSync("mobile",res.data.phone.phoneNumber);
+					this.$store.commit('mobile',res.data.phone.phoneNumber)
+					console.log(this.$store.state.user,'iuyuiyi')
 					_this.isPhone = false
-					_this.isMap = true
+					_this.isMap = false
+					// location.reload()
 				})
 			},
 			//获取用户位置
-			// getAddress() {
+			getAddress() {
 			// 	uni.getLocation({
 			// 		type: 'wgs84',
 			// 		altitude: true,
@@ -145,7 +152,7 @@
 			// 			})
 			// 		}
 			// 	})
-			// }
+			}
 		}
 	}
 </script>

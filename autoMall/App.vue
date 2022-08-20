@@ -2,7 +2,7 @@
 	import { getWXJsCode } from '@/utils/index.js'
 	import { getOpenIds, getUserInfo } from '@/api/user.js'
 	export default {
-		onLaunch: function() {
+		onLaunch: function(opation) {
 			// #ifdef H5
 			console.log(
 				`%c hello uniapp %c v${version} `,

@@ -28,29 +28,32 @@
 			<view class="chooseT">
 				<text>订单信息</text>
 			</view>
-			<view class="chooseItem" v-for="(item,index) in goodsList" :key='index'>
-				<image class="goodsImage" :src="item.imgSrc"></image>
+			<view class="chooseItem" v-for="(item,index) in goodsData.order_item" :key='index'>
+				<image class="goodsImage" :src="item.goods_image"></image>
 				<view class="goodsInfo">
-					<text class="shopTitle">{{item.title}}</text>
+					<text class="shopTitle">{{item.goods_title}}</text>
 					<view class="shopTag">
-						<uni-tag class="tag" :text="item.type" />
+						<uni-tag class="tag" :text="item.goods_sku_text" />
 					</view>
 					<view class="moneyInfo">
 						<view class="">
-							<text class="shopMoney">{{item.money}}</text>
+							<text class="shopMoney">{{item.goods_price}}</text>
 						</view>
 						<view class="number-box">
-							<text>X {{item.count}}</text>
+							<text>X {{item.goods_num}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="godsCoup">
-				<text class="couLft">{{couponInfo}}</text>
-				<text class="couRig">-￥{{couponMoney}}</text>
+			<view class="godsCoup" v-if="goodsData.coupon_name === ''">
+				<text class="couLft">暂无优惠券</text>
+			</view>
+			<view class="godsCoup" v-else>
+				<text class="couLft">{{goodsData.total_amount}}</text>
+				<text class="couRig">-￥{{goodsData.coupon_fee}}</text>
 			</view>
 			<view class="payMoney">
-				<text class="text">需支付：¥<text class="money">{{money}}</text></text>
+				<text class="text">需支付：¥<text class="money">{{goodsData.pay_fee}}</text></text>
 			</view>
 		</view>
 		<!-- 打款凭证 -->
@@ -77,37 +80,82 @@
 </template>
 
 <script>
+	import { commitPay, getBankInfo } from '@/api/store.js'
+	import { getOrderInfo } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
 				payForType: '线下支付',
-				account: '110 9307 9091 0206 ',
-				bank:'招商银行股份有限公司北京常营支行',
-				company:'北京多咖科技有限公司',
-				goodsList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					type: '太空灰;256GB',
-					money: '￥368.00',
-					count: '1',
-				}],
-				couponInfo: '满100减10元优惠券',
-				couponMoney: '10',
-				money: '159.00',
+				account: '',
+				bank:'',
+				company:'',
+				goodsList: [],
+				couponInfo: '',
+				couponMoney: '',
+				money: '',
 				imgList:[],
-				info: null
+				info: null,
+				orderId: '',
+				goodsData: null
 			}
 		},
 		onLoad(e) {
-			this.info = JSON.parse(e.info)
+			if(e.id) {
+				this.orderId = e.id
+			}else {
+				this.goodsList = JSON.parse(e.goods)
+				let coupon = JSON.parse(e.coupon)
+				console.log(e.coupon.id,7777)
+				if(coupon.coupon_id === undefined) {
+					this.couponInfo = '暂无优惠券'
+				}else {
+					this.couponInfo = "满" + JSON.parse(e.coupon).full_price + '减' + JSON.parse(e.coupon).reduce_price + '元优惠券'
+					this.couponMoney = JSON.parse(e.coupon).reduce_price
+				}
+				this.money = e.price
+				this.orderId = e.orderId
+			}
+		},
+		onShow() {
+			this.orderDetail()
+			this.initBank()
 		},
 		methods: {
+			//回显
+			orderDetail() {
+				let query = {
+					order_id: this.orderId
+				}
+				getOrderInfo(query).then(res=>{
+					if(res.code === 1) {
+						this.goodsData = res.data
+					}
+				})
+			},
+			//付款账户
+			initBank() {
+				getBankInfo().then(res=>{
+					this.info = res.data
+				})
+			},
 			//我已打款
 			payment(url) {
-				//完成支付
-				uni.navigateTo({
-					url: url
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					order_id: this.orderId,
+					pay_voucher_images: this.imgList
+				}
+				commitPay(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration: 2000
+					})
+					//完成支付
+					uni.navigateTo({
+						url: url+'?price=' + this.money
+					})
 				})
+				
 			},
 			// 点击上传图片
 			upload() {
@@ -121,17 +169,17 @@
 						if (res.tempFilePaths.length != 0) {
 							this.imgList.push(res.tempFilePaths[0]);
 						}
-					console.log(JSON.stringify(res.tempFilePaths));
 						var tempFilePaths = res.tempFilePaths;
-	 
-						console.log(tempFilePaths);
-						console.log(tempFilePaths[0]);
 						uni.uploadFile({
-							url: 'http://douzhuoqianshouba.xieenguoji.com/api/ajax/upload',
+							url: 'https://carshop.duoka361.cn/index.php/api/common/upload',
 							filePath: tempFilePaths[0],
 							name: 'file',
 							success: uploadFileRes => {
 								console.log('上传图片', JSON.parse(uploadFileRes.data));
+								let data = JSON.parse(uploadFileRes.data)
+								if(data.code === "1") {
+									this.imgList.push(data.data.fullurl)
+								}
 							},
 							fail(err) {
 								console.log(err);

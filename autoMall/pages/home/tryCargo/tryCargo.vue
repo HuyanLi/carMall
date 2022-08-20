@@ -6,12 +6,12 @@
 			<image v-else src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qyImage.png"></image>
 		</view>
 		<view class="goodsList">
-			<view class="goodsItem"  v-for="(item,index) in goodList" :key='index'>
+			<view class="goodsItem" @click="toGoodsDetail(item)"  v-for="(item,index) in goodList" :key='index'>
 				<view class="text">
-					<image :src="item.imgSrc"></image>
+					<image :src="item.image"></image>
 				</view>
-				<view class="fontText" style="-webkit-flex: 1;flex: 1;">{{item.text}}</view>
-				<view class="money" style="-webkit-flex: 1;flex: 1;">￥{{item.money}}</view>
+				<view class="fontText" style="-webkit-flex: 1;flex: 1;">{{item.title}}</view>
+				<view class="money" style="-webkit-flex: 1;flex: 1;">￥{{item.price}}</view>
 			</view>
 		</view>
 		<view class="tryGoods">
@@ -24,31 +24,12 @@
 </template>
 
 <script>
+	import { goodsList } from '@/api/store.js'
 	export default {
 		data() {
 			return {
 				sh: true,
-				goodList: [{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器翁王企鹅驱蚊器王企鹅热污染',
-					money: '2538.00'
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面',
-					money: '2538.00'
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面地方',
-					money: '111.00'
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面让人',
-					money: '222.00'
-				},{
-					imgSrc: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/banner1.png',
-					text: '米家行车记录仪 GPS卫星全球定位 高清画面驱蚊器',
-					money: '33.00'
-				}]
+				goodList: []
 			}
 		},
 		onLoad(data) {
@@ -58,7 +39,25 @@
 				this.sh = false
 			}
 		},
+		created() {
+			this.initGoods()
+		},
 		methods: {
+			async initGoods() {
+				let query = {
+					brand_id: '',
+					type: 2,
+					page: 1
+				}
+				let data = await goodsList(query)
+				this.goodList = data.data.rows
+			},
+			//商品詳情
+			toGoodsDetail(item) {
+				uni.navigateTo({
+					url: '/pages/store/goodsDetail/goodsDetail?id=' + item.id
+				})
+			},
 			toSH(e) {
 				if(e == 'sh') {
 					uni.navigateTo({

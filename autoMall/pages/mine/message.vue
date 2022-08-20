@@ -1,7 +1,7 @@
 <template>
 	<view class="message">
 		<view class="message-state">
-			<view class="message-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(index)" v-for="(item, index) in messageState" :key="index">{{item.title}}</view>
+			<view class="message-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(item,index)" v-for="(item, index) in messageState" :key="index">{{item.title}}</view>
 		</view>
 		<view class="message-swiper-wrap">
 			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
@@ -9,20 +9,30 @@
 					<view class="swiper-item">
 						<view class="message-item" v-for="(item, index) in messageList" :key="index">
 							<view class="message-item-title">
-								{{item.title}}
+								{{item.name}}
 							</view>
 							<view class="message-item-date">
-								{{item.date}}
+								{{item.createtime}}
 							</view>
 							<view class="message-item-content">
-								{{item.content}}
+								{{item.note}}
 							</view>
 						</view>
 					</view>
 				</swiper-item>
 				<swiper-item>
 					<view class="swiper-item">
-						
+						<view class="message-item" v-for="(item, index) in messageList" :key="index">
+							<view class="message-item-title">
+								{{item.name}}
+							</view>
+							<view class="message-item-date">
+								{{item.createtime}}
+							</view>
+							<view class="message-item-content">
+								{{item.note}}
+							</view>
+						</view>
 					</view>
 				</swiper-item>
 				
@@ -39,40 +49,9 @@
 			return {
 				current: 0,
 				activeIndex: 0,
-				messageState: [{title: '系统消息'},{title: '后台通知'}],
-				messageList: [{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				},{
-					title: '消息标题',
-					date: '2022-02-17 18:00',
-					content: '通知文字内容占位通知文字内容占位通知文字内容占位通知文字内容占位',
-				}]
+				messageState: [{title: '系统消息',type: '1'},{title: '后台通知',type:'2'}],
+				messageList: [],
+				type: ''
 			}
 		},
 		created() {
@@ -81,19 +60,27 @@
 		methods: {
 			initInfo(){
 				let query = {
-					member_id: this.$store.state.user.userInfo.member_id,
-					type: '1'
+					member_id: uni.getStorageSync('member_id'),
+					type: this.type
 				}
 				getInfoList(query).then(res=>{
-					console.log(res)
+					if(res.code === 0) {
+						this.messageList = res.data.rows
+					}else {
+						this.messageList = res.data.rows
+					}
 				})
 			},
-			handleStateTap(index) {
-				this.activeIndex = index
-				this.current = index
+			handleStateTap(e,i) {
+				this.messageList = []
+				this.activeIndex = i
+				this.current = i
+				this.type = e.type
+				this.initInfo()
 			},
 			handleSwipeChange(e) {
 				this.activeIndex = e.detail.current
+				
 			},
 		}
 	}

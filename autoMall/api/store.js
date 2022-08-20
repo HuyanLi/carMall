@@ -10,6 +10,12 @@ export const bransList = () => request(
 	'/index.php/api/goods/getBrandList',
 	'POST'
 ) 
+//获取品牌详情
+export const brandDetail = (data) =>request(
+	'/index.php/api/goods/getBrandInfo',
+	data,
+	'POST'
+)
 //获取商品列表
 export const goodsList = (data) => request(
 	'/index.php/api/goods/getGoodsList',
@@ -109,6 +115,18 @@ export const getDefault = (data) => request(
 //添加订单
 export const addOrder = (data) => request(
 	'/index.php/api/order/addOrder',
+	data,
+	'POST'
+)
+//订单列表
+export const getOrder = (data) => request(
+	'/index.php/api/order/getOrderList',
+	data,
+	'POST'
+)
+//提交打款凭证
+export const commitPay = (data) => request(
+	'/index.php/api/order/submitOrderVoucher',
 	data,
 	'POST'
 )

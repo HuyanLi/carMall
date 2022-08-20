@@ -4,14 +4,17 @@
 		<view class="box">
 			<rich-text :nodes="content"></rich-text>
 			<view class="sign">
-			  <!-- <view class="paper">
-			    <canvas class="mycanvas"
-				  disable-scroll=false
-				  canvas-id="mycanvas"
-				  @touchstart="touchstart"
-				  @touchmove="touchmove"
-				  @touchend="touchend"></canvas>
-			  </view> -->
+			  <view class="form">
+					<view class="form-content">
+						<canvas class="form-content__canvas" canvas-id="canvas_sign" @touchstart="touchstart"
+							@touchmove="touchmove" @touchend="touchend" disable-scroll="true"></canvas>
+					</view>
+					<!-- <view class="form-footer">
+						<button class="form-footer__reset" @click="autographClick(1)">重置</button>
+						<button class="form-footer__save" @click="autographClick(2)">保存</button>
+						<button class="form-footer__preview" @click="autographClick(3)">预览</button>
+					</view> -->
+				</view>
 			</view>
 			<view class="btn">
 				<!-- <button class="btn1" @click="addCart('购物车')">加入购物车</button> -->
@@ -35,11 +38,10 @@
 			return {
 				content: '',
 				hasDraw: false,
-				context1: '',
-				writeTips: '签字区',
-				writeTipsTrue: true,
-				ctx: '', //绘图图像
-				points: [], //路径点集合,
+				canvasCtx: '', //绘图图像
+				points: [], //路径点集合
+				hasSign: false,
+				isInit: false,
 				user:'',
 				type:'',
 				info: null
@@ -51,14 +53,13 @@
 			this.content= data;
 			// id = option.id;
 			//     type = option.type;
-			    this.ctx = uni.createCanvasContext('mycanvas', this); //创建绘图对象
-			    //设置画笔样式
-			    this.ctx.lineWidth = 4;
-			    this.ctx.lineCap = 'round';
-			    this.ctx.lineJoin = 'round';
-				this.user = uni.getStorageSync('userInfo')
-				this.type = e.pt
-				this.info = e.info
+			    this.canvasCtx = uni.createCanvasContext('canvas_sign', this) //创建绘图对象
+				//设置画笔样式
+				this.canvasCtx.lineWidth = 6
+				// 设置线条的端点样式
+				this.canvasCtx.lineCap = 'round'
+				// 设置线条的交点样式
+				this.canvasCtx.lineJoin = 'round'
 		},
 		methods:{ 
 			//确认并签署
@@ -74,43 +75,42 @@
 				}
 				
 			},
-			//触摸开始，获取到起点
-			touchstart: function (e) {
-			  let startX = e.changedTouches[0].x;
-			  let startY = e.changedTouches[0].y;
-			  let startPoint = {
-				X: startX,
-				Y: startY
-			  };
-		 
-			  /* **************************************************
-							#由于uni对canvas的实现有所不同，这里需要把起点存起来
-						 * **************************************************/
-			  this.points.push(startPoint);
-		 
-			  //每次触摸开始，开启新的路径
-			  this.ctx.beginPath();
+			touchstart: function(e) {
+			    if (!this.isInit) {
+			        this.isInit = true
+			        this.autographClick(1);
+			    }
+			    let startX = e.changedTouches[0].x
+			    let startY = e.changedTouches[0].y
+			    let startPoint = {
+			        X: startX,
+			        Y: startY
+			    }
+			    this.points.push(startPoint)
+			    //每次触摸开始，开启新的路径
+			    this.canvasCtx.beginPath()
 			},
 		 
 			//触摸移动，获取到路径点
-			touchmove: function (e) {
-			  let moveX = e.changedTouches[0].x;
-			  let moveY = e.changedTouches[0].y;
-			  let movePoint = {
-				X: moveX,
-				Y: moveY
-			  };
-			  this.points.push(movePoint); //存点
-			  let len = this.points.length;
-			  if (len >= 2) {
-				this.draw(); //绘制路径
-			  }
-			  tempPoint.push(movePoint);
+			touchmove: function(e) {
+			    let moveX = e.changedTouches[0].x
+			    let moveY = e.changedTouches[0].y
+			    let movePoint = {
+			        X: moveX,
+			        Y: moveY
+			    }
+			    this.points.push(movePoint) //存点
+			    let len = this.points.length
+			    if (len >= 2) {
+			        this.draw() //绘制路径
+			    }
+			 
 			},
 		 
 			// 触摸结束，将未绘制的点清空防止对后续路径产生干扰
-			touchend: function () {
-			  this.points = [];
+			touchend: function() {
+			    this.points = []
+			    this.canvasCtx.draw(true)
 			},
 		 
 			/* ***********************************************	
@@ -119,14 +119,15 @@
 					#   2.为保证笔迹连续，每次从路径集合中区两个点作为起点（moveTo）和终点(lineTo)
 					#   3.将上一次的终点作为下一次绘制的起点（即清除第一个点）
 					************************************************ */
-			draw: function () {
-			  let point1 = this.points[0];
-			  let point2 = this.points[1];
-			  this.points.shift();
-			  this.ctx.moveTo(point1.X, point1.Y);
-			  this.ctx.lineTo(point2.X, point2.Y);
-			  this.ctx.stroke();
-			  this.ctx.draw(true);
+			draw: function() {
+			    let point1 = this.points[0]
+			    let point2 = this.points[1]
+			    this.points.shift()
+			    this.canvasCtx.moveTo(point1.X, point1.Y)
+			    this.canvasCtx.lineTo(point2.X, point2.Y)
+			    this.canvasCtx.stroke()
+			    this.canvasCtx.draw(true)
+			    this.hasSign = true
 			},
 		}
 	}
