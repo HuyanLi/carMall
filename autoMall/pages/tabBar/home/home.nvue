@@ -94,8 +94,10 @@
 			</view>
 		</view>
 		<!-- 文章列表 -->
-		<view class="wyList">
-			<view class="wyItem" v-for="(item,index) in wyList" :key='index' @click="toDetail(item)">
+		<swiper class="swiperWrap" duration="500" :current="current" @change="handleSwipeChange">
+			<swiper-item v-for="(i, idx) in goodsList" :key="index">
+				<view class="empty" v-if="wyList.length === 0">暂无数据</view>
+				<view class="swiper-item" v-for="(item, idx) in wyList" :key="idx" @tap.stop="toDetail(item)">
 					<view class="wyItem-text">
 						<view class="text title">{{item.title}}</view>
 						<view class="text textContent">{{item.upper_note}}</view>
@@ -103,8 +105,20 @@
 					<view class="wyItem-img">
 						<image :src="item.image"></image>
 					</view>
+				</view>
+			</swiper-item>
+		</swiper>
+		<!-- <view class="wyList">
+			<view class="wyItem" v-for="(item,index) in wyList" :key='index' @click="toDetail(item)">
+				<view class="wyItem-text">
+					<view class="text title">{{item.title}}</view>
+					<view class="text textContent">{{item.upper_note}}</view>
+				</view>
+				<view class="wyItem-img">
+					<image :src="item.image"></image>
+				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- tabBar -->
 		<tab-bar :tabbar='tabbar' :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
 		<auth v-if='showAuth'></auth>
@@ -175,23 +189,6 @@
 						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
 						"text": "首页"
 					}
-					// ,{
-					// 	"pagePath": "pages/tabBar/mall/mall",
-					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
-					// 	"text": "品牌专区"
-					// }
-					// ,{
-					// 	"pagePath": "pages/tabBar/service/service",
-					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
-					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
-					// 	"text": "客服"
-					// },{
-					// 	"pagePath": "pages/tabBar/mine/mine",
-					// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
-					// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
-					// 	"text": "我的"
-					// }
 				]
 			}
 		},
@@ -293,8 +290,7 @@
 			async initContentList() {
 				let query = {
 					category_id: this.goodsIndex,
-					status: 2,
-					is_share: 1,
+					is_share: 2,
 					page: 1
 				}
 				let data = await contentList(query)
@@ -328,6 +324,11 @@
 					this.goodsIndex = e
 					this.initContentList()
 				}
+			},
+			handleSwipeChange(e) {
+				console.log(e,'her ')
+				this.goodsIndex  = e.detail.current
+				this.initContentList()
 			},
 			toDetail(e) {
 				uni.navigateTo({
@@ -541,66 +542,80 @@
 			}
 			
 		}
-		.wyList {
+		.swiperWrap {
+			box-sizing: border-box;
+			padding: 30rpx;
+			flex: 1;
 			width: 690rpx;
 			background: #FFFFFF;
 			margin: 0rpx auto;
-			.wyItem {
-				border-bottom: 1rpx solid #EAEAEA;
-				padding:  30rpx 0rpx;
-				width: 650rpx;
-				margin: 0 auto;
-				display: flex;
+			height: 750rpx;
+			.empty {
+				text-align: center;
+				margin-top: 50rpx;
+			}
+			.swiper-item {
+				background: #FFFFFF;
 				flex-direction: row;
 				justify-content: space-between;
-				// width: 650px;
-				// height: 1px;
-				// border: 1px solid #DCDCDC;
-				&-text {
-					width: 70%;
-					.title {
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						font-size: 28rpx;
-						color: #333333;
-						margin-bottom: 10rpx;
-						letter-spacing: 0;
-						text-align: justify;
-						// height: 120rpx;
-						text-align: left;
-						padding-left: 20rpx;
-						text-overflow: ellipsis;
-						overflow: hidden;
-						/* text-wrap: inherit; */
-						-webkit-line-clamp: 2;
-						display: -webkit-box;
-						-webkit-box-orient: vertical;
+				margin-bottom: 30rpx;
+				.wyItem {
+					border-bottom: 1rpx solid #EAEAEA;
+					width: 650rpx;
+					margin: 0 auto;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					&-text {
+						width: 70%;
+						.title {
+							font-family: PingFangSC-Regular;
+							font-weight: 400;
+							font-size: 28rpx;
+							color: #333333;
+							margin-bottom: 10rpx;
+							letter-spacing: 0;
+							text-align: justify;
+							// height: 120rpx;
+							text-align: left;
+							text-overflow: ellipsis;
+							overflow: hidden;
+							/* text-wrap: inherit; */
+							-webkit-line-clamp: 2;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
+						}
+						.textContent {
+							// width:  450rpx;
+							font-family: PingFangSC-Regular;
+							font-weight: 400;
+							font-size: 24rpx;
+							color: #888888;
+							text-align: left;
+							text-overflow: ellipsis;
+							overflow: hidden;
+							/* text-wrap: inherit; */
+							-webkit-line-clamp: 2;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
+						}
 					}
-					.textContent {
-						// width:  450rpx;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						font-size: 24rpx;
-						color: #888888;
-						text-align: left;
-						padding-left: 20rpx;
-						text-overflow: ellipsis;
-						overflow: hidden;
-						/* text-wrap: inherit; */
-						-webkit-line-clamp: 2;
-						display: -webkit-box;
-						-webkit-box-orient: vertical;
+					&-img {
+						image {
+							width: 150rpx;
+							height: 150rpx;
+							background: #D8D8D8;
+						}	
 					}
 				}
-				&-img {
-					image {
-						width: 150rpx;
-						height: 150rpx;
-						background: #D8D8D8;
-					}	
-				}
 				
-				
+			}
+		}
+		.swiper {
+			height: 100%;
+			swiper-item {
+				overflow-y: scroll;
+				&::-webkit-scrollbar{display:none}
 			}
 			
 		}

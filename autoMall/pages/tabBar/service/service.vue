@@ -6,7 +6,7 @@
 			</view>
 			<rich-text :nodes="content"></rich-text>
 		</view>
-		<button type="default" @click="toShare">在线客服</button>
+		<button type="default" open-type="contact" session-from="sessionFrom" @tap.stop="toShare">在线客服</button>
 		<!-- tabBar -->
 		<tab-bar :current="currentTabIndex" :tabbar='tabbar' :approve='approve' backgroundColor="#fbfbfb" color="#999" tintColor="#42b983" @click="tabClick"></tab-bar>
 	</view>
@@ -14,6 +14,7 @@
 
 <script>
 	import { getQuestion } from '@/api/service.js'
+	import { getBankInfo } from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -22,35 +23,19 @@
 				tabbar: uni.getStorageSync('tabbar')
 			}
 		},
-		onLoad() {
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
-		},
 		created() {
 			this.initQuestion()
 		},
 		methods: {
 			initQuestion() {
-				getQuestion().then(res=>{
-					if(res.code === "1") {
-						
+				getBankInfo().then(res=>{
+					if(res.code === 1) {
+						this.content = res.data.member_note
 					}
 				})
 			},
-			toShare() {
-				wx.openCustomerServiceChat({
-					extInfo: {
-						url: 'https://work.weixin.qq.com/...'//客服地址链接
-					},
-					corpId: '企业ID',//必须和你小程序上的一致
-					success(res) {
-						console.log(res, 1)
-					},
-					fail(res) {
-						console.log(res, 2)
-					},
-				})
+			toShare(e) {
+				console.log(e)
 			}
 		}
 	}

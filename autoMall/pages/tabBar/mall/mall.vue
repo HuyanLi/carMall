@@ -63,10 +63,11 @@
 				// 接口列表模拟数据
 				list: [],
 				userInfo: null,
-				tabbar: uni.getStorageSync('tabbar')
+				tabbar: uni.getStorageSync('tabbar'),
+				goodsType: '1'
 			}
 		},
-		onLoad: function() {
+		onLoad(e) {
 			//初始化数据
 			for (var i = 0; i < this.swiperDateList.length; i++) {
 				this.getDateList(i);
@@ -76,12 +77,20 @@
 					this.type = v.name
 				}
 			})
-		},
-		created() {
 			//品牌
 			this.initBrandList()
-			//商品列表
-			this.initGoods()
+			//试货
+			if(e.type === 'sh') {
+				debugger
+				this.goodsType = '2'
+				//商品列表
+				this.initGoods()
+			}else{
+				//签约等于普通
+				this.goodsType = '1'
+				//商品列表
+				this.initGoods()
+			}
 		},
 		methods: {
 			async initBrandList() {
@@ -96,7 +105,7 @@
 			async initGoods() {
 				let query = {
 					brand_id: this.brandId,
-					type: 1,
+					type: this.goodsType,
 					page: 1
 				}
 				let data = await goodsList(query)

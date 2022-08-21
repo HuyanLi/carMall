@@ -3,41 +3,41 @@
 		<view class="bg">
 			<view class="bg-content">
 				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/box.png" />
-				<text>待收货</text>
+				<text>{{status}}</text>
 			</view>
 			<view class="address">
 				<view>
-					北京市朝阳区
+					{{goodsData.province_name}}{{goodsData.city_name}}{{goodsData.area_name}}
 				</view>
 				<view class="right">
-					动漫大厦五号楼3单元1101
+					{{goodsData.address}}
 				</view>
 				<view>
-					张海底
-					<text>17524521452</text>
+					{{goodsData.consignee}}
+					<text>{{goodsData.phone}}</text>
 				</view>
 				<view>
 					<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/address.png" />
 				</view>
 			</view>
 		</view>
-		<view class="fms">
+		<!-- <view class="fms">
 			<view class="fms-header">
-				<text>顺丰快递</text>
-				<text>已签收</text>
+				<text>{{goodsData.express_name}}</text>
+				<text>{{goodsData.status_name}}</text>
 			</view>
 			<view>您的订单已由本人签收，如有疑问您可以联系配送员。</view>
 			<view class="fms-date">2021-03-15:10:10:02</view>
-		</view>
+		</view> -->
 		<view class="order">
-			<view class="order-content" v-for="(i, idx) in commodities" :key="idx">
-				<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
+			<view class="order-content" v-for="(i, idx) in goodsData.order_item" :key="idx">
+				<image class="img" :src="i.goods_image" />
 				<view class="order-content-info">
-					<view class="order-content-info-name">{{i.name}}</view>
-					<text class="order-content-info-tag">{{i.tags}}</text>
+					<view class="order-content-info-name">{{i.goods_title}}</view>
+					<text class="order-content-info-tag">{{i.goods_sku_text}}</text>
 					<view class="order-content-info-total">
-						<text class="order-content-info-price">¥{{i.price}}</text>
-						<text class="order-content-info-amount">X{{i.amount}}</text>
+						<text class="order-content-info-price">¥{{i.goods_price}}</text>
+						<text class="order-content-info-amount">X{{i.goods_num}}</text>
 					</view>
 				</view>
 			</view>
@@ -45,15 +45,15 @@
 		<view class="total">
 			<view class="total-count">
 				<text>商品金额</text>
-				<text>￥736.00</text>
+				<text>￥{{goodsData.total_amount}}</text>
 			</view>
 			<view class="total-count">
 				<text>优惠金额</text>
-				<text>-￥15.00</text>
+				<text>-￥{{goodsData.coupon_fee}}</text>
 			</view>
 			<view class="total-price">
 				实付：
-				<text>¥731.00</text>
+				<text>¥{{goodsData.pay_fee}}</text>
 			</view>
 		</view>
 		
@@ -61,7 +61,7 @@
 			<view class="info-title">订单信息</view>
 			<view class="info-content">
 				<text>订单编号</text>
-				<text>287615435412</text>
+				<text>{{goodsData.order_sn}}</text>
 			</view>
 			<view class="info-content">
 				<text>支付方式</text>
@@ -69,26 +69,27 @@
 			</view>
 			<view class="info-content">
 				<text>下单时间</text>
-				<text>2021-03-15:10:10:02</text>
+				<text>{{goodsData.paytime}}</text>
 			</view>
 			<view class="info-content">
 				<text>支付时间</text>
-				<text>2021-03-15:10:10:02</text>
+				<text>{{goodsData.createtime}}</text>
 			</view>
 			<view class="info-content">
 				<text>完成时间</text>
-				<text>2021-03-15:10:10:02</text>
+				<text>{{goodsData.confirm_time}}</text>
 			</view>
 		</view>
 		<view class="button">
-			<view class="gray">联系客服</view>
-			<view class="gray">查看物流</view>
-			<view class="black">确认收货</view>
+			<view class="gray" @tap.stop='toService'>联系客服</view>
+			<view class="gray" @tap.stop='showExpres'>查看物流</view>
+			<view class="black" @tap.stop='confirmGoods()'>确认收货</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import { getOrderInfo, confirmOrder } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
@@ -113,11 +114,56 @@
 					price: '368.00',//单价
 					amount: '1',//数量
 					visible: false
-				}]
+				}],
+				orderId: '',
+				goodsData: null,
+				status: ''
 			}
 		},
+		onLoad(e) {
+			this.orderId = e.id
+			this.initOrder()
+		},
 		methods: {
-			
+			initOrder() {
+				let query = {
+					order_id: this.orderId
+				}
+				getOrderInfo(query).then(res=>{
+					this.goodsData = res.data
+					if(this.goodsData === '-1') {
+						this.status = '已取消'
+					}else if(this.goodsData === '0') {
+						this.status = '待打款'
+					}else if(this.goodsData === '1') {
+						this.status = '待发货'
+					}else if(this.goodsData === '2') {
+						this.status = '待收货'
+					}else {
+						this.status = '已完成'
+					}
+				})
+			},
+			confirmGoods() {
+				let query = {
+					order_id: this.goodsData.id,
+					member_id: uni.getStorageSync('member_id'),
+				}
+				confirmOrder(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration:2000
+					})
+				})
+			},
+			toService(){
+				uni.navigateTo({
+					url: '/pages/tabBar/service/service'
+				})
+			},
+			showExpres() {
+				
+			}
 		}
 	}
 </script>

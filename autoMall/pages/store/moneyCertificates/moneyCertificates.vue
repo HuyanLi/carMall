@@ -140,6 +140,12 @@
 			},
 			//我已打款
 			payment(url) {
+				if(this.imgList.length < 0) {
+					uni.showToast({
+						title:'请上传凭证',
+						duration:2000
+					})
+				}
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
 					order_id: this.orderId,

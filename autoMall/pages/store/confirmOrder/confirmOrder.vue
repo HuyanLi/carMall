@@ -235,16 +235,18 @@
 				}
 				addOrder(query).then(res=>{
 					this.orderId = res.data.order_id
-					if(this.needQY === '1') {
+					if(this.needQY === 1) {
 						//不需要签约
 						uni.navigateTo({
 							url: '/pages/store/moneyCertificates/moneyCertificates?info='+ JSON.stringify(this.bankInfo) + '&goods=' + JSON.stringify(this.goodsList) + '&coupon=' + 
 							JSON.stringify(this.coupData) + '&price=' + this.originTotal + '&orderId='+ res.data.order_id
 						})
 					}else {
+						debugger
 						//需要签约
 						//是否签约
-						if( this.user.signing_image === null) {
+						if( this.user.signing_image === "") {
+							debugger
 							//1：未签约   签约协议
 							
 							uni.navigateTo({

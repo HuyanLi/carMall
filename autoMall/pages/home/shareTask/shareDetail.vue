@@ -14,7 +14,8 @@
 	export default {
 		data() {
 			return {
-				content:''
+				content:'',
+				datad: null
 			}
 		},
 		onLoad(option) {
@@ -23,8 +24,8 @@
 		},
 		methods:{
 			async initCont(e) {
-				let data =	await content({content_id: e})
-				this.content = data.data.upper_note
+				this.datad = await content({content_id: e})
+				this.content = this.datad.data.upper_note
 			},
 			toShare() {
 				console.log('2222222222')
@@ -34,14 +35,17 @@
 			　　var that = this;
 			　　// 设置菜单中的转发按钮触发转发事件时的转发内容
 			　　var shareObj = {
-			　　　  title:'',        // 默认是小程序的名称(可以写slogan等)
+			　　　  title: this.datad.name,        // 默认是小程序的名称(可以写slogan等)
 			　　　　desc:'',// 小程序的描述
 					path: '/pages/home/shareDetail/shareDetail',        // 默认是当前页面，必须是以‘/’开头的完整路径
-			　　　　imageUrl: '', // 图片封面，本地文件路径、网络图片路，支持PNG及JPG，默认当前页面截图，显示图片长宽比是 5:4。
+			　　　　imageUrl: this.datad.image, // 图片封面，本地文件路径、网络图片路，支持PNG及JPG，默认当前页面截图，显示图片长宽比是 5:4。
 			　　　　success: function(res){
 			　　　　　　// 转发成功之后的回调
 			　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
-							
+						 uni.showToast({
+						 	title: '分享成功',
+							duration: 2000
+						 })
 			　　　　　　}
 			　　　　},
 			　　　　fail: function(){

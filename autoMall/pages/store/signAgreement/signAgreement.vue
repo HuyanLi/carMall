@@ -9,11 +9,11 @@
 						<canvas class="form-content__canvas" canvas-id="canvas_sign" @touchstart="touchstart"
 							@touchmove="touchmove" @touchend="touchend" disable-scroll="true"></canvas>
 					</view>
-					<!-- <view class="form-footer">
+					<view class="form-footer">
 						<button class="form-footer__reset" @click="autographClick(1)">重置</button>
 						<button class="form-footer__save" @click="autographClick(2)">保存</button>
 						<button class="form-footer__preview" @click="autographClick(3)">预览</button>
-					</view> -->
+					</view>
 				</view>
 			</view>
 			<view class="btn">
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+	import { editUser } from '@/api/mine.js'
 	var x = 20;
 	var y = 20;
 	var tempPoint = []; //用来存放当前画纸上的轨迹点
@@ -48,11 +49,6 @@
 			};
 		},
 		onLoad(e){
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
-			// id = option.id;
-			//     type = option.type;
 			    this.canvasCtx = uni.createCanvasContext('canvas_sign', this) //创建绘图对象
 				//设置画笔样式
 				this.canvasCtx.lineWidth = 6
@@ -90,7 +86,46 @@
 			    //每次触摸开始，开启新的路径
 			    this.canvasCtx.beginPath()
 			},
-		 
+			autographClick(e) {
+				if(e === 1) {
+					let that = this;
+					uni.getSystemInfo({
+						success: function(res) {
+							let canvasw = res.windowWidth;
+							let canvash = res.windowHeight;
+							that.canvasCtx.clearRect(0, 0, canvasw, canvash);
+							that.canvasCtx.draw(true);
+						},
+					})
+				}else if( e === 2) {
+					let that = this;
+					uni.canvasToTempFilePath({
+						canvasId: 'canvas_sign',
+						success: function(res) {
+							let query = {
+								signing_image: res.tempFilePath,
+								member_id: uni.getStorageSync('member_id')
+							}
+							console.log(res.tempFilePath) 
+							//图片格式为base64，如果不是可上传七牛云，之后请求签名接口即可
+							editUser(query).then(res=>{
+								if(res.code == 1) {
+									//走到这里就签名成功了
+									// uni.redirectTo({
+									// 	url:'/pages/workOrder/workOrder'
+									// })
+									uni.showToast({
+										title:res.msg,
+										duration:2000
+									})
+								}else{
+									// that.$u.toast(res.result.message)
+								}
+							})
+						}
+					})
+				}
+			},
 			//触摸移动，获取到路径点
 			touchmove: function(e) {
 			    let moveX = e.changedTouches[0].x

@@ -29,24 +29,26 @@
 		data() {
 			return {
 				sh: true,
-				goodList: []
+				goodList: [],
+				type: '1',
 			}
 		},
 		onLoad(data) {
 			if(data.shihuo === 'sh') {
 				this.sh = true
+				this.type = '2'
+				this.initGoods()
 			}else if(data.shihuo === 'qy'){
 				this.sh = false
+				this.type = '1'
+				this.initGoods()
 			}
-		},
-		created() {
-			this.initGoods()
 		},
 		methods: {
 			async initGoods() {
 				let query = {
 					brand_id: '',
-					type: 2,
+					type: this.type,
 					page: 1
 				}
 				let data = await goodsList(query)
@@ -61,11 +63,11 @@
 			toSH(e) {
 				if(e == 'sh') {
 					uni.navigateTo({
-						url: '/pages/tabBar/mall/mall'
+						url: '/pages/tabBar/mall/mall?type='+ e
 					})
 				}else {
 					uni.navigateTo({
-						url: '/pages/tabBar/mall/mall'
+						url: '/pages/tabBar/mall/mall?type='+e
 					})
 				}
 				
@@ -94,14 +96,14 @@
 		flex-wrap: wrap;
 		padding: 30rpx 30rpx 100rpx;
 		.goodsItem {
-			// padding: 20rpx 18rpx 25rpx;
+			border: 1px dashed #333;
+			padding: 20rpx;
 			image {
 				width: 300rpx;
 				height: 300rpx;
-				margin: 20rpx 20rpx 30rpx;
+				margin: 20rpx 0 30rpx;
 			}
 			.fontText {
-				margin-left: 20rpx;
 				width: 296rpx;
 				display: block;
 				font-family: PingFangSC-Regular;
@@ -130,7 +132,6 @@
 				font-size: 30rpx;
 				color: #ED1C24;
 				text-align: justify;
-				margin-left: 20rpx;
 			}
 		}
 	}

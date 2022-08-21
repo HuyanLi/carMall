@@ -22,25 +22,25 @@
 					<view class="warehouse-content-item-info-storage">当前库存:{{item.storage}}</view>
 					<view class="warehouse-content-item-info-price">
 						¥{{item.price}}
-						<text class="out" @tap="handleOut">出库</text>
+						<text class="out" @tap="handleOut(item)">出库</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="save">
 			<view>保存修改</view>
 		</view>
-		
+
 		<uni-popup class="pop" ref="popup" background-color="#fff">
 			<view class="popup-content">
 				<view class="pop-title">商品出库</view>
-				<view class="pop-name">冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB</view>
-				<view class="pop-number">当前库存: 1000</view>
-				<input class="pop-ipt" type="number" placeholder="请输入出库数量"/>
+				<view class="pop-name">{{outGoodInfo.title}}</view>
+				<view class="pop-number">当前库存: {{outGoodInfo.storage}}</view>
+				<input class="pop-ipt" type="number" v-model="outGoodInfo.outCount" placeholder="请输入出库数量"/>
 				<view class="pop-btn">
 					<view class="pop-cancel" @tap="handleCancelPop">取消</view>
-					<view class="pop-confirm">确认出库</view>
+					<view class="pop-confirm" @tap = "confirmOut">确认出库</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -48,36 +48,38 @@
 </template>
 
 <script>
-	import { warehouse } from '@/api/mine.js'
+	import { warehouse,outMemberGoods,getMyOutGoodsList,getMyOutGoodsLogList } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
-				data: [{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				}]
+				data: [],
+				// 		[{
+				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+				// 	storage: '1000',
+				// 	price: '368'
+				// },{
+				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+				// 	storage: '1000',
+				// 	price: '368'
+				// },{
+				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+				// 	storage: '1000',
+				// 	price: '368'
+				// },{
+				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+				// 	storage: '1000',
+				// 	price: '368'
+				// },{
+				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
+				// 	storage: '1000',
+				// 	price: '368'
+				// }]
+				outGoodInfo:{}
 			}
 		},
 		created() {
@@ -91,7 +93,20 @@
 					page: 1
 				}
 				await warehouse(query).then(res=>{
-					console.log(res)
+					console.log(res);
+					let pageData = [];
+					res.data.data.rows.forEach(item => {
+						let row = {
+							img: item.goods_image,
+							title: item.goods_title,
+							storage: item.goods_num,
+							price: item.goods_price,
+							goods_id:item.goods_id,
+							goods_sku_price_id:item.goods_sku_price_id
+						}
+						pageData.push(row);
+					})
+					this.data = pageData;
 				})
 			},
 			handleHistory () {
@@ -99,11 +114,27 @@
 					url: '/pages/mine/wareHistory'
 				})
 			},
-			handleOut() {
+			handleOut(rows) {
+				this.outGoodInfo = rows;
 				this.$refs.popup.open('center')
 			},
 			handleCancelPop() {
+				this.outGoodInfo = {};
 				this.$refs.popup.close('center')
+			},
+			confirmOut(){
+				// {"goods_id":"1","goods_sku_price_id":"2","num":"1"}
+				let outData = [];
+				outData.push({
+					goods_id:this.outGoodInfo.goods_id,
+					goods_sku_price_id:this.outGoodInfo.goods_sku_price_id,
+					num:this.outGoodInfo.outCount
+				})
+				outMemberGoods(outData).then(res => {
+					if(res.code === '1' ){
+						this.outGoodInfo = {};
+					}
+				})
 			}
 		}
 	}
@@ -115,7 +146,7 @@
 		padding: 34rpx 52rpx 41rpx 44rpx;
 		box-sizing: border-box;
 	}
-	
+
 	&-title {
 		text-align: center;
 		font-weight: 600;

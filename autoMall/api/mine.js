@@ -4,12 +4,6 @@ export const editUser = () => request(
 	'/index.php/api/user/editUser',
 	'POST'
 ) 
-//我的仓库列表
-export const warehouse = (data) => request(
-	'/index.php/api/user/getMyGoodsList',
-	data,
-	'POST'
-) 
 //我的消息列表
 export const getInfoList = (data) => request(
 	'/index.php/api/user/msgList',
@@ -41,3 +35,29 @@ export const confirmOrder = (data) => request(
 	data,
 	'POST'
 ) 
+
+//我的仓库列表
+export const warehouse = (data) => request(
+	'/index.php/api/user/getMyGoodsList',
+	data,
+	'POST'
+)
+//仓库出库
+export const outMemberGoods = (data) => request(
+	'/index.php/api/user/outMemberGoods',
+	data,
+	'POST'
+)
+
+//我的出入库列表
+export const getMyOutGoodsList = (data) => request(
+	'/index.php/api/user/getMyOutGoodsList',
+	data,
+	'POST'
+)
+//我的出入库详情
+export const getMyOutGoodsLogList = (data) => request(
+	'/index.php/api/user/getMyOutGoodsLogList',
+	data,
+	'POST'
+)

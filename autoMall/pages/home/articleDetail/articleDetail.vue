@@ -28,7 +28,8 @@
 				title: '',
 				date: '',
 				showNext: true,
-				id: ''
+				id: '',
+				data: null
 			}
 		},
 		onLoad(option){
@@ -36,32 +37,25 @@
 			console.log(this.id)
 			this.initContent(this.id)
 		},
-		onShow(e) {
-			// console.log(e)
-			// let pages = getCurrentPages();
-			// console.log(pages,5555555)
-			// let currPage = pages[pages.length-1];
-			// if(currPage.data.address==undefined || currPage.data.detailAddress==''){
-				
-			// }else{
-			// 	this.addressList = currPage.data.address
-			// 	// this.address_id = currPage.data.detailAddress
-			// }
-		},
 		methods: {
 			async initContent(e) {
 				let that = this
 				console.log(that.id,'id')
-				let data = await content({content_id: e})
-				that.title = data.data.title
-				that.date = data.data.createtime
-				var cont = data.data.upper_note;
+				that.data = await content({content_id: e})
+				that.title = that.data.data.title
+				that.date = that.data.data.createtime
+				var cont = that.data.data.upper_note;
 				cont = cont.replace(/\<img/g, "<img style='width: 100%;'")
-				this.content= cont;
-				
+				that.content= cont;
 			},
 			nextArticle() {
-				this.$refs.alertDialog.open()
+				console.log(this.data)
+				if(uni.getStorageSync('member_id') !== '') {
+					this.content = this.data.data.lower_note
+					this.showNext = false
+				}else {
+					this.$refs.alertDialog.open()
+				}
 			},
 			backto() {
 				var pages = getCurrentPages();

@@ -5,7 +5,6 @@
 			<view class="order-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(index)" v-for="(item, index) in orderState" :key="index">{{item.title}}</view>
 		</view>
 		<view class="order-swiper-wrap">
-			
 			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
 				<swiper-item v-for="(i, idx) in orderState" :key="idx">
 					<view class="swiper-item">
@@ -56,13 +55,13 @@
 								<text class="order-content-info-price">¥{{item.total_amount}}</text>
 							</view>
 							<view class="order-item-btn">
-								<view class="gray" @tap.stop="cancleBtn(item)" v-if="item.status == '0' || item.pay_voucher_status === '1' || item.pay_voucher_status === '4'">
+								<view class="gray" @tap.stop="cancleBtn(item)" v-if="item.status == '0' || item.pay_voucher_status === '4'">
 									取消订单
 								</view>
 								<view class="gray" v-if="item.status == '0'" @tap.stop="toPay(item)">
 									去打款
 								</view>
-								<view class="gray" v-if="item.status === '1'" @tap.stop="toWL(item)">
+								<view class="gray" v-if="item.status === '2'" @tap.stop="toWL(item)">
 									查看物流
 								</view>
 								<view class="gray" v-if="item.status==='2'" @tap.stop='confirmGoods(item)'>
@@ -71,7 +70,7 @@
 								<!-- <view v-if="item.status == '0'" @tap.stop="handleBlack" class="gray">
 									{{isSale ? '去发货' : '去打款'}}
 								</view> -->
-								<view class="black">
+								<view class="black" @tap.stop='toService'>
 									联系客服
 								</view>
 							</view>
@@ -79,7 +78,6 @@
 						
 					</view>
 				</swiper-item>
-				
 			</swiper>
 		</view>
 	</view>
@@ -107,7 +105,11 @@
 			 * 3 待收货
 			 * 4 已完成
 			 */
-			this.current = this.activeIndex = Number(opt.activeIndex)
+			if(opt.activeIndex) {
+				this.current = this.activeIndex = Number(opt.activeIndex)
+			}else {
+				this.current = 0
+			}
 			this.getOrderList()
 		},
 		methods: {
@@ -123,8 +125,9 @@
 				}
 				console.log(param)
 				const res = await getOrderList(param)
-				this.allOrder = res.data.rows || [];
-				console.log(res)
+				if(res.data){
+					this.allOrder = res.data.rows || [];
+				}
 			},
 			//取消订单
 			cancleBtn(e) {
@@ -166,6 +169,11 @@
 					this.getOrderList()
 				})
 			},
+			toService(){
+				uni.navigateTo({
+					url: '/pages/tabBar/service/service'
+				})
+			},
 			handleBlack() {
 				this.isSale ? uni.navigateTo({
 					url: '/pages/mine/sendout'
@@ -184,7 +192,6 @@
 			handleSwipeChange(e) {
 				this.activeIndex = this.current = e.detail.current
 				// this.current = e.detail.current
-				this.getOrderList()
 			},
 			handleShowAll(item) {
 				item.order_item.forEach(i => {
@@ -194,7 +201,7 @@
 			},
 			handleOrderDetail(item) {
 				uni.navigateTo({
-					url: `/pages/mine/orderDetail?id=${item.orderNumber}`,
+					url: `/pages/mine/orderDetail?id=${item.id}`,
 					
 				})
 			},
