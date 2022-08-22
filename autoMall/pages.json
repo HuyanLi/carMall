@@ -287,7 +287,6 @@
 		        "navigationBarTitleText": "提现记录",
 		        "enablePullDownRefresh": false
 		    }
-		    
 		}
 		,{
 		    "path" : "pages/mine/orderDetail",
@@ -352,6 +351,15 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
+        ,{
+            "path" : "pages/mine/equity",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"pageOrientation": "portrait",

@@ -8,7 +8,7 @@
 			</view>
 			<view class="detailAddress">
 				<text>{{person.addres}}</text>
-				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/to.png"></image>
 			</view>
 			<view class="adressPerson">
 				<text class="text1">{{person.name}}</text>
@@ -18,7 +18,7 @@
 		<view class="orderAdress" @click="toAddress" v-else>
 			<view class="detailAddress">
 				<text>请添加收货地址</text>
-				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/to.png"></image>
 			</view>
 		</view>
 		<!-- 选购商品 -->
@@ -46,7 +46,7 @@
 				<view class="money" @click="toCoupon">
 					<text class="testMon" v-if="showChoose">请选择优惠券</text>
 					<text class="testMon" v-else>-￥{{coupon}}</text>
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png" mode=""></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/mall/to.png" mode=""></image>
 				</view>
 			</view>
 			<view class="total">
@@ -86,8 +86,11 @@
 				<text style="font-size: 24rpx;color: #FF0000;">￥</text>
 				<text style="font-size: 36rpx;color: #FF0000;">{{total}}</text>
 			</view>
-			<view class="confirmBtn">
+			<view class="confirmBtn" v-if="user.is_signing == 1">
 				<button class="confirmB" type="default" @click="toConfirm">确认打款</button>
+			</view>
+			<view class="confirmBtn" v-if="user.is_signing == 2">
+				<button class="confirmB" type="default" @click="toaddPT">加入拼团购物车</button>
 			</view>
 		</view>
 	</view>
@@ -116,41 +119,62 @@
 				comitGoods: '',
 				coupData: {},
 				confromData: [],
-				showChoose: true
+				showChoose: true,
+				orderType: ''
 			}
 		},
 		onLoad(e) {
-			this.goodsList = JSON.parse(e.goodsData)
-			this.goodsList.forEach(item=>{
-				this.goodsnum = item.goods_num
-				this.confromData.push({
-					goods_id: item.goods_id,
-					goods_sku_price_id: item.sku_price_id,
-					num: item.goods_num
+			if(e.data) {
+				let conD = JSON.parse(e.data)
+				let conSku = JSON.parse(e.sku)
+				console.log(conD,conSku,'e')
+				this.goodsList.push({
+					goods: {
+						image: conD.image,
+						title: conD.title,
+					},
+					sku_price:{
+						goods_sku_text: conSku[0].goods_sku_text ,
+						price: conSku[0].price
+					},
+					goods_num: e.num
 				})
-			})
+			}
+			if(e.goodsData) {
+				this.goodsList = JSON.parse(e.goodsData)
+				this.goodsList.forEach(item=>{
+					this.goodsnum = item.goods_num
+					this.confromData.push({
+						goods_id: item.goods_id,
+						goods_sku_price_id: item.sku_price_id,
+						num: item.goods_num
+					})
+				})
+			}
 			this.user = uni.getStorageSync('userInfo')
 		},
 		onShow() {
-			this.initDefault()
 			this.initBankInfo()
 			this.initconfrom()
 			let pages = getCurrentPages();
 			let currPage = pages[pages.length - 1]; //当前页面
+			console.log(currPage.data.person.area,'person')
 			//地址
-			if(currPage.data.person) {
-				console.log(currPage.data.person,'person')
-				let data = currPage.data.person;
+			if(currPage.data.person.area !== undefined) {
+				let data = currPage.__data__.person;
 				//地址
 				this.person.area = data.area;
 				this.person.addres = data.addres;
 				this.person.name = data.name;
 				this.person.number = data.number;
 				this.addId = data.id
+				this.showAddress = true
+			}else {
+				this.initDefault()
+				this.showAddress = false
 			}
 			//优惠券
 			let list = currPage.data.coupon
-			console.log(list,'list')
 			if(list === 0) {
 				this.showChoose = true
 			}else if(list !== '') {
@@ -198,6 +222,8 @@
 						this.coupon = res.data.coupon_fee
 						this.company = res.data.goods_num
 						this.needQY = res.data.is_signing
+						// 订单类型 trial=试货，other=普通订单
+						this.orderType = res.data.type
 					}
 				})
 			},
@@ -220,6 +246,12 @@
 					url: '/pages/store/coupon/coupon'
 				})
 			},
+			//加入拼团购物车
+			toaddPT() {
+				uni.navigateTo({
+					url: '/pages/home/groupBooking/groupBooking'
+				})
+			},
 			//确认打款
 			toConfirm() {
 				if(this.couId ===undefined) {
@@ -235,28 +267,22 @@
 				}
 				addOrder(query).then(res=>{
 					this.orderId = res.data.order_id
+					//是否能签约 1：不能 2：可以
 					if(this.needQY === 1) {
 						//不需要签约
 						uni.navigateTo({
-							url: '/pages/store/moneyCertificates/moneyCertificates?info='+ JSON.stringify(this.bankInfo) + '&goods=' + JSON.stringify(this.goodsList) + '&coupon=' + 
-							JSON.stringify(this.coupData) + '&price=' + this.originTotal + '&orderId='+ res.data.order_id
+							url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
 						})
 					}else {
-						debugger
-						//需要签约
-						//是否签约
-						if( this.user.signing_image === "") {
-							debugger
+						if( this.user.signing_image === null) {
 							//1：未签约   签约协议
-							
 							uni.navigateTo({
-								url: '/pages/store/signAgreement/signAgreement?info='+ JSON.stringify(this.bankInfo)
+								url: '/pages/store/signAgreement/signAgreement?orderId=' + this.orderId
 							})
 						}else {
 							//2：已签约  提交打款凭证
 							uni.navigateTo({
-								url: '/pages/store/moneyCertificates/moneyCertificates?info='+ JSON.stringify(this.bankInfo) + '&goods=' + JSON.stringify(this.goodsList) + '&coupon=' + 
-								JSON.stringify(this.coupData) + '&price=' + this.originTotal + '&orderId='+ res.data.order_id
+								url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
 							})
 						}
 					}
@@ -284,7 +310,7 @@
 		flex-direction: column;
 		padding: 30rpx;
 		border: 1px solid;
-		border-image:url(https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/group.png) 27 round; 
+		border-image:url(https://carshop.duoka361.cn/images/static/image/mall/group.png) 27 round; 
 		.orderArea {
 			font-family: PingFangSC-Light;
 			font-weight: 300;
@@ -349,9 +375,10 @@
 					color: #333333;
 				}
 				.shopTag {
-					display: inline-block;
+					display: block;
 					padding: 0 20rpx;
 					height: 48rpx;
+					width: 100rpx;
 					border-radius: 8rpx;
 					margin: 10rpx 0 ;
 					background: #F3F3F3;

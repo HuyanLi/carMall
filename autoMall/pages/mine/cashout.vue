@@ -18,11 +18,11 @@
 				<view class="cashout-content-footer-title">提现至</view>
 				<view class="cashout-content-footer-content">
 					<view>
-						<img class="size33" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wechat.png" />
+						<img class="size33" src="https://carshop.duoka361.cn/images/static/image/mine/wechat.png" />
 						<text class="we">微信</text>
-						<text class="name">微微一笑很倾城</text>
+						<text class="name">{{nickName}}</text>
 					</view>
-					<img class="size30" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/duigou.png" />
+					<img class="size30" src="https://carshop.duoka361.cn/images/static/image/mine/duigou.png" />
 				</view>
 			</view>
 			<view class="cashout-button" @tap="handleCashout">
@@ -32,12 +32,12 @@
 		<view class="cashout-footer">
 			提现即表示同意<text>《车后市场分销协议》</text>
 		</view>
-		<Dialog title="确定提现3000.00元吗？" :visible="dialogVisible" @cancel="handleCancel" @confirm="handleConfirm"/>
+		<Dialog :title="title" :visible="dialogVisible" @cancel="handleCancel" @confirm="handleConfirm"/>
 	</view>
 </template>
 
 <script>
-	
+	import { userGet } from '@/api/mine.js'
 	import Dialog from "../../components/dialog.vue"
 	export default {
 		components: {
@@ -45,13 +45,19 @@
 		},
 		data() {
 			return {
-				balance: '3200.00',
+				balance: uni.getStorageSync('userInfo').commission_price,
 				count: '',
 				dialogVisible: false,
+				nickName: uni.getStorageSync('userInfo').nickname,
+				title: ''
 			}
+		},
+		created() {
+			// this.initList()
 		},
 		methods: {
 			handleCashout() {
+				this.title = '确定提现' +  this.count +'元吗'
 				this.dialogVisible = true
 			},
 			handleCancel() {
@@ -59,6 +65,16 @@
 			},
 			handleConfirm() {
 				this.dialogVisible = false
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					price: this.count
+				}
+				userGet(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration: 2000
+					})
+				})
 			},
 			handleOutAll() {
 				this.count = this.balance

@@ -2,7 +2,7 @@
 <template>
 	<view class="coupon">
 		<view class="coupon-que">
-			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/went.png" mode=""></image>
+			<image src="https://carshop.duoka361.cn/images/static/image/mall/went.png" mode=""></image>
 			<text>如何使用</text>
 		</view>
 		<view class="coupon-content">
@@ -27,6 +27,7 @@
 				</view>
 			</view>
 		</view>
+		<uni-load-more v-if="couList.length>0" :status="status" :icon-size="16" :content-text="contentText"></uni-load-more>
 	</view>
 </template>
 
@@ -36,22 +37,56 @@
 		data() {
 			return {
 				couList: [],
+				status: 'more',
+				contentText: {
+					contentdown: '上拉加载更多',
+					contentrefresh: '加载中',
+					contentnomore: '没有更多了'
+				},
+				reload: false,
+				pageNum: 1,
+				totalCount: 0
 			}
 		},
-		created() {
-			this.initcoupon()
+		onShow() {
+			this.reload = true;
+			this.pageNum = 1;
+			this.initcoupon();
+		},
+		onReachBottom() {
+			if (this.totalCount > this.couList.length) {
+				this.status = 'loading';
+				setTimeout(() => {
+					this.pageNum++
+					this.initcoupon();//执行的方法
+				}, 1000)//这里我是延迟一秒在加载方法有个loading效果，如果接口请求慢的话可以去掉
+			} else { //停止加载
+				this.status = 'noMore'
+			}
 		},
 		methods: {
 			async initcoupon() {
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
-					page: 1,
+					page: this.pageNum,
 					status: 1,
 					coupon_type: 2,
 					
 				}
 				await myCoupon(query).then(res=>{
+					this.totalCount = res.data.total
 					this.couList = res.data.rows
+					if (this.totalCount > 0) {
+						const dataMap = res.data.rows;
+						this.couList = this.reload ? dataMap : this.couList.concat(dataMap);
+						this.reload = false;
+					} else {
+						this.couList = [];
+					}
+					if (this.totalCount == this.couList.length) {
+						this.reload = false;
+						this.status = 'noMore'
+					}
 				})
 			},
 			choosecoupon(e,i) {
@@ -95,7 +130,7 @@
 		&-image {
 			width: 690rpx;
 			height: 190rpx;
-			background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/hcoupon.png);
+			background-image: url(https://carshop.duoka361.cn/images/static/image/mall/hcoupon.png);
 			background-repeat: no-repeat;
 			background-size: 690rpx 190rpx;
 			display: flex;

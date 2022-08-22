@@ -4,7 +4,9 @@
 			<view class="">
 				<text>常见问题</text>
 			</view>
-			<rich-text :nodes="content"></rich-text>
+			<view class="service-text">
+				<rich-text :nodes="content"></rich-text>
+			</view>
 		</view>
 		<button type="default" open-type="contact" session-from="sessionFrom" @tap.stop="toShare">在线客服</button>
 		<!-- tabBar -->
@@ -54,10 +56,14 @@
 		text {
 			color: #424242;
 			display: inline-block;
-			margin: 0 0 30rpx 0;
+			// margin: 0 0 30rpx 0;
 			font-weight: 600;
 			font-size: 28rpx;
 		}
+	}
+	&-text {
+		width: 100%;
+		height: 1100rpx;
 	}
 	button {
 		width: 690rpx;

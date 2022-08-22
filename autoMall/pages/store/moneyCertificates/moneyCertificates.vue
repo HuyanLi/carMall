@@ -28,7 +28,10 @@
 			<view class="chooseT">
 				<text>订单信息</text>
 			</view>
-			<view class="chooseItem" v-for="(item,index) in goodsData.order_item" :key='index'>
+			<view class="chooseItem" v-if="goodsData === null">
+				未找到该订单
+			</view>
+			<view class="chooseItem" v-else v-for="(item,index) in goodsData.order_item" :key='index'>
 				<image class="goodsImage" :src="item.goods_image"></image>
 				<view class="goodsInfo">
 					<text class="shopTitle">{{item.goods_title}}</text>
@@ -50,9 +53,9 @@
 			</view>
 			<view class="godsCoup" v-else>
 				<text class="couLft">{{goodsData.total_amount}}</text>
-				<text class="couRig">-￥{{goodsData.coupon_fee}}</text>
+				<text class="couRig" v-if="goodsData !== null">-￥{{goodsData.coupon_fee}}</text>
 			</view>
-			<view class="payMoney">
+			<view class="payMoney" v-if="goodsData !== null">
 				<text class="text">需支付：¥<text class="money">{{goodsData.pay_fee}}</text></text>
 			</view>
 		</view>
@@ -66,10 +69,10 @@
 				<!-- 上传图片 -->
 				<view class="shangchuan">
 					<view class="sc2" v-for="(item, index) in imgList" :key="index">
-						<image class="del" @click="del(index)" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/close.png" mode=""></image>
+						<image class="del" @click="del(index)" src="https://carshop.duoka361.cn/images/static/image/mall/close.png" mode=""></image>
 						<image class="Img3" :src="item" mode=""></image>
 					</view>
-					<view class="sc2" v-if="imgList.length < 3" @click="upload"><image class="sc3" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/upload.png" mode=""></image></view>
+					<view class="sc2" v-if="imgList.length < 3" @click="upload"><image class="sc3" src="https://carshop.duoka361.cn/images/static/image/mall/upload.png" mode=""></image></view>
 				</view>
 			</view>
 
@@ -100,26 +103,14 @@
 			}
 		},
 		onLoad(e) {
-			if(e.id) {
-				this.orderId = e.id
-			}else {
-				this.goodsList = JSON.parse(e.goods)
-				let coupon = JSON.parse(e.coupon)
-				console.log(e.coupon.id,7777)
-				if(coupon.coupon_id === undefined) {
-					this.couponInfo = '暂无优惠券'
-				}else {
-					this.couponInfo = "满" + JSON.parse(e.coupon).full_price + '减' + JSON.parse(e.coupon).reduce_price + '元优惠券'
-					this.couponMoney = JSON.parse(e.coupon).reduce_price
-				}
-				this.money = e.price
-				this.orderId = e.orderId
-			}
-		},
-		onShow() {
+			this.orderId = e.orderId
 			this.orderDetail()
 			this.initBank()
 		},
+		// onShow() {
+			
+			
+		// },
 		methods: {
 			//回显
 			orderDetail() {
@@ -127,6 +118,11 @@
 					order_id: this.orderId
 				}
 				getOrderInfo(query).then(res=>{
+					uni.showToast({
+						duration: 2000,
+						title: res.msg
+					})
+					console.log(this.goodsData)
 					if(res.code === 1) {
 						this.goodsData = res.data
 					}
@@ -140,28 +136,36 @@
 			},
 			//我已打款
 			payment(url) {
-				if(this.imgList.length < 0) {
+				if(this.goodsData === null) {
 					uni.showToast({
-						title:'请上传凭证',
-						duration:2000
+						duration: 2000,
+						title: '未找到该订单'
 					})
+					return
+				}else {
+					if(this.imgList.length === 0) {
+						uni.showToast({
+							title:'请上传凭证',
+							duration:2000
+						})
+					}else {
+						let query = {
+							member_id: uni.getStorageSync('member_id'),
+							order_id: this.orderId,
+							pay_voucher_images: this.imgList
+						}
+						commitPay(query).then(res=>{
+							uni.showToast({
+								title: res.msg,
+								duration: 2000
+							})
+							//完成支付
+							uni.navigateTo({
+								url: url+'?price=' + this.goodsData.pay_fee
+							})
+						})
+					}
 				}
-				let query = {
-					member_id: uni.getStorageSync('member_id'),
-					order_id: this.orderId,
-					pay_voucher_images: this.imgList
-				}
-				commitPay(query).then(res=>{
-					uni.showToast({
-						title: res.msg,
-						duration: 2000
-					})
-					//完成支付
-					uni.navigateTo({
-						url: url+'?price=' + this.money
-					})
-				})
-				
 			},
 			// 点击上传图片
 			upload() {

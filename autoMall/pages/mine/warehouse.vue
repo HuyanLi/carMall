@@ -10,8 +10,8 @@
 				<text>总计金额(元)</text>
 			</view>
 			<view class="warehouse-big">
-				<text>500</text>
-				<text>2350.00</text>
+				<text>{{goodsNum}}</text>
+				<text>{{goodsPrice}}</text>
 			</view>
 		</view>
 		<view class="warehouse-content">
@@ -29,7 +29,7 @@
 		</view>
 
 		<view class="save">
-			<view>保存修改</view>
+			<button type="default" @tap.stop='saveEdit'>保存修改</button>
 		</view>
 
 		<uni-popup class="pop" ref="popup" background-color="#fff">
@@ -40,7 +40,7 @@
 				<input class="pop-ipt" type="number" v-model="outGoodInfo.outCount" placeholder="请输入出库数量"/>
 				<view class="pop-btn">
 					<view class="pop-cancel" @tap="handleCancelPop">取消</view>
-					<view class="pop-confirm" @tap = "confirmOut">确认出库</view>
+					<view class="pop-confirm" @tap.stop="confirmOut">确认出库</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -53,33 +53,10 @@
 		data() {
 			return {
 				data: [],
-				// 		[{
-				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-				// 	storage: '1000',
-				// 	price: '368'
-				// },{
-				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-				// 	storage: '1000',
-				// 	price: '368'
-				// },{
-				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-				// 	storage: '1000',
-				// 	price: '368'
-				// },{
-				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-				// 	storage: '1000',
-				// 	price: '368'
-				// },{
-				// 	img: 'https://baiyuechangxiong-pic.luobo.info/che/staticuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-				// 	title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-				// 	storage: '1000',
-				// 	price: '368'
-				// }]
-				outGoodInfo:{}
+				outGoodInfo:{},
+				goodsNum: '',
+				goodsPrice: '',
+				outList:[]
 			}
 		},
 		created() {
@@ -93,9 +70,10 @@
 					page: 1
 				}
 				await warehouse(query).then(res=>{
-					console.log(res);
+					this.goodsNum = res.data.count.all_goods_num
+					this.goodsPrice = res.data.count.all_goods_price
 					let pageData = [];
-					res.data.data.rows.forEach(item => {
+					res.data.rows.forEach(item => {
 						let row = {
 							img: item.goods_image,
 							title: item.goods_title,
@@ -122,19 +100,37 @@
 				this.outGoodInfo = {};
 				this.$refs.popup.close('center')
 			},
-			confirmOut(){
-				// {"goods_id":"1","goods_sku_price_id":"2","num":"1"}
-				let outData = [];
-				outData.push({
-					goods_id:this.outGoodInfo.goods_id,
-					goods_sku_price_id:this.outGoodInfo.goods_sku_price_id,
-					num:this.outGoodInfo.outCount
-				})
-				outMemberGoods(outData).then(res => {
-					if(res.code === '1' ){
-						this.outGoodInfo = {};
+			//保存修改
+			saveEdit() {
+				if(this.outList.length == 0) {
+					uni.showToast({
+						title: '请选择出库商品',
+						duration: 2000
+					})
+				}else {
+					let query = {
+						goods_list: JSON.stringify(this.outList),
+						member_id: uni.getStorageSync('member_id')
 					}
+					outMemberGoods(query).then(res => {
+						if(res.code === 1 ){
+							this.outGoodInfo = {};
+							uni.showToast({
+								title: res.msg,
+								duration: 2000
+							})
+							this.initwareList()
+						}
+					})
+				}
+			},
+			confirmOut(){
+				this.outList.push({
+					goods_id: this.outGoodInfo.goods_id,
+					goods_sku_price_id: this.outGoodInfo.goods_sku_price_id,
+					num: this.outGoodInfo.outCount
 				})
+				this.$refs.popup.close('center')
 			}
 		}
 	}
@@ -231,9 +227,9 @@
 		border-radius: 16rpx;
 		transform: translate3d(0, -60rpx, 0);
 		box-sizing: border-box;
-		padding: 39rpx 30rpx 0;
+		padding: 39rpx 30rpx 20rpx;
 		&-item {
-			margin-bottom: 52rpx;
+			margin-bottom: 20rpx;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;

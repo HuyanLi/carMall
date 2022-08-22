@@ -1,7 +1,7 @@
 <template>
 	<view class="sale-relation">
 		<view class="sale-relation-user">
-			<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" />
+			<img src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png" />
 			<view class="sale-relation-user-msg">
 				<view class="sale-relation-user-msg-name">
 					Latte今天喝拿铁
@@ -13,32 +13,58 @@
 		</view>
 		<view class="contact">
 			<view class="contact-state">
-				<view class="contact-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(index)" v-for="(item, index) in contactState" :key="index">{{item.title}}</view>
+				<view class="contact-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(item,index)" v-for="(item, index) in contactState" :key="index">{{item.title}}</view>
 			</view>
 			<view class="contact-swiper-wrap">
 				<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
 					<swiper-item>
-						<view class="contact-item" v-for="(item, index) in contacts" :key="index">
-							<img :src="item.img" />
+						<view class="empty" v-if="contacts.length == 0">
+							暂无数据
+						</view>
+						<view v-else class="contact-item" v-for="(item, index) in contacts" :key="index">
+							<img :src="item.head_img" />
 							<view>
 								<view class="contact-item-name">
-									{{item.name}}
+									{{item.nickname}}
 								</view>
 								<view class="contact-item-date">
-									{{item.date}}
+									{{item.agent_time}}
 								</view>
 							</view>
 						</view>
 					</swiper-item>
 					<swiper-item>
-						<view class="swiper-item">
-							2
+						<view class="empty" v-if="contacts.length == 0">
+							暂无数据
+						</view>
+						<view v-else class="contact-item" v-for="(item, index) in contacts" :key="index">
+							<img :src="item.head_img" />
+							<view>
+								<view class="contact-item-name">
+									{{item.nickname}}
+								</view>
+								<view class="contact-item-date">
+									{{item.agent_time}}
+								</view>
+							</view>
 						</view>
 					</swiper-item>
 					<swiper-item>
-						<view class="swiper-item">
-							3
+						<view class="empty" v-if="contacts.length == 0">
+							暂无数据
 						</view>
+						<view v-else class="contact-item" v-for="(item, index) in contacts" :key="index">
+							<img :src="item.head_img" />
+							<view>
+								<view class="contact-item-name">
+									{{item.nickname}}
+								</view>
+								<view class="contact-item-date">
+									{{item.agent_time}}
+								</view>
+							</view>
+						</view>
+						
 					</swiper-item>
 				</swiper>
 				
@@ -48,38 +74,57 @@
 </template>
 
 <script>
+	import { getRelationlist } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
 				activeIndex: 0,
 				current: 0,
-				contactState: [{title: '平级代理商'},{title: '下级团长'},{title: '下级团员'}],
+				type: '',
+				contactState: [{title: '平级代理商',type: '1'},{title: '下级团长',type: '2'},{title: '下级团员',type:'3'}],
 				contacts: [{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
+					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
 					name: '用户名称',
 					date: '2020-08-18 23:02:31'
 				}]
 			}
 		},
+		created() {
+			this.initlist()
+		},
 		methods: {
-			handleStateTap(index) {
+			initlist() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					level_id: this.type
+				}
+				getRelationlist(query).then(res=>{
+					this.contacts = res.data.rows
+				})
+			},
+			handleStateTap(item,index) {
+				this.type = item.type
 				this.activeIndex = index
 				this.current = index
+				this.initlist()
 			},
 			handleSwipeChange(e) {
 				this.activeIndex = e.detail.current
+				this.current = this.activeIndex
+				this.type = Number(this.current) + 1
+				this.initlist()
 			},
 		}
 	}
@@ -140,6 +185,12 @@
 			swiper-item {
 				box-sizing: border-box;
 				padding: 28rpx;
+			}
+			.empty {
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				margin-top: 30rpx;
 			}
 			.contact-item {
 				height: 130rpx;

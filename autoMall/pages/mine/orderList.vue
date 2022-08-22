@@ -1,6 +1,6 @@
 <template>
 	<view class="order">
-		<img @tap="handleStorage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/viewStorage.png" alt="" class="float" />
+		<img @tap="handleStorage" src="https://carshop.duoka361.cn/images/static/image/mine/viewStorage.png" alt="" class="float" />
 		<view class="order-state">
 			<view class="order-state-item" :class="index === activeIndex ? 'active' : ''" @tap="handleStateTap(index)" v-for="(item, index) in orderState" :key="index">{{item.title}}</view>
 		</view>
@@ -12,11 +12,11 @@
 						<view class="order-item" @tap="handleOrderDetail(item)" v-for="(item, index) in allOrder" :key="index">
 							<view class="order-header" v-if="isSale">
 								<view class="order-header-info">
-									<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png" class="order-header-info-pic" />
+									<img src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png" class="order-header-info-pic" />
 									<view class="order-header-info-name">张三</view>
-									<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png" class="order-header-info-tag" />
+									<img src="https://carshop.duoka361.cn/images/static/image/mine/tuanzhang.png" class="order-header-info-tag" />
 								</view>
-								<img class="order-header-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tel.png" />
+								<img class="order-header-img" src="https://carshop.duoka361.cn/images/static/image/mine/tel.png" />
 								<!-- <text class="order-title-number">订单号 {{item.orderNumber}}</text>
 								<text class="order-title-state">{{item.orderStateName}}</text> -->
 							</view>
@@ -114,6 +114,7 @@
 		},
 		methods: {
 			async getOrderList() {
+				this.allOrder = []
 				let param = {
 					member_id: uni.getStorageSync('member_id'),
 					page: '1',
@@ -123,7 +124,6 @@
 					//全部订单不传status
 					delete param.status
 				}
-				console.log(param)
 				const res = await getOrderList(param)
 				if(res.data){
 					this.allOrder = res.data.rows || [];
@@ -191,7 +191,7 @@
 			},
 			handleSwipeChange(e) {
 				this.activeIndex = this.current = e.detail.current
-				// this.current = e.detail.current
+				this.current = e.detail.current
 			},
 			handleShowAll(item) {
 				item.order_item.forEach(i => {
@@ -202,7 +202,6 @@
 			handleOrderDetail(item) {
 				uni.navigateTo({
 					url: `/pages/mine/orderDetail?id=${item.id}`,
-					
 				})
 			},
 			
@@ -219,6 +218,10 @@
 		flex-direction: column;
 		overflow: hidden;
 		position: relative;
+		.empty {
+			text-align: center;
+			margin-top: 30rpx;
+		}
 		&-header {
 			display: flex;
 			flex-direction: row;

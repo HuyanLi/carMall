@@ -16,16 +16,16 @@
 				</view>
 			</view>
 			<view class="approve">
-				<image @click="toApprove" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/approve.png"></image>
+				<image @click="toApprove" src="https://carshop.duoka361.cn/images/static/image/register/approve.png"></image>
 			</view>
 		</view>
 		<view class="task">
 			<view class="uni-flex uni-row taskImg">
 				<view class="text" style="-webkit-flex: 1;flex: 1;" @click="toShare('share')">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/share.png"></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/register/share.png"></image>
 				</view>
 				<view class="text" style="-webkit-flex: 1;flex: 1;" @click="toShare('testReport')">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/register/testReport.png"></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/register/testReport.png"></image>
 				</view>
 			</view>
 		</view>
@@ -37,7 +37,7 @@
 	export default {
 		data() {
 			return {
-				bgcIMG: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/register/top.png',
+				bgcIMG: 'https://carshop.duoka361.cn/images/static/image/register/top.png',
 				couponsList:[],
 				testData: {}
 			}
@@ -128,7 +128,7 @@
 				height: 168rpx;
 				margin-bottom: 30rpx;
 				text-align: center;
-				background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/register/coupons.png);
+				background-image: url(https://carshop.duoka361.cn/images/static/image/register/coupons.png);
 				background-repeat:no-repeat;
 				background-size: 100%;
 				text {

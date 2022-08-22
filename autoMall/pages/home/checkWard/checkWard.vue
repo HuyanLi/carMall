@@ -1,7 +1,7 @@
 <!-- 查看奖励 -->
 <template>
 	<view class="checkWard">
-		<image class="checkWard-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/rrr.png" mode=""></image>
+		<image class="checkWard-img" src="https://carshop.duoka361.cn/images/static/image/home/rrr.png" mode=""></image>
 		<view class="checkWard-text">
 			<rich-text :nodes="content"></rich-text>
 		</view>

@@ -24,51 +24,144 @@
 				<input class="info-item-content ipt" v-model="company" type="text">
 			</view>
 		</view>
-		<uni-data-picker v-if="pickerVisible" ref="picker" placeholder="请选择" popup-title="请选择所在地区" :localdata="addressList" v-model="address"
-			@change="onchange" @nodeclick="onnodeclick" @popupopened="onpopupopened" @popupclosed="onpopupclosed">
-		</uni-data-picker>
+		<view class="bottom-btn">
+			<button type="default" @tap.stop="saveInfo">保存</button>
+		</view>
+		<uni-popup ref="pupop" type="bottom">
+			<view class="popup">
+				<view class="picker-btn">
+					<view class="left" @click="cancel">取消</view>
+					<view class="right" @click="confirm">确定</view>
+				</view>
+				<picker-view :indicator-style="indicatorStyle" :value="valueArr" @change="bindChange">
+					<picker-view-column>
+						<view class="item" v-for="(item,index) in province" :key="index">{{item.name}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="province[valueArr[0]]">
+						<view class="item" v-for="(item,index) in province[valueArr[0]].children[valueArr[1]].children" :key="index">{{item.name}}</view>
+					</picker-view-column>
+				</picker-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
-	import { addressList } from '@/components/address.js'
+	import { getCity } from '@/api/store.js'
+	import { editUser } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
 				pickerVisible: false,
 				userInfo: uni.getStorageSync('userInfo'),
 				tel: uni.getStorageSync('userInfo').mobile,
-				userName: uni.getStorageSync('userInfo').name,
+				userName: uni.getStorageSync('userInfo').realname,
 				address: uni.getStorageSync('userInfo').province_name + uni.getStorageSync('userInfo').city_name + uni.getStorageSync('userInfo').area_name,
 				company: uni.getStorageSync('userInfo').company_name,
-				addressList,
+				select:"请选择地区",
+				id:'',
+				valueArr: [0, 0, 0], // 用于判断当前滑动的是哪一列
+				province: [], // 数据列表
+				city: [],
+				area: [],
+				province_name: '',
+				city_name: '',
+				area_name: '',
 			}
 		},
+		created() {
+			this.initCity()
+		},
 		methods: {
+			saveInfo() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					mobile: this.tel,
+					realname: this.userName,
+					company_name: this.company,
+					province_name: this.province_name,
+					city_name: this.city_name,
+					area_name: this.area_name
+				}
+				editUser(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration: 2000
+					})
+					uni.navigateBack({
+						delta: 1
+					})
+				})
+			},
 			handleAddress() {
-				this.pickerVisible = true
-				this.$nextTick(() => {
-					this.$refs.picker.show()
+				let that = this
+				that.$refs.pupop.open()
+			},
+			initCity() {
+				getCity().then(res=>{
+					this.province = res.data
+					this.loadCity(this.province[0].id)
+				})
+				
+			},
+			loadCity(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res =>{
+					this.city = res.data;
+					if (this.province[this.valueArr[0]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children.push(item)
+						})
+						this.loadArea(this.province[this.valueArr[0]].children[this.valueArr[1]].id)
+					}
 				})
 			},
-			onnodeclick(e) {
-				console.log(e);
-			},
-			onpopupopened(e) {
-				console.log('popupopened');
-			},
-			onpopupclosed(e) {
-				this.pickerVisible = false
-				console.log('popupclosed');
-			},
-			onchange(e) {
-				console.log('onchange:', e);
-				let address = ''
-				e.detail.value.forEach(i => {
-					address+=i.text
+			loadArea(pid) {
+				const query = {
+					parent_id: pid
+				}
+				getCity(query).then(res => {
+					this.area = res.data;
+					if (this.province[this.valueArr[0]].children[this.valueArr[1]].children === undefined) {
+						this.$set(this.province[this.valueArr[0]].children[this.valueArr[1]], 'children', [])
+						res.data.forEach(item => {
+							this.province[this.valueArr[0]].children[this.valueArr[1]].children.push(item)
+						})
+					}
 				})
-				this.address = address
-			}
+			},
+			bindChange(e) {
+				const val = e.detail.value;
+				if (this.valueArr[0] !== val[0]) {
+					this.province_name = this.province[val[0]].name
+					this.province_id = this.province[val[0]].id
+					this.loadCity(this.province[val[0]].id)
+				} else if (this.valueArr[1] !== val[1]) {
+					this.city_name = this.province[val[0]].children[val[1]].name,
+					this.loadArea(this.province[val[0]].children[val[1]].id)
+					this.city_id = this.province[val[0]].children[val[1]].id
+				}
+				this.valueArr = val
+			},
+			confirm(e) {
+				this.area.forEach((item,index)=>{
+					if(this.valueArr[2] === index) {
+						this.area_name = item.name
+					}
+				})
+				this.address = this.province_name + this.city_name + this.area_name
+				this.$refs.pupop.close()
+			},
+			cancel() {
+				this.$refs.pupop.close()
+			},
+			
  		}
 	}
 </script>
@@ -133,6 +226,64 @@
 			border-top: 2px solid #999999;
 			border-right: 2px solid #999999;
 			transform: rotate(45deg) translate3d(0, -50%, 0);
+		}
+		.popup {
+			height: fit-content;
+			width: 100%;
+			background: #fff;
+			bottom: 0;
+			position: fixed;
+		}
+		
+		.picker-btn {
+			display: flex;
+			height: 100upx;
+			width: 100%;
+			line-height: 100upx;
+			background: #fff;
+			font-size: 34upx;
+			z-index: 1;
+			border-bottom: 1rpx solid #f8f8f8;
+		
+			.left {
+				flex: 1;
+				color: #0076FF;
+				padding-left: 40upx;
+				box-sizing: border-box;
+			}
+		
+			.right {
+				flex: 1;
+				text-align: right;
+				padding-right: 40upx;
+				color: #FE4533;
+				box-sizing: border-box;
+			}
+		}
+		.bottom-btn {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			margin: 0 auto;
+			width: 750rpx;
+			height: 129rpx;
+			background: #FFFFFF;
+			button {
+				width: 690rpx;
+				height: 88rpx;
+				background: #202425;
+				border-radius: 8px;
+				color: #fff;
+			}
+		}
+		picker-view {
+			width: 100%;
+			height: 500rpx;
+			display: relative;
+		}
+		.item {
+			line-height: 100rpx;
+			text-align: center;
 		}
 	}
 </style>

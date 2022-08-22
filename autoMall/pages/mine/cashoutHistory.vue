@@ -3,18 +3,18 @@
 		<view class="cashout-history-header">
 			<view class="cashout-history-header-title">总提现金额</view>
 			<view class="cashout-history-header-val">
-				¥<text>500.00</text>
+				¥<text>{{price}}</text>
 			</view>
 		</view>
 		<view class="cashout-history-content">
 			<view class="cashout-history-content-item" v-for="(item,index) in history" :key="index">
 				<view>
-					<text class="font28">{{item.title}}</text>
+					<text class="font28">佣金转微信</text>
 					<text class="font32">{{item.price}}</text>
 				</view>
 				<view class="font24">
-					<text>{{item.orderNumber}}</text>
-					<text>{{item.date}}</text>
+					<text>订单号{{item.cash_sn}}</text>
+					<text>{{item.createtime}}</text>
 				</view>
 			</view>
 		</view>
@@ -22,64 +22,27 @@
 </template>
 
 <script>
+	import { txList } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
-				history: [{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				},{
-					title: '订单转微信',
-					price: '300.00',
-					orderNumber: 'MCYP784948',
-					date: '2022-04-12 10:13'
-				}]
+				price: uni.getStorageSync('userInfo').commission_price,
+				history: []
 			}
 		},
+		created() {
+			this.initList()
+		},
 		methods: {
-			
+			initList() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					page: 1,
+				}
+				txList(query).then(res=>{
+					this.history = res.data.rows
+				})
+			},
 		}
 	}
 </script>
@@ -104,7 +67,7 @@
 	background: #f6f6f6;
 	&-header {
 		height: 340rpx;
-		background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/background-blue.png") no-repeat;
+		background: url("https://carshop.duoka361.cn/images/static/image/mine/background-blue.png") no-repeat;
 		transform: translate3d(0,-3rpx,0);
 		background-size: cover;
 		color: #ffffff;

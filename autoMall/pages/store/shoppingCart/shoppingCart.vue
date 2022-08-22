@@ -7,19 +7,19 @@
 		<view class="shopListM">
 			<!-- 空购物车 -->
 			<view v-if="isEmptyCart" class="empty">
-				<!-- <image class="img-size-xl" src="https://baiyuechangxiong-pic.luobo.info/che/static/cart/empty-cart.png" mode="aspectFit"></image> -->
+				<!-- <image class="img-size-xl" src="https://carshop.duoka361.cn/images/rt/empty-cart.png" mode="aspectFit"></image> -->
 				<text>购物车是空的</text>
 			</view>
 			<!-- 非空购物车 -->
 			<view v-if="!isEmptyCart" class="shopItem" v-for="(item, index) in goodsList" :key="index">
-				<view class="shopcheckbox">
-					<checkbox-group @change="chooseShop(item,index)">
+				<view class="shopcheckbox" @tap.stop="chooseShop(item,index)">
+					<radio :value="item.goods.price" :checked="item.checked" color="#203885" style="transform:scale(0.7)" />
+					<!-- <checkbox-group >
 						<label>
-							<checkbox :value="item.goods.price" :checked="item.checked" color="#203885" style="transform:scale(0.7)" />
 						</label>
-					</checkbox-group>
+					</checkbox-group> -->
 					<!-- <view v-if="!item.checked" class="choose"></view>
-					<image v-else class="chooseImage" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/choose.png"></image> -->
+					<image v-else class="chooseImage" src="https://carshop.duoka361.cn/images/static/image/mall/choose.png"></image> -->
 				</view>
 				<view class="shopLists">
 					<image class="shopImage" :src="item.goods.image" mode=""></image>
@@ -50,7 +50,7 @@
 					<text class="font-size-base">全选</text> -->
 					<checkbox-group name="" @change="checkedAll" class="check">
 						<label>
-							<checkbox :value="1111" :checked="allChecked" style="transform:scale(0.7)" color="#203885" /><text class="font-size-base">全选</text>
+							<radio :value="1111" :checked="allChecked" style="transform:scale(0.7)" color="#203885" /><text class="font-size-base">全选</text>
 						</label>
 					</checkbox-group>
 				</view>
@@ -147,14 +147,12 @@
 					this.initGoosList()
 				})
 			},
-			
 			chooseShop(e,i) {
 				e.checked = !e.checked
 				if (!e.checked) {
 					this.allChecked = false
 				} else {
 					this.deleteIds = []
-					console.log(e,'chooseShop')
 					this.goodsData = e
 					// 判断每一个商品是否是被选择的状态
 					const cartList = this.goodsList.every(item => {
@@ -162,13 +160,11 @@
 					})
 					this.goodsActiveList = []
 					let goodsIndex = i
-					console.log(cartList)
 					this.goodsList.forEach(item=>{
 						if(item.checked === true) {
 							this.deleteIds.push(item.id)
 						}
 					})
-					console.log(this.deleteIds,'delete')
 					//选中商品信息
 					this.goodsActiveList.push(e)
 					if (cartList) {
@@ -180,8 +176,17 @@
 			},
 			//领券结算
 			toPay() {
-				uni.navigateTo({
-					url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
+				this.goodsList.forEach(item=>{
+					if(item.checked === true) {
+						uni.navigateTo({
+							url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
+						})
+					}else {
+						uni.showToast({
+							title: '请选择商品',
+							duration: 2000
+						})
+					}
 				})
 			},
 			//全选

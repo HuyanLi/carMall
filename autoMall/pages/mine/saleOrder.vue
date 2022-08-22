@@ -1,31 +1,31 @@
 <template>
 	<view class="sale-order">
 		<view class="sale-order-content" v-for="(item, index) in orders" :key="index">
-			<view class="sale-order-content-header">
+			<view class="sale-order-content-header" >
 				<view class="sale-order-content-header-left">
-					<img :src="item.headerImg" />
-					<text>{{item.name}}</text>
+					<img :src="item.user.head_img" />
+					<text>{{item.user.nickname}}</text>
 				</view>
 				<view class="sale-order-content-header-right">
-					订单编号：{{item.orderNumber}}
+					订单编号：{{item.order_sn}}
 				</view>
 			</view>
-			<view class="sale-order-content-wrapper">
-				<img class="sale-order-content-wrapper-img" :src="item.orderImg" />
+			<view class="sale-order-content-wrapper" v-for="(v,k) in item.order_item" :key='k'>
+				<img class="sale-order-content-wrapper-img" :src="v.goods_image" />
 				<view class="sale-order-content-wrapper-msg">
-					<view class="sale-order-content-wrapper-title">{{item.orderTitle}}</view>
+					<view class="sale-order-content-wrapper-title">{{v.goods_title}}</view>
 					<view class="sale-order-content-wrapper-price">
-						<text>¥{{item.price}}</text>
-						<text>x{{item.count}}</text>
+						<text>¥{{v.goods_price}}</text>
+						<text>x{{v.goods_num}}</text>
 					</view>
 				</view>
 			</view>
 			<view class="sale-order-content-footer">
 				<view class="sale-order-content-footer-totalprice">
-					订单总金额：<text>{{item.totalPrice}}</text>
+					订单总金额：<text>{{item.pay_fee}}</text>
 				</view>
 				<view class="sale-order-content-footer-commission">
-					佣金：<text>{{item.commission}}</text>
+					佣金：<text>{{item.commission_price}}</text>
 				</view>
 			</view>
 		</view>
@@ -33,43 +33,30 @@
 </template>
 
 <script>
+	import { getFXlist } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
-				orders: [{
-					headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					name: 'Gerald Bryan',
-					orderNumber: '0395325792',
-					orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
-					price: '368',
-					count: '1',
-					totalPrice: '368.00',
-					commission: '20.00'
-				},{
-					headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					name: 'Gerald Bryan',
-					orderNumber: '0395325792',
-					orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
-					price: '368',
-					count: '1',
-					totalPrice: '368.00',
-					commission: '20.00'
-				},{
-					headerImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					name: 'Gerald Bryan',
-					orderNumber: '0395325792',
-					orderImg: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					orderTitle: 'MICHELIN轮胎 性能三合一 都市畅行',
-					price: '368',
-					count: '1',
-					totalPrice: '368.00',
-					commission: '20.00'
-				}]
+				orders: []
 			}
 		},
+		created() {
+			this.initList()
+		},
 		methods: {
+			initList() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					page: 1
+				}
+				getFXlist(query).then(res=>{
+					if(res.code === 1) {
+						console.log(res.data,'23432')
+						this.orders = res.data.rows
+					}
+					
+				})
+			}
 			
 		}
 	}

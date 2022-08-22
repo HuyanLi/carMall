@@ -2,30 +2,29 @@
 	<view class="warehistory">
 		<view class="warehistory-title">
 			<view>当前库存/时间</view>
-			<view class="warehistory-title-right" @tap="handleFilter"><img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/filter@2x.png" /><text>历史筛选</text></view>
+			<view class="warehistory-title-right" @tap="handleFilter"><img src="https://carshop.duoka361.cn/images/static/image/mine/filter@2x.png" /><text>历史筛选</text></view>
 		</view>
 		<view class="warehouse-content">
 			<view class="warehouse-content-item" v-for="(item,index) in data" :key="index">
-				<img :src="item.img" />
+				<img :src="item.goods_image" />
 				<view class="warehouse-content-item-info">
-					<view class="warehouse-content-item-info-title">{{item.title}}</view>
-					<view class="warehouse-content-item-info-storage">当前库存:{{item.storage}}</view>
+					<view class="warehouse-content-item-info-title">{{item.goods_title}}</view>
+					<view class="warehouse-content-item-info-storage">当前库存:{{item.after_num}}</view>
 					<view class="warehouse-content-item-info-price">
-						¥{{item.price}}
+						¥{{item.goods_price}}
 					</view>
 				</view>
 			</view>
 		</view>
 		<uni-popup class="pop" ref="popup" background-color="#fff">
 			<view class="popup-content">
-				<view class="filter-title">选择修改历史 <img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/bacha.png" @tap="handleClosePop"/></view>
-				<view class="filter-item" v-for="(item, index) in filter" :key="index" @tap="handleChoose(index)">
-					<img :src="item.selected ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/duigou.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/empty.png'"/>
-					<text>{{item.time}}</text>
+				<view class="filter-title">选择修改历史 <img src="https://carshop.duoka361.cn/images/static/image/mine/bacha.png" @tap="handleClosePop"/></view>
+				<view class="filter-item" v-for="(item, index) in filter" :key="index" @tap="handleChoose(item,index)">
+					<img :src="item.selected ? 'https://carshop.duoka361.cn/images/static/image/mine/duigou.png' : 'https://chttps://carshop.duoka361.cn/images/empty.png'"/>
+					<text>{{item.createtime}}</text>
 				</view>
-				
 				<view class="save">
-					<view>确认选择</view>
+					<button type="default" @tap.stop='submitBtn(item)'>确认选择</button>
 				</view>
 			</view>
 		</uni-popup>
@@ -33,102 +32,73 @@
 </template>
 
 <script>
+	import { goodsHistory, fliterHistory } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
-				filter: [{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				},{
-					time: '库存修改 2022-05-10 08:00',
-					selected: false
-				}],
-				data: [{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				},{
-					img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png',
-					title: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',
-					storage: '1000',
-					price: '368'
-				}]
+				type: '',
+				filter: [],
+				data: [],
+				chooseId: ''
 			}
 		},
+		created() {
+			this.initList()
+		},
 		methods: {
+			initList() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					type: this.type,
+					member_goods_time_id: this.chooseId,
+					page: 1
+				}
+				goodsHistory(query).then(res=>{
+					if(res.code === 1) {
+						this.data = res.data.rows
+						res.data.rows.forEach(item=>{
+							item.selected = false
+						})
+						this.filter = res.data.rows
+						
+					}
+ 				})
+			},
 			handleFilter() {
 				this.$refs.popup.open('bottom')
-				// this.$nextTick(() => {
-				// 	this.setRadius()
-				// })
+				this.initFilter()
+			},
+			//历史筛选
+			initFilter(){
+				let query = {
+						member_id: uni.getStorageSync('member_id'),
+						page: 1
+					}
+				fliterHistory(query).then(res=>{
+					if(res.code === 1) {
+						// this.data = res.data.rows
+						res.data.rows.forEach(item=>{
+							item.selected = false
+						})
+						this.filter = res.data.rows
+					}
+				})
+				
 			},
 			handleClosePop() {
 				this.$refs.popup.close('bottom')
 			},
-			handleChoose(index) {
-				this.filter.forEach((item) => {
+			handleChoose(item,index) {
+				this.filter.forEach((index) => {
 					item.selected = false
 				})
 				this.filter[index].selected = true
+				this.chooseId = item.id
 			},
+			submitBtn() {
+				this.initList()
+				this.$refs.popup.close('bottom')
+			}
 			// setRadius() {
 			// 	document.getElementsByName('content')[0].style.borderRadius = '15px 15px 0 0'
 			// 	document.getElementsByName('content')[0].style.overflow = 'hidden'
@@ -231,9 +201,9 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		box-sizing: border-box;
-		padding: 39rpx 30rpx 0;
+		padding: 39rpx 30rpx 20rpx;
 		&-item {
-			margin-bottom: 52rpx;
+			margin-bottom: 20rpx;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;

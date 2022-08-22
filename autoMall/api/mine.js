@@ -1,7 +1,8 @@
 import request from '@/utils/request'
 //编辑用户
-export const editUser = () => request(
+export const editUser = (data) => request(
 	'/index.php/api/user/editUser',
+	data,
 	'POST'
 ) 
 //我的消息列表
@@ -48,9 +49,14 @@ export const outMemberGoods = (data) => request(
 	data,
 	'POST'
 )
-
-//我的出入库列表
-export const getMyOutGoodsList = (data) => request(
+//库存记录
+export const goodsHistory = (data) => request(
+	'/index.php/api/user/getMyOutGoodsLogList',
+	data,
+	'POST'
+)
+//库存筛选
+export const fliterHistory = (data) => request(
 	'/index.php/api/user/getMyOutGoodsList',
 	data,
 	'POST'
@@ -58,6 +64,36 @@ export const getMyOutGoodsList = (data) => request(
 //我的出入库详情
 export const getMyOutGoodsLogList = (data) => request(
 	'/index.php/api/user/getMyOutGoodsLogList',
+	data,
+	'POST'
+)
+//分销订单
+export const getFXlist = (data) => request(
+	'/index.php/api/user/getMyCommissionOrderList',
+	data,
+	'POST'
+)
+//分销关系
+export const getRelationlist = (data) => request(
+	'/index.php/api/user/getMySubordinateList',
+	data,
+	'POST'
+)
+//余额明细
+export const yeList = (data) => request(
+	'/index.php/api/user/getMyCommissionPriceList',
+	data,
+	'POST'
+)
+//提现记录
+export const txList = (data) => request(
+	'/index.php/api/user/getMyCommissionCashList',
+	data,
+	'POST'
+)
+//提现
+export const userGet = (data) => request(
+	'/index.php/api/user/cashMoney',
 	data,
 	'POST'
 )

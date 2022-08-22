@@ -119,6 +119,7 @@
 	.detailBox {
 		padding: 25rpx 30rpx 100rpx;
 		background: #FFFFFF;
+		height: 800rpx;
 		text {
 			font-family: PingFangSC-Semibold;
 			font-weight: 600;

@@ -18,7 +18,7 @@
 			<view class="text uni-flex detail" @click="toDetail"
 				style="-webkit-flex: 1;flex: 1;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
 				<text class="choseText">品牌详情 </text>
-				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/to.png"></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/to.png"></image>
 			</view>
 		</view>
 		<!-- 显示区域 -->
@@ -28,13 +28,17 @@
 					<image :src="item.image"></image>
 				</view>
 				<view class="text fontText">{{item.title}}</view>
-				<view class="text money">￥{{item.price}}</view>
+				<view v-if="isApprove" class="text money">￥{{item.price}}</view>
+				<view v-else class="needApprove">
+					认证审核后可查看详情
+				</view>
+				
 			</view>
 		</view>
 		<!-- 悬浮按钮 -->
 		<view class="tryGoods">
 			<view class="shihuoLogo" @click="toshoppingCart">
-				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/sh.png" ></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/gwc.png" ></image>
 			</view>
 		</view>
 		<!-- tabBar -->
@@ -64,10 +68,18 @@
 				list: [],
 				userInfo: null,
 				tabbar: uni.getStorageSync('tabbar'),
-				goodsType: '1'
+				goodsType: '1',
+				//是否认证
+				isApprove: false
 			}
 		},
 		onLoad(e) {
+			//1：未认证 2：已认证
+			if(uni.getStorageSync('userInfo').is_authentication === 1) {
+				this.isApprove = false
+			}else if(uni.getStorageSync('userInfo').is_authentication === 2){
+				this.isApprove = true
+			}
 			//初始化数据
 			for (var i = 0; i < this.swiperDateList.length; i++) {
 				this.getDateList(i);
@@ -81,7 +93,6 @@
 			this.initBrandList()
 			//试货
 			if(e.type === 'sh') {
-				debugger
 				this.goodsType = '2'
 				//商品列表
 				this.initGoods()
@@ -353,6 +364,12 @@
 			flex-direction: column;
 			background-color: #fff;
 			margin-bottom: 20rpx;
+			.needApprove {
+				font-weight: 400;
+				font-size: 22rpx;
+				color: #C31B23;
+				margin: 20rpx 22rpx 36rpx 17rpx;
+			}
 			.text {
 				width: 300rpx;
 				margin: 20rpx auto 30rpx;

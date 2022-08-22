@@ -34,7 +34,7 @@
 				</view>
 				<picker-view :indicator-style="indicatorStyle" :value="valueArr" @change="bindChange">
 					<picker-view-column>
-						<view class="item" v-for="(item,index) in province" :key="index">{{item.provinceName}}</view>
+						<view class="item" v-for="(item,index) in province" :key="index">{{item.name}}</view>
 					</picker-view-column>
 					<picker-view-column v-if="province[valueArr[0]]">
 						<view class="item" v-for="(item,index) in province[valueArr[0]].children" :key="index">{{item.name}}</view>
@@ -213,7 +213,6 @@
 				let query;
 				console.log(_this.addInfo.id,'info')
 				if(_this.addInfo.id !== undefined) {
-					debugger
 					if(_this.change === false) {
 						query = {
 							member_id: uni.getStorageSync('member_id'),
@@ -256,7 +255,6 @@
 						})
 					})
 				}else {
-					debugger
 					query = {
 							member_id: uni.getStorageSync('member_id'),
 							province_name: _this.province_name,

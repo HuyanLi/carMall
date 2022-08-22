@@ -80,7 +80,6 @@
 			},
 			handleSwipeChange(e) {
 				this.activeIndex = e.detail.current
-				
 			},
 		}
 	}

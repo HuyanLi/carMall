@@ -131,27 +131,20 @@
 					this.$store.commit('mobile',res.data.phone.phoneNumber)
 					console.log(this.$store.state.user,'iuyuiyi')
 					_this.isPhone = false
-					_this.isMap = false
+					_this.isMap = true
 					// location.reload()
 				})
 			},
 			//获取用户位置
 			getAddress() {
-			// 	uni.getLocation({
-			// 		type: 'wgs84',
-			// 		altitude: true,
-			// 		success: function(res) {
-			// 			console.log(res)
-			// 			const latitude = res.latitude;
-			// 			const longitude = res.longitude;
-			// 			uni.openLocation({
-			// 				latitude: res.latitude,
-			// 				longitude:res.longitude,
-			// 				success:function(res){
-			// 				}
-			// 			})
-			// 		}
-			// 	})
+				uni.chooseLocation({
+					success: (res) => {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+					}
+				});
 			}
 		}
 	}

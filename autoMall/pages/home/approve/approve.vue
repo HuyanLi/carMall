@@ -15,24 +15,24 @@
 					</uni-section>
 				</uni-forms-item>
 				<uni-forms-item label="所在地" required>
-					<uni-easyinput v-model="approve.address" disabled @tap="handleAddress" placeholder="请选择地区" />
+					<uni-easyinput @focus.prevent="handleAddress" v-model="approve.address" placeholder="请选择地区" />
 				</uni-forms-item>
 				<uni-forms-item label="职业" required>
 					<uni-easyinput v-model="approve.vocation" placeholder="请输入职业，如：总经理，销售" />
 				</uni-forms-item>
 				<uni-forms-item label="上传公司营业执照" required>
-					<uni-file-picker v-if='uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
-						<image class="uploadImg" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/upload.png" mode=""></image>
+					<uni-file-picker  v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
+						<image class="uploadImg" src="https://carshop.duoka361.cn/images/static/image/mall/upload.png" mode=""></image>
 					</uni-file-picker>
-					<uni-file-picker v-if='!uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
+					<!-- <uni-file-picker v-if='!uploadI' v-model="imageValue" fileMediatype="image" mode="grid" @select="selectImg" @progress="progress" @success="success" @fail="fail" >
 						<image class="uploadImg" :src="approve.company_iamges" mode=""></image>
-					</uni-file-picker>
+					</uni-file-picker> -->
 				</uni-forms-item>
 			</uni-forms>
 		</view>
 		<view class="bottom">
 			<view class="title">
-				<image v-if="choose" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/choose.png"></image>
+				<image v-if="choose" src="https://carshop.duoka361.cn/images/static/image/mall/choose.png"></image>
 				<view v-if="!choose" class="text"></view>
 				<text>提交即代表您同意</text>
 				<text class="approveT">《认证协议》</text>
@@ -51,7 +51,7 @@
 				</view>
 				<picker-view :indicator-style="indicatorStyle" :value="valueArr" @change="bindChange">
 					<picker-view-column>
-						<view class="item" v-for="(item,index) in province" :key="index">{{item.provinceName}}</view>
+						<view class="item" v-for="(item,index) in province" :key="index">{{item.name}}</view>
 					</picker-view-column>
 					<picker-view-column v-if="province[valueArr[0]]">
 						<view class="item" v-for="(item,index) in province[valueArr[0]].children" :key="index">{{item.name}}</view>
@@ -160,6 +160,7 @@
 			initCity() {
 				getCity().then(res=>{
 					this.province = res.data
+					console.log(this.province)
 					this.loadCity(this.province[0].id)
 				})
 				
@@ -178,6 +179,7 @@
 						})
 						this.loadArea(this.province[this.valueArr[0]].children[this.valueArr[1]].id)
 					}
+					console.log(this.province)
 				})
 			},
 			loadArea(pid) {
@@ -193,6 +195,7 @@
 						})
 					}
 				})
+				console.log(this.province)
 			},
 			bindChange(e) {
 				const val = e.detail.value;
@@ -210,7 +213,8 @@
 			},
 			handleAddress() {
 				let that = this
-				this.$refs.pupop.open('bottom')
+				// that.$refs.address.setAttribute('readonly', 'readonly');
+				that.$refs.pupop.open('bottom')
 			},
 			confirm(e) {
 				this.area.forEach((item,index)=>{
@@ -273,6 +277,13 @@
 </script>
 
 <style lang="scss" scoped>
+	
+/deep/ .uni-easyinput {
+			.is-disabled {
+				background-color: #ffffff !important;
+				color: #333 !important;
+			}
+		}
 .approve{
 	 width: 750rpx;
 	 margin-bottom: 230rpx;

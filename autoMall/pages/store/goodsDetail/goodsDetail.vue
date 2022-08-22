@@ -29,7 +29,7 @@
 				</view>
 				<view class="" @click="toChoose">
 					<view class="text content1" >
-						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/jt.png" mode=""></image>
+						<image src="https://carshop.duoka361.cn/images/static/image/mall/jt.png" mode=""></image>
 					</view>
 					<view class="text content">
 						{{chooseStyle}}
@@ -42,7 +42,7 @@
 				</view>
 				<view class="" @click="toCoup">
 					<view class="text content1" >
-						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/jt.png" mode=""></image>
+						<image src="https://carshop.duoka361.cn/images/static/image/mall/jt.png" mode=""></image>
 					</view>
 					<view class="text content">
 						{{coupTitle}}
@@ -82,12 +82,12 @@
 			<!-- <view class="icon" @click="addCart('收藏')">
 				<template v-if="isShow">
 					<view>
-						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/already.png"></image>
+						<image src="https://carshop.duoka361.cn/images/static/image/mall/already.png"></image>
 					</view>
 				</template>
 				<template v-else>
 					<view>
-						<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/collect.png"></image>
+						<image src="https://carshop.duoka361.cn/images/static/image/mall/collect.png"></image>
 					</view>
 				</template>
 				<view class="text">
@@ -95,14 +95,14 @@
 				</view>
 			</view> -->
 			<view class="icon" @click="goShop">
-				<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/shopCar.png"></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/shopCar.png"></image>
 				<view class="text">
 					购物车
 				</view>
 			</view>
 			<view class="btn">
 				<button class="btn1" @click="addCart('购物车')">加入购物车</button>
-				<button class="btn2" @click="buyGroup">拼团</button>
+				<button class="btn2" v-if="user.is_signing == '1'" @click="buyGroup">拼团</button>
 			</view>
 		</view>
 		<!-- 规格 -->
@@ -122,7 +122,9 @@
 									<text>{{item.name}}</text>
 								</view>
 								<view class="specList" v-for="(e,i) in item.child" :key='i'  @click="changecTab(index,i)">
-									{{ e.name }}
+									<view :class="[getItem(e,index)]" class="gdS">
+										<view>{{ e.name }}</view>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -142,25 +144,18 @@
 				<view class="title">
 					<text>选择优惠券</text>
 				</view>
-				<view class="couponsImage" v-for="(item,index) in couList" :key='index'>
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mall/detailC.png" mode=""></image>
+				<view class="couponsImage" v-for="(item,index) in couList" :key='index' @click="changeRadio(item,index)">
+					<image src="https://carshop.duoka361.cn/images/static/image/mall/detailC.png" mode=""></image>
 					<view class="couponsInfo">
-						<view class="copMoney" v-if="item.reduce_price">
+						<view class="copMoney">
 							<view class="money"> <text style="font-size: 28rpx;">￥</text> {{item.reduce_price}}</view>
 							<view class="useCop">{{item.coupon_type_name}}</view>
 						</view>
-						<view class="copZKMoney" v-else="item.discount">
-							<view class="zhekou">{{item.discount}}折</view>
-						</view>
-						<view class="coupDate" v-if="item.reduce_price">
+						<view class="coupDate">
 							<view>全场满{{item.full_price}}减{{item.reduce_price}}</view>
 							<view>{{item.endtime_text}}</view>
 						</view>
-						<view class="coupzkDate" v-else="item.discount">
-							<view>全场{{item.discount}}折</view>
-							<view>{{item.endtime_text}}</view>
-						</view>
-						<view class="couChoose" @click="changeRadio(item,index)">
+						<view class="couChoose">
 							<view class="radio" :class="{chooseRadio:chooseR == index}"></view>
 						</view>
 					</view>
@@ -214,20 +209,24 @@
 				sku_price_id: '',
 				user: '',
 				number: 1,
-				couponData: null
+				couponData: null,
+				ptgoods: null,
+				queryData: null,
+				conf: null
 			}
 		},
 		onLoad(option) {
 			this.goodsId = option.id
 			this.initgoods(this.goodsId)
 			this.user = uni.getStorageSync('userInfo')
-		},
-		created() {
+			console.log(this.user,'user')
 		},
 		methods: {
 			async initgoods(e) {
 				let that = this
 				let data = await goodsDetail({goods_id: e})
+				console.log(data,'data')
+				that.ptgoods = data.data
 				that.imgList = data.data.images
 				that.price = data.data.price
 				that.title = data.data.title
@@ -253,37 +252,23 @@
 				that.goodsType = data.data.type
 				that.sku_price = data.data.sku_price
 			},
-			getItem(item) {
+			getItem(item,index) {
 				var c;
-				// item_disable item_select
-				if (this.disableSelects.has(item)) {
-					//没有库存
-					return 'item_disable'
-				}
-				if (this.selectTops._empty()) {
-					//没有选中顶点
-					c = 'item'
-				} else {
-					//有选中顶点
-					if (this.hasTop(this.selectTops, item)) {
-						//此顶点选中了
-						c = 'item_select'
-					} else {
-						//顶点没有选中, 没有选中顶点在可选顶点里面
-						if (this.canSelects.has(item)) {
-							//顶点在可选里面
-							c = 'item'
-						} else {
-							c = 'item_disable'
-						}
+				let selectArr = this.selectSku.split(',');
+				if(selectArr.length - 1 >= index){
+					if(Number(selectArr[index]) === item.id){
+						c = 'choosebtna'
+					}else{
+						c = ''
 					}
 				}
 				return c
 			},
 			//选择规格
 			changecTab(key,key2) {
+				console.log(key,key2,'key')
 				let that = this;
-				that.selectSku = []
+				that.selectSku = ''
 				if (!that.process_attribute[key].child[key2].disabled) {
 					that.process_attribute[key].child.forEach((item, index) => {
 						item.actived = index == key2 ? !item.actived : false
@@ -301,15 +286,18 @@
 						}
 					}
 				})
+				console.log(that.process_attribute)
 				that.getPrice()
 			},
 			getPrice() {
 				let that = this;
 				let data = that.sku_price.filter(res=>{
-					console.log(res)
+					console.log(res,'res')
 					return res.goods_sku_ids === that.selectSku
 				})
-				console.log(data,2)
+				//提交到确认订单页数据
+				that.conf = data
+				console.log(data,that.selectSku,2)
 				if(data.length > 0) {
 					that.shopDetail.productPrice = data[0].price
 					that.chooseStyle = data[0].goods_sku_text
@@ -355,6 +343,7 @@
 						item.checked = false
 					})
 					this.couList = res.data.rows
+					console.log(this.couList)
 				})
 				this.$refs.coup.open();
 			},
@@ -380,10 +369,6 @@
 			change(e) {
 				console.log(e)
 				this.number = e
-			},
-			
-			buyTrue() {
-				
 			},
 			changeRadio(e,i) {
 				console.log(e,i,'choose')
@@ -417,13 +402,13 @@
 						this.isShow = !this.isShow
 					}
 				}else {
-					let query = {
+					this.queryData = {
 						member_id: uni.getStorageSync('member_id'),
 						goods_id: this.goodsId,
 						sku_price_id: this.sku_price_id,
 						goods_num: this.number
 					}
-					addShopCart(query).then(res=>{
+					addShopCart(this.queryData).then(res=>{
 						if(res.code === 0) {
 							uni.showToast({
 							    title: '请选择规格',
@@ -443,25 +428,32 @@
 			},
 			//拼团
 			buyGroup() {
-				//认证状态 1：未认证 2：已认证
-				if(this.user.is_authentication === 2) {
-					//去签约
-					uni.navigateTo({
-						url: '/pages/store/groupActivity/groupActivity'
+				if(this.sku_price_id === '') {
+					uni.showToast({
+						title: '请选择规格',
+						duration: 2000
 					})
-				}else if(this.user.signing_image === null){
-					//有数据  签约成功   ““不成功
-					//我已阅读并确认签署
-					uni.navigateTo({
-						url: '/pages/store/signAgreement/signAgreement?type=pt'
-					})
-				}else if(this.user.signing_image !== '') {
-					//拼团活动
-					uni.navigateTo({
-						url: '/pages/home/groupBooking/groupBooking'
-					})
+				}else{
+					if(this.user.signing_image === null || this.user.signing_image === '' ) {
+						//去签约且去确认订单
+						uni.navigateTo({
+							url: '/pages/store/groupActivity/groupActivity?data=' + this.ptgoods
+						})
+					}else {
+						if(this.user.is_signing == '1'){
+							//未签约   下普通订单
+							uni.navigateTo({
+								url: '/pages/store/confirmOrder/confirmOrder?data='+JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
+							})
+						}else if(this.user.is_signing == '2') {
+							//拼团活动
+							uni.navigateTo({
+								url: '/pages/store/confirmOrder/confirmOrder?data=' + this.ptgoods + '&sku=' + this.conf
+							})
+						}
+						
+					}
 				}
-				
 			},
 		}
 	}
@@ -645,7 +637,7 @@
 	}
 	.goodInfo {
 		text-align: center;
-		margin-bottom: 120rpx;
+		margin-bottom: 140rpx;
 		.title {
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
@@ -772,6 +764,30 @@
 			.bugSpec {
 				padding: 52rpx 40rpx 0;
 				margin: 0 auto;
+				.item {
+				        height: 30upx;
+				        padding: 20upx;
+				        border-style: solid;
+				        border-width: 1upx;
+				        border-color: #EEEEEE;
+				        color: #333333;
+				        font-size: 28upx;
+				        text-align: center;
+				        margin-left: 40upx;
+				        box-sizing: content-box;
+				    }
+				    .item_select {
+				        height: 30upx;
+				        padding: 20upx;
+				        border-style: solid;
+				        border-width: 1upx;
+				        border-color: red;
+				        color: red;
+				        font-size: 28upx;
+				        text-align: center;
+				        margin-left: 40upx;
+				        box-sizing: content-box;
+				    }
 				.buyTitle {
 					font-family: PingFangSC-Semibold;
 					font-weight: 600;
@@ -783,13 +799,24 @@
 				.specList {
 					display: inline-block;
 					margin-right: 20rpx;
+					background: #F3F3F3;
 					// padding: 10rpx 21rpx;
 					border-radius: 4rpx;
 					// font-family: PingFangSC-Regular;
 					font-weight: 400;
 					font-size: 26rpx;
-					width: 100rpx;
-					height: 57rpx;
+					// line-height: 57rpx;
+					text-align: center;
+				}
+				.gdS {
+					display: inline-block;
+					// margin-right: 20rpx;
+					// padding: 10rpx 21rpx;
+					border-radius: 4rpx;
+					// font-family: PingFangSC-Regular;
+					font-weight: 400;
+					font-size: 26rpx;
+					padding: 20rpx 30rpx;
 					// line-height: 57rpx;
 					text-align: center;
 				}
@@ -797,9 +824,9 @@
 					background: #003488;
 					color: #FFFFFF;
 				}
-				.btna {
+				.nochoosebtna {
 					background: #F3F3F3;
-					color: #565656;
+					color: #333;
 				}
 			}
 			.buyNum{
@@ -867,10 +894,9 @@
 				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
-				align-items: center;
-				transform: translate(0px, -81px);
+				// align-items: center;
+				transform: translate(0px, -80px);
 				.copMoney {
-					
 					display: inline-block;
 					width: 190rpx;
 					height: 190rpx;
@@ -892,7 +918,6 @@
 					}
 				}
 				.copZKMoney {
-					
 					display: inline-block;
 					width: 190rpx;
 					height: 190rpx;

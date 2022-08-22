@@ -27,24 +27,24 @@
 				//公共的tabbar
 				// tabBar: [{
 				// 		"pagePath": "pages/tabBar/home/home",
-				// 		"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-				// 		"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+				// 		"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
+				// 		"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
 				// 		"text": "首页"
 				// 	},{
 				// 		"pagePath": "pages/tabBar/mall/mall",
-				// 		"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-				// 		"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+				// 		"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mall.png",
+				// 		"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mall1.png",
 				// 		"text": "品牌专区"
 				// 	}
 				// 	// ,{
 				// 	// 	"pagePath": "pages/tabBar/service/service",
-				// 	// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
-				// 	// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+				// 	// 	"iconPath": "https://carshop.duoka361.cn/images/static/image/home/service.png",
+				// 	// 	"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/serviceActive.png",
 				// 	// 	"text": "客服"
 				// 	// },{
 				// 	// 	"pagePath": "pages/tabBar/mine/mine",
-				// 	// 	"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
-				// 	// 	"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+				// 	// 	"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mine.png",
+				// 	// 	"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mineActive.png",
 				// 	// 	"text": "我的"
 				// 	// }
 				// ]

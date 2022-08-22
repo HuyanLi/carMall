@@ -11,7 +11,7 @@
 			</view>
 			<view class="group-content-main">
 				<view class="group-content-main-left">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home//211铃铛-线性.png" mode=""></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/home//211铃铛-线性.png" mode=""></image>
 					<text>庹豪珠</text>
 				</view>
 				<view class="group-content-main-right">
@@ -93,7 +93,7 @@
 	padding-bottom: 118rpx;
 	&-header {
 		height: 510rpx;
-		background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/home/ping.png") no-repeat;
+		background: url("https://carshop.duoka361.cn/images/static/image/home/ping.png") no-repeat;
 		transform: translate3d(0,-3rpx,0);
 		background-size: cover;
 		color: #ffffff;
@@ -205,7 +205,7 @@
 		font-size: 28rpx;
 		color: #FFFFFF;
 		display: inline-block;
-		background-image: url(https://baiyuechangxiong-pic.luobo.info/che/static/image/home/xingzhuang.png);
+		background-image: url(https://carshop.duoka361.cn/images/static/image/home/xingzhuang.png);
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
 	}

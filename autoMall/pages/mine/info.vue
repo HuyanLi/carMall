@@ -4,17 +4,17 @@
 			<!-- <view class="info-item">
 				<text class="info-item-title">头像</text>
 				<view class="info-item-content right">
-					<image class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"/>
+					<image class="img" src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png"/>
 				</view>
 			</view> -->
 			<view class="user">
 				<view class="info-img">
-					<image @tap="handleInfoView" class="img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png">
+					<image @tap="handleInfoView" class="img" src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png">
 				</view>
 				<view class="info-content">
 					<view>
 						<text class="info-name">Latte今天喝拿铁</text>
-						<image class="info-title" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png">
+						<image class="info-title" src="https://carshop.duoka361.cn/images/static/image/mine/tuanzhang.png">
 					</view>
 					<view class="info-invit-code">邀请码：S4SDF7</view>
 				</view>
@@ -43,7 +43,7 @@
 			<view class="mt35">
 				<text>营业执照</text>
 			</view>
-			<img class="license" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"/>
+			<img class="license" src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png"/>
 		</view>
 		
 	</view>

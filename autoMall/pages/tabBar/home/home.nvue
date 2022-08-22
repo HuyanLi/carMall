@@ -16,13 +16,13 @@
 			<!-- 未认证 -->
 			<view  class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
 				<view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/reg.png" mode=""></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/home/reg.png" mode=""></image>
 				</view>
 				<view class="tabMain" @click="navTo('/pages/home/liveBar/liveBar','0')">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/zb.png" mode=""></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/home/zb.png" mode=""></image>
 				</view>
 				<view class="tabMain" @click="navTo('/pages/home/approve/approve','0')">
-					<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/rzsq.png" mode=""></image>
+					<image src="https://carshop.duoka361.cn/images/static/image/home/rzsq.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -30,19 +30,19 @@
 			<!-- 已认证 -->
 			<view  class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
 			  <view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
-			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/reg.png" mode=""></image>
+			  	<image src="https://carshop.duoka361.cn/images/static/image/home/reg.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/tryCargo/tryCargo','sh')">
-			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/goods.png" mode=""></image>
+			  	<image src="https://carshop.duoka361.cn/images/static/image/home/goods.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/liveBar/liveBar','0')">
-			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/zb.png" mode=""></image>
+			  	<image src="https://carshop.duoka361.cn/images/static/image/home/zb.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/contrac/contrac','qy')">
-			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qy.png" mode=""></image>
+			  	<image src="https://carshop.duoka361.cn/images/static/image/home/qy.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/shareTask/shareTask','0')">
-			  	<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/share.png" mode=""></image>
+			  	<image src="https://carshop.duoka361.cn/images/static/image/home/share.png" mode=""></image>
 			  </view>
 			</view>
 		</view>		
@@ -50,34 +50,47 @@
 		<view v-else="showNav === '3'" class="showTab">
 			<view  class="showApp">
 					<view class="showOrder">
-						<view class="showbgc">
-							<image class="leftIMG" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/211铃铛-线性.png" mode=""></image>
-							<text v-if="type === 'sales'">有未支付订单，请前往订单中心打款</text>
-							<text v-else>库存不足，请前往**补充库存</text>
-							<image @click="toOrderCenter" class="rightIMG" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/xiangyou.png" mode=""></image>
+						<view class="showbgc" v-if="type != '1' && orderListData>0">
+							<image class="leftIMG" src="https://carshop.duoka361.cn/images/static/image/home/211铃铛-线性.png" mode=""></image>
+							<text>有未支付订单，请前往订单中心打款</text>
+							<!-- <text v-if="salesData.is_warning == '2'">库存不足，请前往**补充库存</text> -->
+							<image @click="toOrderCenter" class="rightIMG" src="https://carshop.duoka361.cn/images/static/image/home/xiangyou.png" mode=""></image>
+						</view>
+						<view class="showbgc" v-if="salesData.is_warning == '2'">
+							<image class="leftIMG" src="https://carshop.duoka361.cn/images/static/image/home/211铃铛-线性.png" mode=""></image>
+							<text>库存不足，请前往**补充库存</text>
+							<image @click="toOrderCenter" class="rightIMG" src="https://carshop.duoka361.cn/images/static/image/home/xiangyou.png" mode=""></image>
 						</view>
 					</view>
-					<view class="showXS">
+					<view class="showXS" v-if="nowTask !== '0.00'|| nowTask == undefined">
 						<text class="showXS-title">销售任务</text>
-						<view class="showXS-text" v-for="(item,index) in salesTask" :key='index'>
-							<text class="showXS-text-name">{{item.taskName}}</text>
-							<text class="showXS-text-task">{{item.task}}</text>
+						<view class="showXS-text">
+							<text class="showXS-text-name">当前任务</text>
+							<text class="showXS-text-task">{{nowTask}}</text>
+						</view>
+						<view class="showXS-text">
+							<text class="showXS-text-name">当前进度</text>
+							<text class="showXS-text-task">{{nowProgress}}</text>
+						</view>
+						<view class="showXS-text">
+							<text class="showXS-text-name">当前百分比</text>
+							<text class="showXS-text-task">{{nowbfb}}</text>
 						</view>
 					</view>
-					<image v-if="type === 'sales'" class="showIMG" @tap='toPTactivity' src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/拼团.png" mode=""></image>
-					<view v-else class="showAll">
+					<image v-if="type != '1'" class="showIMG" @tap='toPTactivity' src="https://carshop.duoka361.cn/images/static/image/home/拼团.png" mode=""></image>
+					<view v-if="type == '1'" class="showAll">
 						<view class="showAll-left">
-							<text class="showAll-left-title">668</text>
+							<text class="showAll-left-title">{{salesData.all_order_num}}</text>
 							<text class="showAll-left-text">全部订单</text>
 						</view>
-						<image class="showAll-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/dailishang.png" mode=""></image>
+						<image class="showAll-img" src="https://carshop.duoka361.cn/images/static/image/home/dailishang.png" mode=""></image>
 						<view class="showAll-right">
-							<text class="showAll-right-title">668</text>
-							<text class="showAll-right-text">全部订单</text>
+							<text class="showAll-right-title">{{salesData.now_order_num}}</text>
+							<text class="showAll-right-text">当前订单</text>
 						</view>
 						<view class="showAll-right">
-							<text class="showAll-right-title">668</text>
-							<text class="showAll-right-text">全部订单</text>
+							<text class="showAll-right-title">{{salesData.over_order_num}}</text>
+							<text class="showAll-right-text">完成订单</text>
 						</view>
 					</view>
 				</view>
@@ -108,18 +121,6 @@
 				</view>
 			</swiper-item>
 		</swiper>
-		<!-- <view class="wyList">
-			<view class="wyItem" v-for="(item,index) in wyList" :key='index' @click="toDetail(item)">
-				<view class="wyItem-text">
-					<view class="text title">{{item.title}}</view>
-					<view class="text textContent">{{item.upper_note}}</view>
-				</view>
-				<view class="wyItem-img">
-					<image :src="item.image"></image>
-				</view>
-			</view>
-		</view> -->
-		<!-- tabBar -->
 		<tab-bar :tabbar='tabbar' :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
 		<auth v-if='showAuth'></auth>
 	</view>
@@ -128,45 +129,18 @@
 <script>
 	import auth from '@/components/auth.vue'
 	import tabBar from "@/components/tabBar.vue"
-	import { slideShow, contentType, contentList } from '@/api/home.js'
+	import { slideShow, contentType, contentList, orderData } from '@/api/home.js'
 	import { getUserInfo, getOpenIds } from '@/api/user.js'
+	import { getOrder } from '@/api/store.js'
 	export default {
 		components: {
 			auth,
 		    tabBar
 		},
-		watch:{
-			'$store.state.user.showNav': {
-			  deep: true, //深度监听
-			  handler(newValue, oldValue) {
-				  console.log(newValue, oldValue, 'store.state //watch')
-				  this.showNav = newValue
-			  },
-			  immediate: true
-			},
-			'$store.state.user.type': {
-			  deep: true, //深度监听
-			  handler(newValue, oldValue) {
-				  console.log(newValue, oldValue, 'store.state //watch')
-				  this.type = newValue
-			  },
-			  immediate: true
-			},
-		},
 		data() {
 			return {
-				salesTask: [{
-					taskName: '当前任务',
-					task: '2022-09-01之前消费¥60000'
-				},{
-					taskName: '当前进度',
-					task: '467899/60000'
-				},{
-					taskName: '当前百分比',
-					task: '68%'
-				}],
 				showNav:'1',
-				type: 'sales',
+				type: '',
 				currentTabIndex: 0,
 				currentIndex: 0,
 				//轮播图
@@ -185,11 +159,19 @@
 				memberId: uni.getStorageSync('member_id'),
 				tabbar: [{
 						"pagePath": "pages/tabBar/home/home",
-						"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-						"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+						"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
+						"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
 						"text": "首页"
 					}
-				]
+				],
+				orderListData: '',
+				//当前任务
+				nowTask: '',
+				//当前进度
+				nowProgress: '',
+				//当前百分比
+				nowbfb: '',
+				salesData: null
 			}
 		},
 		mounted() {
@@ -199,8 +181,11 @@
 			this.initContent()
 			//内容列表
 			this.initContentList()
+			//是否有支付订单
+			this.orderList()
+			//获取代理商主页信息
+			this.initsalseData()
 			let query
-			console.log(uni.getStorageSync('member_id'),'member')
 			if(uni.getStorageSync('member_id') === '') {
 				this.getOpenId()
 			}else {
@@ -209,8 +194,33 @@
 				}
 				this.initUserInfo(query)
 			}
+			console.log(uni.getStorageSync('userInfo').sales_task_now_price)
+			this.nowTask = uni.getStorageSync('userInfo').sales_task_now_price
+			this.nowProgress = uni.getStorageSync('userInfo').sales_task_now_price +'/'+uni.getStorageSync('userInfo').sales_task_price
+			this.nowbfb = Number(this.nowProgress = uni.getStorageSync('userInfo').sales_task_now_price) / Number(uni.getStorageSync('userInfo').sales_task_price)
 		},
 		methods: {
+			//获取代理商订单
+			initsalseData() {
+				let query = {
+					member_id: this.memberId
+				}
+				orderData(query).then(res=>{
+					this.salesData = res.data
+				})
+			},
+			orderList() {
+				let query = {
+					member_id: this.memberId,
+					status: '0',
+					page: 1
+				}
+				getOrder(query).then(res=>{
+					if(res.code === 1) {
+						this.orderListData = res.data.total
+					}
+				})
+			},
 			initUserInfo(data){
 				getUserInfo(data).then(res=>{
 					if(res.code === 1) {
@@ -222,40 +232,45 @@
 								this.showNav = '1'
 								this.tabbar = [{
 										"pagePath": "pages/tabBar/home/home",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
 										"text": "首页"
 									}
 									,{
 										"pagePath": "pages/tabBar/mall/mall",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mall.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mall1.png",
 										"text": "品牌专区"
 									}
 								]
 							}else {
-								this.showNav = '2'
+								if(res.data.signing_image !== null) {
+									this.showNav = '3'
+									this.type = res.data.level_id
+								}else {
+									this.showNav = '2'
+								}
 								this.tabbar = [{
 										"pagePath": "pages/tabBar/home/home",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home1.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/home.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
 										"text": "首页"
 									}
 									,{
 										"pagePath": "pages/tabBar/mall/mall",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mall1.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mall.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mall1.png",
 										"text": "品牌专区"
 									}
 									,{
 										"pagePath": "pages/tabBar/service/service",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/service.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/serviceActive.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/service.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/serviceActive.png",
 										"text": "客服"
 									},{
 										"pagePath": "pages/tabBar/mine/mine",
-										"iconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mine.png",
-										"selectedIconPath": "https://baiyuechangxiong-pic.luobo.info/che/static/image/home/mineActive.png",
+										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mine.png",
+										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mineActive.png",
 										"text": "我的"
 									}]
 							}
@@ -337,9 +352,16 @@
 			},
 			//订单中心
 			toOrderCenter() {
-				uni.navigateTo({
-					url: '/pages/mine/orderDetail'
-				})
+				if(this.type != '1') {
+					uni.navigateTo({
+						url: '/pages/mine/orderList'
+					})
+				}else {
+					uni.navigateTo({
+						url: '/pages/mine/warehouse'
+					})
+				}
+				
 			},
 			//拼团活动
 			toPTactivity() {
@@ -444,7 +466,7 @@
 				}
 				.showXS {
 					width: 690rpx;
-					margin: 20rpx auto;
+					margin: 20rpx auto 0;
 					background: #fff;
 					display: flex;
 					flex-direction: column;

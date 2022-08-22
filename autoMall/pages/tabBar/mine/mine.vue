@@ -9,19 +9,17 @@
 				<view class="info-content">
 					<view>
 						<text class="info-name">{{userInfo.nickname}}</text>
-						<image class="info-title" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/tuanzhang.png">
+						<image class="info-title" src="https://carshop.duoka361.cn/images/static/image/mine/tuanzhang.png">
 					</view>
 					<view class="info-invit-code">邀请码：{{userInfo.invitation_code}}</view>
 				</view>
-				<image @tap="handleInfo" class="edit" :src="authentication ? 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/editaddress.png' : 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/edit.png'"/>
+				<image @tap="handleInfo" class="edit" :src="authentication ? 'https://carshop.duoka361.cn/images/static/image/mine/editaddress.png' : 'https://carshop.duoka361.cn/images/static/image/mine/edit.png'"/>
 			</view>
 		</view>
-
-		
 		<view class="order">
 			<view class="order-title">
 				<view class="order-mine">我的订单</view>
-				<view class="order-all" @tap="handleAllOrder">全部订单<image class="order-all-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineRight.png"/></view>
+				<view class="order-all" @tap="handleAllOrder">全部订单<image class="order-all-img" src="https://carshop.duoka361.cn/images/static/image/mine/mineRight.png"/></view>
 			</view>
 			<view class="order-content">
 				<view v-for="(item, index) in order" :key="index" @tap="handleOrder(index)" class="order-item">
@@ -30,14 +28,12 @@
 				</view>
 			</view>
 		</view>
-		
 		<view class="wallet" @tap="handleTool('/pages/mine/wallet')" v-if="this.showQY === true">
 			<view class="wallet-title">我的钱包</view>
 			<view class="wallet-money">{{userInfo.commission_price || '0.00'}}</view>
-			<view class="wallet-btn" @tap="handleAllOrder">可提现<image class="order-all-img" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineRight.png"/></view>
-			<img class="coins" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/coins.png"/>
+			<view class="wallet-btn" @tap="handleAllOrder">可提现<image class="order-all-img" src="https://carshop.duoka361.cn/images/static/image/mine/mineRight.png"/></view>
+			<img class="coins" src="https://carshop.duoka361.cn/images/static/image/mine/coins.png"/>
 		</view>
-		
 		<view class="tool">
 			<view class="tool-title">
 				<view class="tool-mine">常用工具</view>
@@ -66,48 +62,49 @@
 				userInfo: uni.getStorageSync('userInfo'),
 				order: [
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daifk.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/daifk.png',
 						name: '待付款',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daifh.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/daifh.png',
 						name: '待发货',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daish.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/daish.png',
 						name: '待收货',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/daipj.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/daipj.png',
 						name: '待评价',
 					},
 				],
 				tool: [
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
 						name: '站内信',
 						url: '/pages/mine/message'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
 						name: '我的权益',
+						url: '/pages/mine/equity'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
 						name: '收货地址',
 						url: '/pages/store/shipAddress/shipAddress'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '联系客服',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '我的钱包',
 						url: '/pages/mine/wallet'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '我的仓库',
 						url: '/pages/mine/warehouse'
 					},
@@ -125,56 +122,87 @@
 			});
 		},
 		created() {
-			console.log(this.$store.state.user,'userInfo')
-			if(this.userInfo.signing_image !== '') {
-				this.showQY = true
+			/* 等级 1：代理商 2：团长 3：团员 */
+			if (this.userInfo.level_id !== 1) {
+				if(this.userInfo.signing_image !== '' && this.userInfo.signing_image !== null) {
+					this.showQY = true
+					this.tool = [{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
+							name: '站内信',
+							url: '/pages/mine/message'
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
+							name: '我的权益',
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
+							name: '收货地址',
+							url: '/pages/store/shipAddress/shipAddress'
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
+							name: '联系客服',
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
+							name: '我的钱包',
+							url: '/pages/mine/wallet'
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
+							name: '我的仓库',
+							url: '/pages/mine/warehouse'
+						}]
+				}else if(this.userInfo.level_id === 2){
+					this.showQY = false
+					this.tool = [{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
+							name: '站内信',
+							url: '/pages/mine/message'
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
+							name: '我的权益',
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
+							name: '收货地址',
+							url: '/pages/store/shipAddress/shipAddress'
+						},
+						{
+							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
+							name: '联系客服',
+						}]
+				}
+			}else {
 				this.tool = [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
 						name: '站内信',
 						url: '/pages/mine/message'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
 						name: '我的权益',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
 						name: '收货地址',
 						url: '/pages/store/shipAddress/shipAddress'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '联系客服',
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '我的钱包',
 						url: '/pages/mine/wallet'
 					},
 					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
+						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 						name: '我的仓库',
 						url: '/pages/mine/warehouse'
-					}]
-			}else {
-				this.showQY = false
-				this.tool = [{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/zhanneixin.png',
-						name: '站内信',
-						url: '/pages/mine/message'
-					},
-					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/wodequanyi.png',
-						name: '我的权益',
-					},
-					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/shouhuodizhi.png',
-						name: '收货地址',
-						url: '/pages/store/shipAddress/shipAddress'
-					},
-					{
-						img: 'https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/lianxikefu.png',
-						name: '联系客服',
 					}]
 			}
 		},
@@ -257,7 +285,7 @@
 }
 
 .top-bg {
-    background: url('https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/mineBackground.png');
+    background: url('https://carshop.duoka361.cn/images/static/image/mine/mineBackground.png');
     background-position: center top;
     background-size: cover;
 	width: 100%;

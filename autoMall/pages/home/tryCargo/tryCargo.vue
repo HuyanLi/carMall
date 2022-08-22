@@ -2,8 +2,8 @@
 <template>
 	<view class="tryGO">
 		<view class="'topImg">
-			<image v-if="sh" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/shihuo.png"></image>
-			<image v-else src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qyImage.png"></image>
+			<image v-if="sh" src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png"></image>
+			<image v-else src="https://carshop.duoka361.cn/images/static/image/home/qyImage.png"></image>
 		</view>
 		<view class="goodsList">
 			<view class="goodsItem" @click="toGoodsDetail(item)"  v-for="(item,index) in goodList" :key='index'>
@@ -16,8 +16,8 @@
 		</view>
 		<view class="tryGoods">
 			<view class="shihuoLogo">
-				<image v-if="sh" src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/sh.png" @click="toSH('sh')"></image>
-				<image v-else src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/qyLogo.png" @click="toSH('qy')"></image>
+				<image v-if="sh" src="https://carshop.duoka361.cn/images/static/image/home/sh.png" @click="toSH('sh')"></image>
+				<image v-else src="https://carshop.duoka361.cn/images/static/image/home/qyLogo.png" @click="toSH('qy')"></image>
 			</view>
 		</view>
 	</view>

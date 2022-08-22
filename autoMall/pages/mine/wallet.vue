@@ -3,37 +3,37 @@
 		<view class="wallet-header">
 			<view class="wallet-header-left">
 				<view class="wallet-header-left-title">钱包余额</view>
-				<view class="wallet-header-left-balance">¥<text>500.00</text></view>
+				<view class="wallet-header-left-balance">¥<text>{{balance}}</text></view>
 			</view>
 			<view class="wallet-header-right right" @tap="handlePart('/pages/mine/cashout')">提现</view>
 		</view>
 		<view class="wallet-part">
 			<view class="wallet-part-left" @tap="handlePart('/pages/mine/saleRelation')">
-				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/fenxiaoguanxi.png">
+				<img src="https://carshop.duoka361.cn/images/static/image/mine/fenxiaoguanxi.png">
 				<text>分销关系</text>
 			</view>
 			<view class="wallet-part-right" @tap="handlePart('/pages/mine/saleOrder')">
-				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/fenxiaodingdan.png">
+				<img src="https://carshop.duoka361.cn/images/static/image/mine/fenxiaodingdan.png">
 				<text>分销订单</text>
 			</view>
 		</view>
 		<view class="wallet-select">
-			<view class="wallet-select-left">共{{bills.length}}笔</view>
+			<view class="wallet-select-left">共{{bills.total}}笔</view>
 			<view class="wallet-select-right" @tap="openCalendar">
 				<text>{{date}}</text>
-				<img src="https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/down.png" class="img" />
+				<img src="https://carshop.duoka361.cn/images/static/image/mine/down.png" class="img" />
 			</view>
 		</view>
 		
 		<view class="wallet-bill">
-			<view class="wallet-bill-item" v-for="(item, index) in bills" :key="index">
+			<view class="wallet-bill-item" v-for="(item, index) in bills.rows" :key="index">
 				<view class="wallet-bill-item-content">
-					<view class="title">{{item.title}}</view>
-					<view class="account" :class="item.accountType == 'in' ? 'color333333' : 'color7D0016'">{{item.account}}</view>
+					<view class="title">收入(获取途径)</view>
+					<view class="account" :class="item.accountType == 'in' ? 'color333333' : 'color7D0016'">{{item.commission_price}}</view>
 				</view>
 				<view class="wallet-bill-item-content">
-					<view class="order">订单编号：{{item.order}}</view>
-					<view class="date">{{item.date}}</view>
+					<view class="order">订单编号：{{item.order_sn}}</view>
+					<view class="date">{{item.createtime}}</view>
 				</view>
 			</view>
 		</view>
@@ -42,47 +42,33 @@
 </template>
 
 <script>
+	import { yeList } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
-				date: '2022-12-10',
-				bills: [{
-					title: '收入(获取途径)',
-					account: '-10.00',
-					order: 'MCYP202918394',
-					date: '2022.05.09 20:10',
-					accountType: 'out'
-				},{
-					title: '收入(获取途径)',
-					account: '+10.00',
-					order: 'MCYP202918394',
-					date: '2022.05.09 20:10',
-					accountType: 'in'
-				},{
-					title: '收入(获取途径)',
-					account: '+10.00',
-					order: 'MCYP202918394',
-					date: '2022.05.09 20:10',
-					accountType: 'in'
-				},{
-					title: '收入(获取途径)',
-					account: '+10.00',
-					order: 'MCYP202918394',
-					date: '2022.05.09 20:10',
-					accountType: 'in'
-				},{
-					title: '收入(获取途径)',
-					account: '-10.00',
-					order: 'MCYP202918394',
-					date: '2022.05.09 20:10',
-					accountType: 'out'
-				}]
+				date: '2022-08-12',
+				balance: uni.getStorageSync('userInfo').commission_price,
+				bills: []
 			}
 		},
+		created() {
+			this.inityeList()
+		},
 		methods: {
+			inityeList() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					page: 1,
+					start_time: this.date,
+				}
+				yeList(query).then(res=>{
+					this.bills = res.data
+				})
+			},
 			confirmCalendar(val) {
 				console.log(val)
 				this.date = val.fulldate
+				this.inityeList()
 			},
 			openCalendar() {
 				this.$refs.calendar.open()
@@ -99,7 +85,7 @@
 	background: #f6f6f6;
 	&-header {
 		height: 340rpx;
-		background: url("https://baiyuechangxiong-pic.luobo.info/che/static/image/mine/background-blue.png") no-repeat;
+		background: url("https://carshop.duoka361.cn/images/static/image/mine/background-blue.png") no-repeat;
 		transform: translate3d(0,-3rpx,0);
 		background-size: cover;
 		color: #ffffff;

@@ -43,3 +43,9 @@ export const approveCoupon = () => request(
 	'/index.php/api/index/getAuthenticationCouponList',
 	'POST'
 )
+//首页订单
+export const orderData = (data) => request(
+	'/index.php/api/order/getSigningNum',
+	data,
+	'POST'
+)

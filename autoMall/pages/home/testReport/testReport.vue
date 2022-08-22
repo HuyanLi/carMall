@@ -2,7 +2,7 @@
 <template>
 	<view class="report">
 		<view class="report-content">
-			<image src="https://baiyuechangxiong-pic.luobo.info/che/static/image/home/rrr.png" mode=""></image>
+			<image src="https://carshop.duoka361.cn/images/static/image/home/rrr.png" mode=""></image>
 			<view class="report-content-text">
 				<view class="report-content-text-item">
 					<text class="report-content-text-item-title">一、加油时的#98、#95、#92有什么区别？</text>
