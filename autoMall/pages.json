@@ -21,13 +21,14 @@
 			"path": "pages/tabBar/mall/mall",
 			"style": {
 				"navigationBarTitleText": "商城"
+				// "navigationStyle": "custom" // 取消本页面的导航栏
 			}
 		},
 		{
 			"path": "pages/tabBar/service/service",
 			"style": {
 				"navigationBarTitleText": "客服"
-				// "navigationStyle": "custom" // 取消本页面的导航栏
+				// "navigationStyle" : "custom",
 			}
 		},
 		{

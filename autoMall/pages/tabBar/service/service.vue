@@ -26,6 +26,7 @@
 			}
 		},
 		created() {
+			uni.hideHomeButton()
 			this.initQuestion()
 		},
 		methods: {

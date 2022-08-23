@@ -102,7 +102,7 @@
 			</view>
 			<view class="btn">
 				<button class="btn1" @click="addCart('购物车')">加入购物车</button>
-				<button class="btn2" v-if="user.is_signing == '1'" @click="buyGroup">拼团</button>
+				<button class="btn2" @click="buyGroup">拼团</button>
 			</view>
 		</view>
 		<!-- 规格 -->
@@ -440,15 +440,14 @@
 							url: '/pages/store/groupActivity/groupActivity?data=' + this.ptgoods
 						})
 					}else {
+						//是否签约 1：未签约 2：已签约
 						if(this.user.is_signing == '1'){
-							//未签约   下普通订单
 							uni.navigateTo({
-								url: '/pages/store/confirmOrder/confirmOrder?data='+JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
+								url: '/pages/store/confirmOrder/confirmOrder?data=' + JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
 							})
 						}else if(this.user.is_signing == '2') {
-							//拼团活动
 							uni.navigateTo({
-								url: '/pages/store/confirmOrder/confirmOrder?data=' + this.ptgoods + '&sku=' + this.conf
+								url: '/pages/store/confirmOrder/confirmOrder?data=' + JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
 							})
 						}
 						
@@ -509,7 +508,7 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		margin: 20rpx auto;
-		// padding: 20rpx;
+		padding-bottom: 20rpx;
 		.money {
 			font-family: PingFangSC-Regular;
 			font-weight: 400;

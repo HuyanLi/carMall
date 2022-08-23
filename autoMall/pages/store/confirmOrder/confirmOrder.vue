@@ -90,14 +90,14 @@
 				<button class="confirmB" type="default" @click="toConfirm">确认打款</button>
 			</view>
 			<view class="confirmBtn" v-if="user.is_signing == 2">
-				<button class="confirmB" type="default" @click="toaddPT">加入拼团购物车</button>
+				<button class="confirmB" type="default" @click="toaddPT">加入拼团活动</button>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import { getOrderPrice, getBankInfo, getDefault, addOrder} from '@/api/store.js'
+	import { getOrderPrice, getBankInfo, getDefault, addOrder, addptCart} from '@/api/store.js'
 	export default {
 		data() {
 			return {
@@ -139,6 +139,14 @@
 					},
 					goods_num: e.num
 				})
+				this.confromData.push({
+					goods_id: conD.id,
+					goods_sku_price_id: conSku[0].id,
+					num: e.num
+				})
+				this.goodsnum = e.num
+				this.originTotal = conSku[0].price
+				this.total = conSku[0].price
 			}
 			if(e.goodsData) {
 				this.goodsList = JSON.parse(e.goodsData)
@@ -152,6 +160,7 @@
 				})
 			}
 			this.user = uni.getStorageSync('userInfo')
+			console.log(this.user)
 		},
 		onShow() {
 			this.initBankInfo()
@@ -248,12 +257,41 @@
 			},
 			//加入拼团购物车
 			toaddPT() {
-				uni.navigateTo({
-					url: '/pages/home/groupBooking/groupBooking'
+				if(this.addId === '') {
+					uni.showToast({
+						title: '请选择收货地址',
+						duration: 2000
+					})
+					return
+				}
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					goods_list: JSON.stringify(this.confromData),
+					address_id: this.addId,
+				}
+				addptCart(query).then(res=>{
+					if(res.code == 1) {
+						// this.orderId = res.data.order_id
+						uni.navigateTo({
+							url: '/pages/home/groupBooking/groupBooking'
+						})
+					}else {
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						})
+					}
 				})
 			},
 			//确认打款
 			toConfirm() {
+				if(this.addId === '') {
+					uni.showToast({
+						title: '请选择收货地址',
+						duration: 2000
+					})
+					return
+				}
 				if(this.couId ===undefined) {
 					this.couId = ''
 				}
@@ -546,7 +584,7 @@
 			// margin-right: 20rpx;
 			// float: right;
 			.confirmB {
-				width: 200rpx;
+				// width: 200rpx;
 				// height: 78rpx;
 				background: #202425;
 				border-radius: 4rpx;

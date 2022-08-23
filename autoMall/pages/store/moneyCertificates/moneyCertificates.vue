@@ -107,10 +107,6 @@
 			this.orderDetail()
 			this.initBank()
 		},
-		// onShow() {
-			
-			
-		// },
 		methods: {
 			//回显
 			orderDetail() {

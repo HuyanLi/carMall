@@ -13,7 +13,7 @@
 		</scroll-view>
 		<view class="uni-flex uni-row chooseBox">
 			<view class="text uni-flex" style="align-items:center;">
-				<text class="choseText">当前品牌 : <text class="chooseType">{{this.type}}</text></text>
+				<text class="choseText">当前品牌 : <text class="chooseType">{{type}}</text></text>
 			</view>
 			<view class="text uni-flex detail" @click="toDetail"
 				style="-webkit-flex: 1;flex: 1;-webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
@@ -74,6 +74,7 @@
 			}
 		},
 		onLoad(e) {
+			uni.hideHomeButton()
 			//1：未认证 2：已认证
 			if(uni.getStorageSync('userInfo').is_authentication === 1) {
 				this.isApprove = false
@@ -110,6 +111,7 @@
 				this.menuTabs.forEach((item,index)=>{
 					if(index === 0) {
 						this.brandId = item.id
+						this.type = item.name
 					}
 				})
 			},

@@ -38,6 +38,9 @@
 		},
 		mounted() {
 			this.getOpenId()
+			this.getUserProfile()
+			this.getPhoneNumber()
+			this.getAddress()
 			let member_id = uni.getStorageSync('member_id')
 			if(member_id){
 				this.isLogin = false;
@@ -139,10 +142,11 @@
 			getAddress() {
 				uni.chooseLocation({
 					success: (res) => {
-						console.log('位置名称：' + res.name);
-						console.log('详细地址：' + res.address);
-						console.log('纬度：' + res.latitude);
-						console.log('经度：' + res.longitude);
+						// console.log('位置名称：' + res.name);
+						// console.log('详细地址：' + res.address);
+						// console.log('纬度：' + res.latitude);
+						// console.log('经度：' + res.longitude);
+						_this.isMap = false
 					}
 				});
 			}

@@ -4,19 +4,19 @@
 		<view class="group-header"></view>
 		<view class="group-content">
 			<view class="group-content-title">
-				第一阶段 -51000元（9折）
+				第一阶段 {{ptInfo.all_price}}元（{{ptInfo.now_discount}}折）
 			</view>
 			<view class="group-content-text">
-				距下一阶段还差***元，下一阶段可8折购买
+				距下一阶段还差{{ptInfo.last_price}}元，下一阶段可{{ptInfo.next_discount}}折购买
 			</view>
-			<view class="group-content-main">
+			<view class="group-content-main" v-for="(item,index) in ptInfo.member_list" :key='index'>
 				<view class="group-content-main-left">
-					<image src="https://carshop.duoka361.cn/images/static/image/home//211铃铛-线性.png" mode=""></image>
-					<text>庹豪珠</text>
+					<image :src="item.head_img" mode=""></image>
+					<text>{{item.nickname}}</text>
 				</view>
 				<view class="group-content-main-right">
-					<text class="text1"> ¥368.00</text>
-					<text class="text2">¥400.00</text>
+					<text class="text1"> ¥{{item.discount_price}}</text>
+					<text class="text2">¥{{item.price}}</text>
 				</view>
 			</view>
 			<button class="group-content-btn" type="default" @click="chooseGoods">继续选货</button>
@@ -31,44 +31,80 @@
 				</view>
 			</view>
 			<view class="group-sale-article">
-				优惠额度富文本文字占位优惠额度富文本文字占位优惠额度富文本文字产规效什入青马及并路类验须要。提果身区北次事置温从真备四适和海多标图高矿体儿将交老口府金这速一文百则容美满龙元。装则收争品得压国示与更由党下
+				{{note}}
 			</view>
 		</view>
 		<view class="group-botton">
 			<button type="default" @click="toConfirm">
-				确认打款 (已优惠¥500.00)
+				确认打款 (已优惠{{ptInfo.my_discount_price}})
 			</button>
 		</view>
 	</view>
 </template>
 
 <script>
-	import { getptList } from '@/api/store.js'
+	import { getptList, getptStep, addptOrder } from '@/api/store.js'
 	export default {
 		data() {
 			return {
 				tabList: [{
-					name: '第一阶段'
+					name: '第一阶段',
 				},{
-					name: '第二阶段'
+					name: '第二阶段',
 				},{
 					name: '第三阶段'
 				}],
 				active: 0,
-				article: '技点际引利及快自空金效回动期往更标元得达利先之六术质于六国素率动热她志离头流。土断二大影角门包题类一育思酸西要老求史把并此至传动五几条被口前查全连上石何来你员圆往队周导政引色队程。以型但传七克难半产习光量根往立查式自使圆太办百接回阶空团安别改。'
+				article: '七克难半产习光量根往立查式自使圆太办百接回阶空团安别改。',
+				ptInfo: null,
+				ptSetting: null,
+				ptList: [],
+				note: ''
 			}
 		},
 		created() {
 			this.initPTList()
+			this.initStep()
 		},
 		methods: {
 			initPTList() {
 				getptList({member_id: uni.getStorageSync('member_id')}).then(res=>{
-					console.log(res)
+					if(res.code == 1) {
+						this.ptInfo = res.data
+						if(this.ptInfo.now_level > 0) {
+							this.active = this.ptInfo.now_level - 1
+						}else {
+							this.active = 0
+						}
+					}else {
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						})
+					}
+				})
+			},
+			//获取拼团设置
+			initStep() {
+				getptStep().then(res=>{
+					if(res.code == 1) {
+						this.ptList = res.data.shuoming
+						this.ptList.forEach((item,index)=>{
+							if(this.active === index) {
+								this.note = item.note
+							}
+						})
+					}
 				})
 			},
 			changeActive(i,e) {
 				this.active = e
+				this.note = ''
+				this.ptList.forEach((item,index)=>{
+					if(e == index) {
+						this.note = item.note
+					}
+				})
 			},
 			//继续选货
 			chooseGoods() {
@@ -78,9 +114,19 @@
 			},
 			//确认打款
 			toConfirm() {
-				uni.navigateTo({
-					url: '/pages/store/moneyCertificates/moneyCertificates'
+				addptOrder({member_id: uni.getStorageSync('member_id')}).then(res=>{
+					if(res.code == 1) {
+						uni.navigateTo({
+							url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
+						})
+					}else {
+						uni.showToast({
+							title: res.msg,
+							duration: 2000
+						})
+					}
 				})
+				
 			}
 		}
 	}
@@ -149,6 +195,7 @@
 					margin-left: 11rpx;
 					font-size: 24rpx;
 					color: #999999;
+					text-decoration: line-through;
 				}
 			}
 		}

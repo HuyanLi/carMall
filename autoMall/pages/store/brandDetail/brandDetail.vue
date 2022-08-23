@@ -16,7 +16,7 @@
 			<text>{{ title }}</text>
 		</view>
 		<view class="detailBox">
-			<text>商品详情</text>
+			<text>品牌详情</text>
 			<rich-text class="richBox" :nodes="content"></rich-text>
 		</view>
 	</view>
@@ -119,7 +119,6 @@
 	.detailBox {
 		padding: 25rpx 30rpx 100rpx;
 		background: #FFFFFF;
-		height: 800rpx;
 		text {
 			font-family: PingFangSC-Semibold;
 			font-weight: 600;
@@ -128,9 +127,7 @@
 			display: block;
 		}
 		.richBox {
-			padding: 20rpx 30rpx;
 			width: 690rpx;
-			height: 505rpx;
 			// border: 1rpx solid #979797;
 		}
 	}

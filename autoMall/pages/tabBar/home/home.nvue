@@ -26,7 +26,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-else-if="showNav === '2'" class="midTab">
+		<view v-else-if="showNav == '2'" class="midTab">
 			<!-- 已认证 -->
 			<view  class="flex-wrp" style="flex-direction:row;justify-content: space-around;">
 			  <view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
@@ -47,7 +47,7 @@
 			</view>
 		</view>		
 		<!-- 已签约 -->
-		<view v-else="showNav === '3'" class="showTab">
+		<view v-else-if="showNav === '3'" class="showTab">
 			<view  class="showApp">
 					<view class="showOrder">
 						<view class="showbgc" v-if="type != '1' && orderListData>0">
@@ -112,8 +112,8 @@
 				<view class="empty" v-if="wyList.length === 0">暂无数据</view>
 				<view class="swiper-item" v-for="(item, idx) in wyList" :key="idx" @tap.stop="toDetail(item)">
 					<view class="wyItem-text">
-						<view class="text title">{{item.title}}</view>
-						<view class="text textContent">{{item.upper_note}}</view>
+						<view class="text title">{{item.name}}</view>
+						<view class="text textContent">{{item.title}}</view>
 					</view>
 					<view class="wyItem-img">
 						<image :src="item.image"></image>
@@ -162,6 +162,11 @@
 						"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
 						"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
 						"text": "首页"
+					},{
+						"pagePath": "pages/tabBar/mall/mall",
+						"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mall.png",
+						"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mall1.png",
+						"text": "品牌专区"
 					}
 				],
 				orderListData: '',
@@ -228,27 +233,16 @@
 						uni.setStorageSync('member_id',res.data.id)
 						uni.setStorageSync('userInfo',res.data)
 						if(res.data.id !== '') {
+							//认证状态 1：未认证 2：已认证
 							if(res.data.is_authentication === 1) {
 								this.showNav = '1'
-								this.tabbar = [{
-										"pagePath": "pages/tabBar/home/home",
-										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/home1.png",
-										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/home.png",
-										"text": "首页"
-									}
-									,{
-										"pagePath": "pages/tabBar/mall/mall",
-										"iconPath": "https://carshop.duoka361.cn/images/static/image/home/mall.png",
-										"selectedIconPath": "https://carshop.duoka361.cn/images/static/image/home/mall1.png",
-										"text": "品牌专区"
-									}
-								]
 							}else {
-								if(res.data.signing_image !== null) {
-									this.showNav = '3'
+								//是否签约 1：未签约 2：已签约
+								if(res.data.is_signing == 1) {
+									this.showNav = '2'
 									this.type = res.data.level_id
 								}else {
-									this.showNav = '2'
+									this.showNav = '3'
 								}
 								this.tabbar = [{
 										"pagePath": "pages/tabBar/home/home",
@@ -306,6 +300,7 @@
 				let query = {
 					category_id: this.goodsIndex,
 					is_share: 2,
+					status: 2,
 					page: 1
 				}
 				let data = await contentList(query)
@@ -384,7 +379,7 @@
 			border-radius:7rpx;
 			position: relative;
 			overflow: hidden;
-			margin-top: 16rpx;
+			// margin-top: 16rpx;
 			// 轮播图
 			.image-container {
 				width: 750rpx;

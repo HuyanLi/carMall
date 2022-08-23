@@ -239,21 +239,25 @@
 				this.approve.area_name = this.area_name
 				this.invitation_code = uni.getStorageSync('userInfo').invitation_code
 				let data = await approve(this.approve)
-				if(data.code === 0) {
-					uni.showToast({
-						title: data.msg
-					})
-					uni.navigateTo({
-						url: '/pages/tabBar/home/home'
-					})
-				}else {
-					this.title= data.msg
-					this.dialogVisible = true
-					
-					uni.navigateTo({
-						url: '/pages/tabBar/home/home'
-					})
-				}
+				uni.showToast({
+					title: data.msg,
+				})
+				setTimeout(()=>{
+					if(data.code === 0) {
+						uni.showToast({
+							title: data.msg
+						})
+						uni.navigateTo({
+							url: '/pages/tabBar/home/home'
+						})
+					}else {
+						this.title= data.msg
+						this.dialogVisible = true
+						uni.navigateTo({
+							url: '/pages/tabBar/home/home'
+						})
+					}
+				},2000);
 			},
 			handleConfirm() {
 				this.dialogVisible = false

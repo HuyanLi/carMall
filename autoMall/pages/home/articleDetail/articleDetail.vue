@@ -49,12 +49,12 @@
 				that.content= cont;
 			},
 			nextArticle() {
-				console.log(this.data)
-				if(uni.getStorageSync('member_id') !== '') {
+				console.log(this.data,uni.getStorageSync('userInfo'))
+				if(uni.getStorageSync('userInfo').is_authentication == 1) {
+					this.$refs.alertDialog.open()
+				}else {
 					this.content = this.data.data.lower_note
 					this.showNext = false
-				}else {
-					this.$refs.alertDialog.open()
 				}
 			},
 			backto() {

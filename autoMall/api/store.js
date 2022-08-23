@@ -130,3 +130,27 @@ export const commitPay = (data) => request(
 	data,
 	'POST'
 )
+//添加商品到拼团购物车
+export const addptCart = (data) => request(
+	'/index.php/api/cart/addCollageCart',
+	data,
+	'POST'
+)
+//添加拼团订单
+export const addptOrder = (data) => request(
+	'/index.php/api/order/addCollageOrder',
+	data,
+	'POST'
+)
+//拼团活动详情
+export const getptInfo = (data) => request(
+	'/index.php/api/index/getCollageInfo',
+	data,
+	'POST'
+)
+//获取拼团设置
+export const getptStep = (data) => request(
+	'/index.php/api/index/getCollageSet',
+	data,
+	'POST'
+)
