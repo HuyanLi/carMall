@@ -3,12 +3,12 @@
 	<view class="shippingAddress">
 		<view class="empty" v-if="addressList.length === 0">
 			<image src="https://carshop.duoka361.cn/images/static/image/mall/empty.png" mode=""></image>
-			<text class="empty-text1">当前地址为空,</text>
+			<text class="empty-text1">当前地址为空</text>
 			<text class="empty-text2" @click="addAddress('/pages/store/addAdress/addAdress')">去添加</text>
 		</view>
 		<view v-if="addressList.length > 0" class="addressContent" >
-			<view class="addItem" v-for="(item,index) in addressList" :key="index">
-				<view class="peoinfo" @click="activeAdress(item,index)">
+			<view class="addItem" v-for="(item,index) in addressList" @click="activeAdress(item,index)" :key="index">
+				<view class="peoinfo" >
 					<text class="fontS fontN">{{item.consignee}}</text>
 					<text class="fontS fontNum">{{item.phone}}</text>
 					<view v-if='item.is_default === "1"' class="defaultBtn">
@@ -115,9 +115,10 @@
 				})
 			},
 			addAddress(src,item) {
+				console.log(item)
 				if(item) {
 					uni.navigateTo({
-						url: src + '?adsId=' + JSON.stringify(item)
+						url: '/pages/store/addAdress/addAdress?adsId=' + JSON.stringify(item)
 					})
 				}else {
 					uni.navigateTo({

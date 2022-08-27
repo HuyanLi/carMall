@@ -3,7 +3,7 @@
 		<view class="info-list">
 			<view class="info-item">
 				<text class="info-item-title">头像</text>
-				<view class="info-item-content right">
+				<view class="info-item-content right" @tap.stop='editImg'>
 					<image class="img" :src="userInfo.head_img"/>
 				</view>
 			</view>
@@ -59,7 +59,7 @@
 				userInfo: uni.getStorageSync('userInfo'),
 				tel: uni.getStorageSync('userInfo').mobile,
 				userName: uni.getStorageSync('userInfo').realname,
-				address: uni.getStorageSync('userInfo').province_name + uni.getStorageSync('userInfo').city_name + uni.getStorageSync('userInfo').area_name,
+				address: '北京北京市昌平区',
 				company: uni.getStorageSync('userInfo').company_name,
 				select:"请选择地区",
 				id:'',
@@ -73,9 +73,13 @@
 			}
 		},
 		created() {
+			this.address = uni.getStorageSync('userInfo').province_name + uni.getStorageSync('userInfo').city_name + uni.getStorageSync('userInfo').area_name,
 			this.initCity()
 		},
 		methods: {
+			editImg() {
+				
+			},
 			saveInfo() {
 				let query = {
 					member_id: uni.getStorageSync('member_id'),
@@ -89,11 +93,12 @@
 				editUser(query).then(res=>{
 					uni.showToast({
 						title: res.msg,
-						duration: 2000
 					})
-					uni.navigateBack({
-						delta: 1
-					})
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta: 1
+						})
+					},500)
 				})
 			},
 			handleAddress() {

@@ -36,7 +36,8 @@
 				duration: 500,
 				tabbarHeights: '100',
 				content: '',
-				brandId: ''
+				brandId: '',
+				title: ''
 			}
 		},
 		onLoad(e) {
@@ -105,10 +106,11 @@
 	.title {
 		// width: 750rpx;
 		// height: 94rpx;
+		// line-height: 94rpx;
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		padding: 30rpx;
-		margin-bottom: 20rpx;
+		margin: 20rpx auto;
 		text {
 			font-family: PingFangSC-Regular;
 			font-weight: 400;

@@ -29,7 +29,7 @@
 				提现
 			</view>
 		</view>
-		<view class="cashout-footer">
+		<view class="cashout-footer" @click="toCommission">
 			提现即表示同意<text>《车后市场分销协议》</text>
 		</view>
 		<Dialog :title="title" :visible="dialogVisible" @cancel="handleCancel" @confirm="handleConfirm"/>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-	import { userGet } from '@/api/mine.js'
+	import { userGet, } from '@/api/mine.js'
 	import Dialog from "../../components/dialog.vue"
 	export default {
 		components: {
@@ -53,12 +53,26 @@
 			}
 		},
 		created() {
-			// this.initList()
 		},
 		methods: {
+			toCommission() {
+				uni.navigateTo({
+					url: '/pages/mine/commission'
+				})
+			},
 			handleCashout() {
-				this.title = '确定提现' +  this.count +'元吗'
-				this.dialogVisible = true
+				if(this.count > this.balance) {
+					uni.showToast({
+						title: '提现金额不能大于当前余额',
+					})
+				}else if(this.count == 0){
+					uni.showToast({
+						title: '没有提现余额',
+					})
+				}else {
+					this.title = '确定提现' +  this.count +'元吗'
+					this.dialogVisible = true
+				}
 			},
 			handleCancel() {
 				this.dialogVisible = false
@@ -72,7 +86,6 @@
 				userGet(query).then(res=>{
 					uni.showToast({
 						title: res.msg,
-						duration: 2000
 					})
 				})
 			},

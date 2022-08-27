@@ -29,6 +29,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="empty">
+			暂无数据
+		</view>
 	</view>
 </template>
 
@@ -51,7 +54,6 @@
 				}
 				getFXlist(query).then(res=>{
 					if(res.code === 1) {
-						console.log(res.data,'23432')
 						this.orders = res.data.rows
 					}
 					
@@ -66,6 +68,11 @@
 .sale-order {
 	box-sizing: border-box;
 	padding: 0 30rpx;
+	.empty {
+		height: 715rpx;
+		text-align: center;
+		padding-top: 50%;
+	}
 	&-content {
 		background: #f6f6f6;
 		margin-top: 20rpx;

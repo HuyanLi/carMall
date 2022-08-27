@@ -10,7 +10,7 @@
 					<view class="text title" style="text-align: left;">
 						{{item.title}}
 					</view>
-					<view class="text content">{{item.upper_note}}</view>
+					<view class="text content">{{item.name}}</view>
 					<view class="text" style="text-align: right;">
 						<button class="btn" type="default" plain="true" @click="toDetail(item)">查看</button>
 					</view>

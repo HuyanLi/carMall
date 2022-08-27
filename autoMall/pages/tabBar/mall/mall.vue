@@ -36,7 +36,7 @@
 			</view>
 		</view>
 		<!-- 悬浮按钮 -->
-		<view class="tryGoods">
+		<view v-if="isApprove" class="tryGoods">
 			<view class="shihuoLogo" @click="toshoppingCart">
 				<image src="https://carshop.duoka361.cn/images/static/image/mall/gwc.png" ></image>
 			</view>
@@ -68,7 +68,7 @@
 				list: [],
 				userInfo: null,
 				tabbar: uni.getStorageSync('tabbar'),
-				goodsType: '1',
+				goodsType: '',
 				//是否认证
 				isApprove: false
 			}
@@ -93,15 +93,9 @@
 			//品牌
 			this.initBrandList()
 			//试货
-			if(e.type === 'sh') {
+			if(e.type && e.type === 'sh') {
 				this.goodsType = '2'
 				//商品列表
-				this.initGoods()
-			}else{
-				//签约等于普通
-				this.goodsType = '1'
-				//商品列表
-				this.initGoods()
 			}
 		},
 		methods: {
@@ -112,6 +106,7 @@
 					if(index === 0) {
 						this.brandId = item.id
 						this.type = item.name
+						this.initGoods()
 					}
 				})
 			},
@@ -144,9 +139,15 @@
 			},
 			//商品詳情
 			toGoodsDetail(item) {
-				uni.navigateTo({
-					url: '/pages/store/goodsDetail/goodsDetail?id=' + item.id
-				})
+				if(this.isApprove === true) {
+					uni.navigateTo({
+						url: '/pages/store/goodsDetail/goodsDetail?id=' + item.id
+					})
+				}else {
+					uni.navigateTo({
+						url: '/pages/home/approve/approve'
+					})
+				}
 			},
 			swiperChange: async function(e) {
 				console.log(e,999)
@@ -207,8 +208,8 @@
 		width: 100%;
 		background-color: #FFFFFF;
 		// height: 86upx;
-		border-top: 1px solid #d8dbe6;
-		border-bottom: 1px solid #d8dbe6;
+		// border-top: 1px solid #d8dbe6;
+		border-bottom: 1px solid #E2E2E2;
 	}
 
 	.top-menu-view .menu-topic-view {
@@ -349,8 +350,8 @@
 			right: 20rpx;
 			bottom: 300rpx;
 			image {
-				width: 80px;
-				height: 80px;
+				width: 80rpx;
+				height: 80rpx;
 			}
 		}
 	}

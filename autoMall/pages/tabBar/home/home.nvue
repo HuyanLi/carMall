@@ -5,7 +5,7 @@
 			<view class="uni-margin-wrap">
 				<swiper class="swiper image-container" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 					<swiper-item v-for="(item, index) in imgList" :key="index">
-						<view class="item" :class="currentIndex == index ? 'item-img' : 'item-img-side'">
+						<view class="item" @click="toReport(item)" :class="currentIndex == index ? 'item-img' : 'item-img-side'">
 							<image :src="item.image" mode=""></image>
 						</view>
 					</swiper-item>
@@ -32,13 +32,13 @@
 			  <view  class="tabMain"  @click="navTo('/pages/home/giftPack/giftPack','0')">
 			  	<image src="https://carshop.duoka361.cn/images/static/image/home/reg.png" mode=""></image>
 			  </view>
-			  <view class="tabMain" @click="navTo('/pages/home/tryCargo/tryCargo','sh')">
+			  <view class="tabMain" @click="navTo('/pages/home/tryCargo/tryCargo','0')">
 			  	<image src="https://carshop.duoka361.cn/images/static/image/home/goods.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/liveBar/liveBar','0')">
 			  	<image src="https://carshop.duoka361.cn/images/static/image/home/zb.png" mode=""></image>
 			  </view>
-			  <view class="tabMain" @click="navTo('/pages/home/contrac/contrac','qy')">
+			  <view class="tabMain" @click="navTo('/pages/home/contrac/contrac','0')">
 			  	<image src="https://carshop.duoka361.cn/images/static/image/home/qy.png" mode=""></image>
 			  </view>
 			  <view class="tabMain" @click="navTo('/pages/home/shareTask/shareTask','0')">
@@ -62,44 +62,51 @@
 							<image @click="toOrderCenter" class="rightIMG" src="https://carshop.duoka361.cn/images/static/image/home/xiangyou.png" mode=""></image>
 						</view>
 					</view>
-					<view class="showXS" v-if="nowTask !== '0.00'|| nowTask == undefined">
-						<text class="showXS-title">销售任务</text>
-						<view class="showXS-text">
-							<text class="showXS-text-name">当前任务</text>
-							<text class="showXS-text-task">{{nowTask}}</text>
-						</view>
-						<view class="showXS-text">
-							<text class="showXS-text-name">当前进度</text>
-							<text class="showXS-text-task">{{nowProgress}}</text>
-						</view>
-						<view class="showXS-text">
-							<text class="showXS-text-name">当前百分比</text>
-							<text class="showXS-text-task">{{nowbfb}}</text>
-						</view>
+				</view>
+		</view>
+		<!-- 任务 -->
+		<view class="showXS" v-if="showTask">
+			<text class="showXS-title">销售任务</text>
+			<view class="showXS-text">
+				<text class="showXS-text-name">当前任务</text>
+				<text class="showXS-text-task">{{nowTask}}</text>
+			</view>
+			<view class="showXS-text">
+				<text class="showXS-text-name">当前进度</text>
+				<text class="showXS-text-task">{{nowProgress}}</text>
+			</view>
+			<view class="showXS-text">
+				<text class="showXS-text-name">当前百分比</text>
+				<text class="showXS-text-task">{{nowbfb.toFixed()}} %</text>
+			</view>
+		</view>
+		<!-- 拼团活动 -->
+		<image v-if="userInfo.signing_image !== null  && (type == '2' || type == '3')" class="showIMG" @tap='toPTactivity' src="https://carshop.duoka361.cn/images/static/image/home/拼团.png" mode=""></image>
+		<!-- 代理商身份 -->
+		<view v-if='type == 1' class="showTab">
+			<view class="showApp">
+				<view class="showAll">
+					<view class="showAll-left">
+						<text class="showAll-left-title">{{salesData.all_order_num}}</text>
+						<text class="showAll-left-text">全部订单</text>
 					</view>
-					<image v-if="type != '1'" class="showIMG" @tap='toPTactivity' src="https://carshop.duoka361.cn/images/static/image/home/拼团.png" mode=""></image>
-					<view v-if="type == '1'" class="showAll">
-						<view class="showAll-left">
-							<text class="showAll-left-title">{{salesData.all_order_num}}</text>
-							<text class="showAll-left-text">全部订单</text>
-						</view>
-						<image class="showAll-img" src="https://carshop.duoka361.cn/images/static/image/home/dailishang.png" mode=""></image>
-						<view class="showAll-right">
-							<text class="showAll-right-title">{{salesData.now_order_num}}</text>
-							<text class="showAll-right-text">当前订单</text>
-						</view>
-						<view class="showAll-right">
-							<text class="showAll-right-title">{{salesData.over_order_num}}</text>
-							<text class="showAll-right-text">完成订单</text>
-						</view>
+					<image class="showAll-img" src="https://carshop.duoka361.cn/images/static/image/home/dailishang.png" mode=""></image>
+					<view class="showAll-right">
+						<text class="showAll-right-title">{{salesData.now_order_num}}</text>
+						<text class="showAll-right-text">当前订单</text>
+					</view>
+					<view class="showAll-right">
+						<text class="showAll-right-title">{{salesData.over_order_num}}</text>
+						<text class="showAll-right-text">完成订单</text>
 					</view>
 				</view>
+			</view>
 			
 		</view>
 		<!-- 商品类型tab -->
 		<view class="goodsTab">
 			<view class="flex-wrap" style="flex-direction: row;">
-				<view class="tabMain" v-for="(item,i) in goodsList" :key='i' @click="changeType(i)">
+				<view class="tabMain" v-for="(item,i) in goodsList" :key='i' @click="changeType(item,i)">
 					<view  :class="goodsIndex === i?'goodsActive' : 'goodsItem'">
 						{{item.name}}
 					</view>
@@ -121,6 +128,12 @@
 				</view>
 			</swiper-item>
 		</swiper>
+		<!-- 悬浮按钮 签约后首页-->
+		<view v-if="userInfo.is_signing == 2" class="tryGoods">
+			<button data-name="shareBtn" open-type="share" class="shihuoLogo">
+				<image src="https://carshop.duoka361.cn/images/static/image/mall/share1.png" ></image>
+			</button>
+		</view>
 		<tab-bar :tabbar='tabbar' :current="currentTabIndex" tintColor="#42b983" @click="tabClick"></tab-bar>
 		<auth v-if='showAuth'></auth>
 	</view>
@@ -176,10 +189,13 @@
 				nowProgress: '',
 				//当前百分比
 				nowbfb: '',
-				salesData: null
+				salesData: null,
+				goodsId: '1',
+				userInfo: uni.getStorageSync('userInfo'),
+				showTask: false
 			}
 		},
-		mounted() {
+		onLoad() {
 			//轮播图
 			this.initSlide()
 			//内容分类
@@ -199,12 +215,83 @@
 				}
 				this.initUserInfo(query)
 			}
-			console.log(uni.getStorageSync('userInfo').sales_task_now_price)
-			this.nowTask = uni.getStorageSync('userInfo').sales_task_now_price
-			this.nowProgress = uni.getStorageSync('userInfo').sales_task_now_price +'/'+uni.getStorageSync('userInfo').sales_task_price
-			this.nowbfb = Number(this.nowProgress = uni.getStorageSync('userInfo').sales_task_now_price) / Number(uni.getStorageSync('userInfo').sales_task_price)
+			//任务显示
+			if(Number(uni.getStorageSync('userInfo').sales_task_price) > 0) {
+				this.showTask = true
+				this.nowTask = uni.getStorageSync('userInfo').sales_task_end_time + '之前消费' + uni.getStorageSync('userInfo').sales_task_price
+			}
+			if(uni.getStorageSync('userInfo').sales_task_now_price == null) {
+				this.nowProgress = '0' + '/'+ uni.getStorageSync('userInfo').sales_task_price
+			}else {
+				this.nowProgress = Number(this.nowProgress)
+				this.nowProgress = uni.getStorageSync('userInfo').sales_task_now_price +'/'+ uni.getStorageSync('userInfo').sales_task_price
+			}
+			this.nowbfb = Number(uni.getStorageSync('userInfo').sales_task_now_price) / Number(uni.getStorageSync('userInfo').sales_task_price)
+		},
+		onShareAppMessage(options){
+		　　var that = this;
+		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+		　　var shareObj = {
+		　　　  title: that.datad.data.name,        // 默认是小程序的名称(可以写slogan等)
+		　　　　desc:'',// 小程序的描述
+			   path: '/pages/home/shareTask/shareDetail?id='+ that.id,        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　imageUrl: that.datad.data.image, // 图片封面，本地文件路径、网络图片路，支持PNG及JPG，默认当前页面截图，显示图片长宽比是 5:4。
+		　　　　success: function(res){
+		　　　　　　// 转发成功之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+					 uni.showToast({
+					 	title: '分享成功',
+						// duration: 2000
+					 })
+		　　　　　　}
+		　　　　},
+		　　　　fail: function(){
+		　　　　　　// 转发失败之后的回调
+		　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+						console.log(res)
+		　　　　　　　　// 用户取消转发
+		　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+						console.log(res)
+		　　　　　　}
+		　　　　},
+		　　}
+		　　// 来自页面内的按钮的转发
+		　　if( options.from == 'button' ){
+		　　　　var eData = options.target.dataset;
+		　　　　console.log( eData.id);     // shareBtn
+		　　　　// 此处可以修改 shareObj 中的内容
+		　　　　shareObj.path = '/pages/home/shareTask/shareDetail?id=' + that.id
+		　　}
+		　　// 返回shareObj
+		　　return shareObj;
 		},
 		methods: {
+			//首页轮播去测试报告
+			toReport(item) {
+				if(item.url !== '') {
+					uni.navigateTo({
+						url: '/pages/home/testReport/testReport'
+					})
+				}
+			},
+			//首页分享
+			onShare() {
+				uni.share({
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 0,
+					href: "http://uniapp.dcloud.io/",
+					title: '',
+					summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+					imageUrl: '',
+					success: function (res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			},
 			//获取代理商订单
 			initsalseData() {
 				let query = {
@@ -232,6 +319,7 @@
 						this.showAuth = false
 						uni.setStorageSync('member_id',res.data.id)
 						uni.setStorageSync('userInfo',res.data)
+						this.type = res.data.level_id
 						if(res.data.id !== '') {
 							//认证状态 1：未认证 2：已认证
 							if(res.data.is_authentication === 1) {
@@ -240,7 +328,6 @@
 								//是否签约 1：未签约 2：已签约
 								if(res.data.is_signing == 1) {
 									this.showNav = '2'
-									this.type = res.data.level_id
 								}else {
 									this.showNav = '3'
 								}
@@ -298,8 +385,8 @@
 			},
 			async initContentList() {
 				let query = {
-					category_id: this.goodsIndex,
-					is_share: 2,
+					category_id: this.goodsId,
+					is_share: 1,
 					status: 2,
 					page: 1
 				}
@@ -313,31 +400,22 @@
 				this.currentIndex = e.detail.current
 			},
 			navTo(url,e) {
-				if(e === 'sh') {
-					uni.navigateTo({
-						url: '/pages/home/tryCargo/tryCargo?shihuo=' + e
-					})
-				}else if(e === 'qy'){
-					uni.navigateTo({
-						url: '/pages/home/tryCargo/tryCargo?shihuo=' + e
-					})
-				}else {
-					uni.navigateTo({
-						url
-					})
-					// this.beforeapprove = true
-				}
-				
+				uni.navigateTo({
+					url
+				})
 			},
-			changeType(e) {
+			changeType(item,e) {
+				console.log(item,e)
 				if(e !== this.goodsIndex) {
 					this.goodsIndex = e
+					this.goodsId = item.id
 					this.initContentList()
 				}
 			},
 			handleSwipeChange(e) {
 				console.log(e,'her ')
 				this.goodsIndex  = e.detail.current
+				this.goodsId = e.detail.current + 1 
 				this.initContentList()
 			},
 			toDetail(e) {
@@ -379,7 +457,7 @@
 			border-radius:7rpx;
 			position: relative;
 			overflow: hidden;
-			// margin-top: 16rpx;
+			margin-bottom: 20rpx;
 			// 轮播图
 			.image-container {
 				width: 750rpx;
@@ -409,14 +487,13 @@
 					width: 650rpx;
 					height: 350rpx;
 					border-radius: 24rpx;
-					// animation: to-mini .2s;
 					margin: 15rpx auto;
 				}
 			}
 		}
 		.midTab {
 			width: 690rpx;
-			margin: 30rpx auto 20rpx;
+			margin: 0 auto 20rpx;
 			text-align: center;
 			overflow: hidden;
 			background: #FFFFFF;
@@ -432,15 +509,50 @@
 				}
 			}
 		}
+		.showIMG {
+			width: 690rpx;
+			margin: 0rpx auto 20rpx;
+			height: 300rpx;
+		}
+		.showXS {
+			width: 690rpx;
+			background: #fff;
+			display: flex;
+			flex-direction: column;
+			// justify-content: ;
+			margin: 0 auto 20rpx;
+			padding: 30rpx;
+			border-radius: 16rpx;
+			&-title {
+				font-size: 30rpx;
+				color: #000000;
+				font-weight: 600;
+				text-align: left;
+				margin-bottom: 15rpx;
+			}
+			&-text {
+				display: inline-block;
+				font-size: 26rpx;
+				margin-bottom: 15rpx;
+				&-name {
+					color: #4D515D;
+					float:left;
+				}
+				&-task {
+					color: #000000;
+					float: right;
+				}
+			}
+		}
 		.showTab{
 			text-align: center;
 			overflow: hidden;
 			.showApp {
 				.showOrder {
 					background: #fff;
+					margin: 0 auto 20rpx;
 					.showbgc {
 						width: 690rpx;
-						margin: 30rpx auto;
 						display: flex;
 						flex-direction: row;
 						padding: 25rpx;
@@ -459,39 +571,9 @@
 						}
 					}
 				}
-				.showXS {
-					width: 690rpx;
-					margin: 20rpx auto 0;
-					background: #fff;
-					display: flex;
-					flex-direction: column;
-					// justify-content: ;
-					padding: 30rpx;
-					border-radius: 16rpx;
-					&-title {
-						font-size: 30rpx;
-						color: #000000;
-						font-weight: 600;
-						text-align: left;
-						margin-bottom: 15rpx;
-					}
-					&-text {
-						display: inline-block;
-						font-size: 26rpx;
-						margin-bottom: 15rpx;
-						&-name {
-							color: #4D515D;
-							float:left;
-						}
-						&-task {
-							color: #000000;
-							float: right;
-						}
-					}
-				}
 				.showAll {
 					width: 690rpx;
-					margin: 20rpx auto;
+					margin: 0rpx auto 20rpx;
 					background: #fff;
 					display: flex;
 					flex-direction: row;
@@ -525,11 +607,7 @@
 						}
 					}
 				}
-				.showIMG {
-					width: 690rpx;
-					margin: 0rpx auto 20rpx;
-					height: 300rpx;
-				}
+				
 			}
 		}
 		.goodsTab {
@@ -569,7 +647,7 @@
 			height: 750rpx;
 			.empty {
 				text-align: center;
-				margin-top: 50rpx;
+				margin-top: 50%;
 			}
 			.swiper-item {
 				background: #FFFFFF;
@@ -635,6 +713,22 @@
 				&::-webkit-scrollbar{display:none}
 			}
 			
+		}
+		.tryGoods {
+			.shihuoLogo {
+				position: fixed;
+				right: 20rpx;
+				bottom: 300rpx;
+				width: 80rpx;
+				height: 80rpx;
+				border-radius: 50%;
+				padding: 0;
+				margin: 0;
+				image {
+					width: 100%;
+					height: 100%;
+				}
+			}
 		}
 		.shopList{
 			width: 670rpx;

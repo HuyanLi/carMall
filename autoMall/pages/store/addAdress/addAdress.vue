@@ -10,9 +10,9 @@
 				<text class="info-item-title">手机号</text>
 				<input class="info-item-content ipt" v-model="tel" placeholder="请输入手机号" type="number">
 			</view>
-			<view class="info-item">
+			<view class="info-item" @tap="handleAddress">
 				<text class="info-item-title">选择地区</text>
-				<input @tap="handleAddress" class="info-item-content ipt right" placeholder="请选择地区" readonly v-model="address" type="text">
+				<input @blur="consigneeRegionInput" class="info-item-content ipt right" placeholder="请选择地区" v-model="address" type="text">
 			</view>
 			<view class="info-item">
 				<text class="info-item-title">详细地址</text>
@@ -98,6 +98,8 @@
 					this.province = res.data
 					this.loadCity(this.province[0].id)
 				})
+			},
+			consigneeRegionInput() {
 				
 			},
 			loadCity(pid) {
@@ -111,7 +113,9 @@
 						this.$set(this.province[this.valueArr[0]], 'children', [])
 						res.data.forEach(item => {
 							this.province[this.valueArr[0]].children.push(item)
+							this.valueArr.push(item.id)
 						})
+						console.log(this.valueArr)
 						this.loadArea(this.province[this.valueArr[0]].children[this.valueArr[1]].id)
 					}
 				})
@@ -134,20 +138,22 @@
 				const val = e.detail.value;
 				if (this.valueArr[0] !== val[0]) {
 					this.province_name = this.province[val[0]].name
+					this.province_id = this.province[val[0]].id
 					this.loadCity(this.province[val[0]].id)
 				} else if (this.valueArr[1] !== val[1]) {
-					console.log(this.province[val[0]].children[val[1]].name,89898)
-					this.city_name = this.province[val[0]].children[val[1]].name,
+					this.city_name = this.province[val[0]].children[val[1]].name
+					this.city_id = this.province[val[0]].children[val[1]].id
 					this.loadArea(this.province[val[0]].children[val[1]].id)
 				}
 				this.valueArr = val
 			},
 			confirm(e) {
-				this.area.forEach((item,index)=>{
-					if(this.valueArr[2] === index) {
-						this.area_name = item.name
-					}
-				})
+				this.province_name = this.province[this.valueArr[0]].name
+				this.province_id = this.province[this.valueArr[0]].id
+				this.city_name = this.province[this.valueArr[0]].children[this.valueArr[1]].name
+				this.city_id = this.province[this.valueArr[0]].children[this.valueArr[1]].id
+				this.area_name = this.province[this.valueArr[0]].children[this.valueArr[1]].children[this.valueArr[2]].name
+				this.area_id = this.province[this.valueArr[0]].children[this.valueArr[1]].children[this.valueArr[2]].id
 				this.address = this.province_name + this.city_name + this.area_name
 				this.$refs.pupop.close()
 			},
@@ -211,18 +217,17 @@
 					return false;
 				}
 				let query;
-				console.log(_this.addInfo.id,'info')
 				if(_this.addInfo.id !== undefined) {
 					if(_this.change === false) {
 						query = {
 							member_id: uni.getStorageSync('member_id'),
 							address: _this.detailAddress,
-							province_name: _this.addInfo.province_name,
+							province_name: _this.province_name,
 							city_name: _this.addInfo.city_name,
 							area_name: _this.addInfo.area_name,
 							province_id: _this.addInfo.province_id,
-							city_id: _this.addInfo.city_id,
-							area_id: _this.addInfo.area_id,
+							city_id: _this.city_id,
+							area_id: _this.area_id,
 							id: _this.addInfo.id,
 							is_default: _this.switchState,
 							consignee: _this.userName,
@@ -234,9 +239,9 @@
 							province_name: _this.province_name,
 							city_name: _this.city_name,
 							area_name: _this.area_name,
-							province_id: _this.valueArr[0],
-							city_id: _this.valueArr[1],
-							area_id: _this.valueArr[2],
+							province_id: _this.province_id,
+							city_id: _this.city_id,
+							area_id: _this.area_id,
 							is_default: _this.switchState,
 							consignee: _this.userName,
 							phone: _this.tel,
@@ -248,11 +253,12 @@
 						uni.showToast({
 						    title: res.msg,
 						    icon: 'none',
-						    duration: 2000
 						});
-						uni.navigateBack({
-							delta:1,//返回层数，2则上上页
-						})
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1,//返回层数，2则上上页
+							})
+						},500)
 					})
 				}else {
 					query = {
@@ -260,9 +266,9 @@
 							province_name: _this.province_name,
 							city_name: _this.city_name,
 							area_name: _this.area_name,
-							province_id: _this.valueArr[0],
-							city_id: _this.valueArr[1],
-							area_id: _this.valueArr[2],
+							province_id: _this.province_id,
+							city_id: _this.city_id,
+							area_id: _this.area_id,
 							is_default: _this.switchState,
 							consignee: _this.userName,
 							phone: _this.tel,
@@ -272,11 +278,12 @@
 						uni.showToast({
 						    title: '新增成功',
 						    icon: 'none',
-						    duration: 2000
 						});
-						uni.navigateBack({
-							delta:1,//返回层数，2则上上页
-						})
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta:1,//返回层数，2则上上页
+							})
+						},500)
 					})
 				}
 			}

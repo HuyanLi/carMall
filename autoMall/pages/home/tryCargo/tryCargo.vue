@@ -1,9 +1,8 @@
-<!-- 试货、签约 -->
+<!-- 试货 -->
 <template>
 	<view class="tryGO">
 		<view class="'topImg">
-			<image v-if="sh" src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png"></image>
-			<image v-else src="https://carshop.duoka361.cn/images/static/image/home/qyImage.png"></image>
+			<image :src="BGimage"></image>
 		</view>
 		<view class="goodsList">
 			<view class="goodsItem" @click="toGoodsDetail(item)"  v-for="(item,index) in goodList" :key='index'>
@@ -16,8 +15,7 @@
 		</view>
 		<view class="tryGoods">
 			<view class="shihuoLogo">
-				<image v-if="sh" src="https://carshop.duoka361.cn/images/static/image/home/sh.png" @click="toSH('sh')"></image>
-				<image v-else src="https://carshop.duoka361.cn/images/static/image/home/qyLogo.png" @click="toSH('qy')"></image>
+				<image src="https://carshop.duoka361.cn/images/static/image/home/sh.png" @click="toSH('sh')"></image>
 			</view>
 		</view>
 	</view>
@@ -25,30 +23,31 @@
 
 <script>
 	import { goodsList } from '@/api/store.js'
+	import { registerGift } from '@/api/home.js'
 	export default {
 		data() {
 			return {
 				sh: true,
 				goodList: [],
 				type: '1',
+				BGimage: ''
 			}
 		},
-		onLoad(data) {
-			if(data.shihuo === 'sh') {
-				this.sh = true
-				this.type = '2'
-				this.initGoods()
-			}else if(data.shihuo === 'qy'){
-				this.sh = false
-				this.type = '1'
-				this.initGoods()
-			}
+		onShow(e) {
+			//图片
+			this.initRegisterGift()
+			this.initGoods()
 		},
 		methods: {
+			initRegisterGift() {
+				registerGift().then(res=>{
+					this.BGimage = res.data.trial_goods_image
+				})
+			},
 			async initGoods() {
 				let query = {
 					brand_id: '',
-					type: this.type,
+					type: 2,
 					page: 1
 				}
 				let data = await goodsList(query)
@@ -101,7 +100,7 @@
 			image {
 				width: 300rpx;
 				height: 300rpx;
-				margin: 20rpx 0 30rpx;
+				// margin: 20rpx 0 30rpx;
 			}
 			.fontText {
 				width: 296rpx;
@@ -141,8 +140,8 @@
 			right: 20rpx;
 			bottom: 300rpx;
 			image {
-				width: 80px;
-				height: 80px;
+				width: 80rpx;
+				height: 80rpx;
 			}
 		}
 	}

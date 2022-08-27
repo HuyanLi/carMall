@@ -69,11 +69,11 @@
 			</view>
 			<view class="info-content">
 				<text>下单时间</text>
-				<text>{{goodsData.paytime}}</text>
+				<text>{{goodsData.createtime}}</text>
 			</view>
 			<view class="info-content">
 				<text>支付时间</text>
-				<text>{{goodsData.createtime}}</text>
+				<text>{{goodsData.paytime}}</text>
 			</view>
 			<view class="info-content">
 				<text>完成时间</text>
@@ -81,9 +81,27 @@
 			</view>
 		</view>
 		<view class="button">
-			<view class="gray" @tap.stop='toService'>联系客服</view>
-			<view class="gray" @tap.stop='showExpres'>查看物流</view>
-			<view class="black" @tap.stop='confirmGoods()'>确认收货</view>
+			<view class="gray"  v-if="goodsData.status == '0' || goodsData.pay_voucher_status === '4'" @tap.stop="cancleBtn()">
+				取消订单
+			</view>
+			<view class="gray" v-if="goodsData.status == '0'" @tap.stop="toPay()">
+				去打款
+			</view>
+			<view class="gray" v-if="goodsData.status === '2'" @tap.stop="toWL()">
+				查看物流
+			</view>
+			<view class="gray" v-if="goodsData.status==='2'" @tap.stop='confirmGoods()'>
+				确认收货
+			</view>
+			<!-- <view v-if="item.status == '0'" @tap.stop="handleBlack" class="gray">
+				{{isSale ? '去发货' : '去打款'}}
+			</view> -->
+			<view class="black" v-if="goodsData.status =='0'||goodsData.status =='1'" @tap.stop='toService'>
+				联系客服
+			</view>
+			<view class="black" v-if="goodsData.status =='2'|| goodsData.status =='3'" @tap.stop='toSH'>
+				售后电话
+			</view>
 		</view>
 	</view>
 </template>
@@ -93,31 +111,11 @@
 	export default {
 		data() {
 			return {
-				commodities: [{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',//图片
-					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-					tags: '太空银;256GB',//标签
-					price: '368.00',//单价
-					amount: '1',//数量
-					visible: true
-				},{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',//图片
-					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-					tags: '太空银;256GB',//标签
-					price: '368.00',//单价
-					amount: '1',//数量
-					visible: true
-				},{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',//图片
-					name: '冲锋GP7617.3英寸11代i7游戏笔记本电脑256GB',//名称
-					tags: '太空银;256GB',//标签
-					price: '368.00',//单价
-					amount: '1',//数量
-					visible: false
-				}],
+				commodities: [],
 				orderId: '',
 				goodsData: null,
-				status: ''
+				status: '',
+				userInfo: uni.getStorageSync('userInfo')
 			}
 		},
 		onLoad(e) {
@@ -131,13 +129,13 @@
 				}
 				getOrderInfo(query).then(res=>{
 					this.goodsData = res.data
-					if(this.goodsData === '-1') {
+					if(this.goodsData.status == '-1') {
 						this.status = '已取消'
-					}else if(this.goodsData === '0') {
+					}else if(this.goodsData.status == '0') {
 						this.status = '待打款'
-					}else if(this.goodsData === '1') {
+					}else if(this.goodsData.status == '1') {
 						this.status = '待发货'
-					}else if(this.goodsData === '2') {
+					}else if(this.goodsData.status == '2') {
 						this.status = '待收货'
 					}else {
 						this.status = '已完成'
@@ -156,13 +154,49 @@
 					})
 				})
 			},
+			//取消订单
+			cancleBtn() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					order_id: this.goodsData.id
+				}
+				cancleOrder(query).then(res=>{
+					uni.showToast({
+						title: res.msg,
+						duration:2000
+					})
+					this.getOrderList()
+				})
+			},
+			//去打款
+			toPay() {
+				//提交打款凭证
+				uni.navigateTo({
+					url: '/pages/store/moneyCertificates/moneyCertificates?orderId='+ this.goodsData.id
+				})
+			},
+			//物流详情
+			toWL() {
+				uni.navigateTo({
+					url: `/pages/mine/orderDetail?id=${this.goodsData.id}`,
+				})
+			},
 			toService(){
 				uni.navigateTo({
 					url: '/pages/tabBar/service/service'
 				})
 			},
-			showExpres() {
-				
+			toSH() {
+				//一键拨号
+				uni.makePhoneCall({
+					phoneNumber: this.userInfo.mobile, //电话号码
+					success: function(e) {
+						console.log(e);
+					},
+					fail: function(e) {
+						console.log(e);
+					}
+				})
 			}
 		}
 	}
@@ -184,7 +218,9 @@
 		flex-direction: row;
 		align-items: center;
 		box-sizing: border-box;
-		padding-left: 210rpx;
+		// padding-left: 210rpx;
+		justify-content: flex-end;
+		padding: 30rpx;
 		view {
 			width: 160rpx;
 			height: 70rpx;

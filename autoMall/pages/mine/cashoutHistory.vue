@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<view class="cashout-history-content">
-			<view class="cashout-history-content-item" v-for="(item,index) in history" :key="index">
+			<view v-if="history.length > 0" class="cashout-history-content-item" v-for="(item,index) in history" :key="index">
 				<view>
 					<text class="font28">佣金转微信</text>
 					<text class="font32">{{item.price}}</text>
@@ -16,6 +16,9 @@
 					<text>订单号{{item.cash_sn}}</text>
 					<text>{{item.createtime}}</text>
 				</view>
+			</view>
+			<view v-if='history.length == 0' class="empty">
+				暂无提现记录
 			</view>
 		</view>
 	</view>
@@ -84,6 +87,13 @@
 				font-size: 68rpx;
 			}
 		}
+	}
+	.empty {
+		// width: 690rpx;
+		height: 716rpx;
+		background: #FFFFFF;
+		text-align: center;
+		padding-top: 20%;
 	}
 	&-content {
 		width: 90%;

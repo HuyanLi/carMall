@@ -61,7 +61,6 @@
                 "navigationBarTitleText": "试货",
                 "enablePullDownRefresh": false
             }
-            
         }
         ,{
             "path" : "pages/home/approve/approve",
@@ -71,6 +70,14 @@
             }
             
         }
+		,{
+		    "path" : "pages/home/approve/aggrement",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "认证协议"
+		    }
+		    
+		}
         ,{
             "path" : "pages/home/shareTask/shareTask",
             "style" :                                                                                    
@@ -96,7 +103,6 @@
             
         }
         ,{
-			//与试货共用同页面
             "path" : "pages/home/contrac/contrac",
             "style" :                                                                                    
             {
@@ -105,6 +111,15 @@
             }
             
         }
+		,{
+		    "path" : "pages/store/signAgreement/signInfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "签约介绍页"
+		        // "enablePullDownRefresh": false
+		    }
+		    
+		}
         ,{
             "path" : "pages/home/shareTask/shareDetail",
             "style" :                                                                                    
@@ -133,7 +148,7 @@
             "path" : "pages/store/groupActivity/groupActivity",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "拼团活动"
+                "navigationBarTitleText": "拼团活动介绍"
             }
             
         }
@@ -194,7 +209,8 @@
                 "navigationBarTitleText": "添加地址"
             }
             
-        },{
+        },
+		{
 		    "path" : "pages/mine/infoEdit",
 		    "style" :                                                                                    
 		    {
@@ -282,6 +298,14 @@
             
         }
 		,{
+		    "path" : "pages/mine/commission",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "分销协议",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
 		    "path" : "pages/mine/cashoutHistory",
 		    "style" :                                                                                    
 		    {
@@ -330,7 +354,7 @@
             "path" : "pages/home/equities/equities",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的权益",
                 "enablePullDownRefresh": false
             }
             
@@ -364,7 +388,7 @@
     ],
 	"globalStyle": {
 		"pageOrientation": "portrait",
-		"navigationBarTitleText": "Hello uniapp",
+		"navigationBarTitleText": "",
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#f7f7f7",
 		"backgroundColor": "#F8F8F8",

@@ -27,7 +27,7 @@
 				<image class="goodsImage" :src="item.goods.image"></image>
 				<view class="goodsInfo">
 					<text class="shopTitle">{{item.goods.title}}</text>
-					<text class="shopTag">{{item.sku_price.goods_sku_text}}</text>
+					<text v-if='item.sku_price.goods_sku_text' class="shopTag">{{item.sku_price.goods_sku_text}}</text>
 					<view class="moneyInfo">
 						<view class="">
 							<text class="shopMoney">{{item.sku_price.price}}</text>
@@ -50,7 +50,7 @@
 				</view>
 			</view>
 			<view class="total">
-				<text class="totalNum">共{{goodsnum}}件</text>
+				<text class="totalNum">共{{allNum}}件</text>
 				<text class="totalMoney">小计：</text>
 				<text class="testMon" >¥</text>
 				<text class="testMon money2">{{originTotal}}</text>
@@ -80,7 +80,7 @@
 		</view>
 		<!-- 确认打款 -->
 		<view class="confirmMoney">
-			<text class="goodN">共{{goodsnum}}件</text>
+			<text class="goodN">共{{allNum}}件</text>
 			<view class="confirmPay">
 				<text style="font-size: 26rpx;color: #333333;">实付</text>
 				<text style="font-size: 24rpx;color: #FF0000;">￥</text>
@@ -89,7 +89,7 @@
 			<view class="confirmBtn" v-if="user.is_signing == 1">
 				<button class="confirmB" type="default" @click="toConfirm">确认打款</button>
 			</view>
-			<view class="confirmBtn" v-if="user.is_signing == 2">
+			<view class="confirmBtn" v-else>
 				<button class="confirmB" type="default" @click="toaddPT">加入拼团活动</button>
 			</view>
 		</view>
@@ -105,7 +105,7 @@
 				showAddress: false,
 				goodsList: [],
 				coupon: '',
-				goodsnum: '',
+				goodsnum: 0,
 				total: '',
 				originTotal: '',
 				payForType: '线下支付',
@@ -120,47 +120,40 @@
 				coupData: {},
 				confromData: [],
 				showChoose: true,
-				orderType: ''
+				orderType: '',
+				allNum: 0
 			}
 		},
 		onLoad(e) {
-			if(e.data) {
-				let conD = JSON.parse(e.data)
-				let conSku = JSON.parse(e.sku)
-				console.log(conD,conSku,'e')
-				this.goodsList.push({
-					goods: {
-						image: conD.image,
-						title: conD.title,
-					},
-					sku_price:{
-						goods_sku_text: conSku[0].goods_sku_text ,
-						price: conSku[0].price
-					},
-					goods_num: e.num
-				})
-				this.confromData.push({
-					goods_id: conD.id,
-					goods_sku_price_id: conSku[0].id,
-					num: e.num
-				})
-				this.goodsnum = e.num
-				this.originTotal = conSku[0].price
-				this.total = conSku[0].price
+			this.goodsList = []
+			console.log(JSON.parse(e.data))
+			let imData = JSON.parse(e.data)
+			if(e.allNum) {
+				this.allNum = e.allNum 
+				// this.goodsnum = 
 			}
-			if(e.goodsData) {
-				this.goodsList = JSON.parse(e.goodsData)
-				this.goodsList.forEach(item=>{
-					this.goodsnum = item.goods_num
+			if(e.data) {
+				imData.forEach(item=>{
+					this.goodsList.push({
+						goods: {
+							image: item.image,
+							title: item.title,
+						},
+						sku_price:{
+							goods_sku_text: item.goods_sku_text ,
+							price: item.price
+						},
+						goods_num: item.goods_num
+					})
 					this.confromData.push({
 						goods_id: item.goods_id,
-						goods_sku_price_id: item.sku_price_id,
+						goods_sku_price_id: item.goods_sku_price_id,
 						num: item.goods_num
 					})
+					this.initconfrom()
 				})
 			}
 			this.user = uni.getStorageSync('userInfo')
-			console.log(this.user)
 		},
 		onShow() {
 			this.initBankInfo()
@@ -217,7 +210,9 @@
 					is_cart: 2,
 					coupon_id: this.couId
 				}
+				console.log(data)
 				getOrderPrice(data).then(res=>{
+					console.log(res.data)
 					if(res.code === 0) {
 						uni.showToast({
 							title: res.msg,
@@ -304,30 +299,35 @@
 					coupon_id: this.couId
 				}
 				addOrder(query).then(res=>{
-					this.orderId = res.data.order_id
-					//是否能签约 1：不能 2：可以
-					if(this.needQY === 1) {
-						//不需要签约
-						uni.navigateTo({
-							url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
+					if(res.code == 0) {
+						uni.showToast({
+							title: res.msg
 						})
 					}else {
-						if( this.user.signing_image === null) {
-							//1：未签约   签约协议
-							uni.navigateTo({
-								url: '/pages/store/signAgreement/signAgreement?orderId=' + this.orderId
-							})
+						console.log(res.data)
+						this.orderId = res.data.order_id
+						//1：未签约   签约协议
+						if( this.user.signing_image === null || this.user.signing_image === '') {
+							//是否能签约 1：不能 2：可以
+							if(this.needQY === 2) {
+								uni.navigateTo({
+									url: '/pages/store/signAgreement/signAgreement?orderId=' + res.data.orderId
+								})
+							}else {
+								//不需要签约
+								uni.navigateTo({
+									url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
+								})
+							}
 						}else {
 							//2：已签约  提交打款凭证
 							uni.navigateTo({
 								url: '/pages/store/moneyCertificates/moneyCertificates?orderId=' + res.data.order_id
 							})
 						}
+						
 					}
-					
 				})
-				
-				
 			}
 		}
 	}

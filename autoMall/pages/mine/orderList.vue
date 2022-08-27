@@ -29,7 +29,7 @@
 								<image class="img" :src="i.goods_image" />
 								<view class="order-content-info">
 									<view class="order-content-info-name">{{i.goods_title}}</view>
-									<text class="order-content-info-tag">{{i.goods_sku_text}}</text>
+									<text v-if="i.goods_sku_text !== null" class="order-content-info-tag">{{i.goods_sku_text}}</text>
 									<view class="order-content-info-total">
 										<text class="order-content-info-price">¥{{i.goods_price}}</text>
 										<text class="order-content-info-amount">X{{i.goods_num}}</text>
@@ -40,7 +40,7 @@
 								<image class="img" :src="i.goods_image" />
 								<view class="order-content-info">
 									<view class="order-content-info-name">{{i.goods_title}}</view>
-									<text class="order-content-info-tag">{{i.goods_sku_text}}</text>
+									<text v-if="i.goods_sku_text !== null" class="order-content-info-tag">{{i.goods_sku_text}}</text>
 									<view class="order-content-info-total">
 										<text class="order-content-info-price">¥{{i.goods_price}}</text>
 										<text class="order-content-info-amount">X{{i.goods_num}}</text>
@@ -70,8 +70,11 @@
 								<!-- <view v-if="item.status == '0'" @tap.stop="handleBlack" class="gray">
 									{{isSale ? '去发货' : '去打款'}}
 								</view> -->
-								<view class="black" @tap.stop='toService'>
+								<view class="black" v-if="item.status == '0' || item.status == '1'" @tap.stop='toService'>
 									联系客服
+								</view>
+								<view class="black" v-if="item.status=='2' || item.status=='3'" @tap.stop='toSH'>
+									售后电话
 								</view>
 							</view>
 						</view>
@@ -93,6 +96,7 @@
 				activeIndex: 0,
 				orderState: [{title: '全部'},{title: '待打款'},{title: '待发货'},{title: '待收货'},{title: '已完成'}],
 				allOrder: [],
+				userInfo: uni.getStorageSync('userInfo')
 			}
 		},
 		onLoad(opt) {
@@ -115,14 +119,19 @@
 		methods: {
 			async getOrderList() {
 				this.allOrder = []
-				let param = {
-					member_id: uni.getStorageSync('member_id'),
-					page: '1',
-					status: (Number(this.current) - 1).toString()
-				}
+				let param
 				if (this.current == 0) {
 					//全部订单不传status
-					delete param.status
+					param = {
+						member_id: uni.getStorageSync('member_id'),
+						page: '1',
+					}
+				}else {
+					param = {
+						member_id: uni.getStorageSync('member_id'),
+						page: '1',
+						status: Number(this.current) - 1 
+					}
 				}
 				const res = await getOrderList(param)
 				if(res.data){
@@ -143,10 +152,12 @@
 					this.getOrderList()
 				})
 			},
+			//去打款
 			toPay(item) {
+				console.log(item,'和节开幕')
 				//提交打款凭证
 				uni.navigateTo({
-					url: '/pages/store/moneyCertificates/moneyCertificates?id='+ item.id
+					url: '/pages/store/moneyCertificates/moneyCertificates?orderId='+ item.id
 				})
 			},
 			//物流详情
@@ -174,6 +185,18 @@
 					url: '/pages/tabBar/service/service'
 				})
 			},
+			toSH() {
+				//一键拨号
+				uni.makePhoneCall({
+					phoneNumber: this.userInfo.mobile, //电话号码
+					success: function(e) {
+						console.log(e);
+					},
+					fail: function(e) {
+						console.log(e);
+					}
+				})
+			},
 			handleBlack() {
 				this.isSale ? uni.navigateTo({
 					url: '/pages/mine/sendout'
@@ -185,13 +208,16 @@
 				})
 			},
 			handleStateTap(index) {
+				console.log(index)
 				this.activeIndex = this.current = index
 				this.current = index
 				this.getOrderList()
 			},
 			handleSwipeChange(e) {
+				console.log(e)
 				this.activeIndex = this.current = e.detail.current
 				this.current = e.detail.current
+				this.getOrderList()
 			},
 			handleShowAll(item) {
 				item.order_item.forEach(i => {

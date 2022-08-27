@@ -14,12 +14,6 @@
 			<view v-if="!isEmptyCart" class="shopItem" v-for="(item, index) in goodsList" :key="index">
 				<view class="shopcheckbox" @tap.stop="chooseShop(item,index)">
 					<radio :value="item.goods.price" :checked="item.checked" color="#203885" style="transform:scale(0.7)" />
-					<!-- <checkbox-group >
-						<label>
-						</label>
-					</checkbox-group> -->
-					<!-- <view v-if="!item.checked" class="choose"></view>
-					<image v-else class="chooseImage" src="https://carshop.duoka361.cn/images/static/image/mall/choose.png"></image> -->
 				</view>
 				<view class="shopLists">
 					<image class="shopImage" :src="item.goods.image" mode=""></image>
@@ -30,8 +24,8 @@
 						</view>
 						<view class="moneyInfo">
 							<view class="">
-								<text class="shopMoney">{{item.goods.price}}</text>
-								<text class="shopOriginMoney">{{item.goods.original_price}}</text>
+								<text class="shopMoney">{{item.sku_price.price}}</text>
+								<text class="shopOriginMoney">{{item.sku_price.original_price}}</text>
 							</view>
 							<view class="number-box">
 								<uni-number-box :min="0" :value="item.goods_num"  @change="deleteShop('edit',item, $event)"></uni-number-box>
@@ -59,8 +53,9 @@
 					<text class='money'>￥{{totalPrice}}</text>
 				</view>
 				<view class="btnList">
-					<button class="btn btn1" @click="toPay">领券结算</button>
-					<button class="btn btn2" @click='toActivity'>拼团</button>
+					<button v-if="userInfo.is_signing == '1'" class="btn btn1" @click="toPay">领券结算</button>
+					<button v-else class="btn btn1" @click="toPay">立即购买</button>
+					<button v-show="userInfo.level_id != '1'" class="btn btn2" @click='toActivity'>拼团</button>
 				</view>
 			</view>
 		</view>
@@ -84,22 +79,22 @@
 				allChecked: false,
 				deleteIds:[],
 				goodsActiveList: [],
-				couponData: null
+				couponData: null,
+				userInfo: uni.getStorageSync('userInfo'),
+				allNum: 0
 			}
 		},
 		computed: {
 			totalPrice() {
 				let totalPrice = 0
 				this.goodsList.map(item => {
-					item.checked ? totalPrice += Number(item.goods.price)*Number(item.goods_num) : totalPrice += 0
+					item.checked ? totalPrice += Number(item.sku_price.price)*Number(item.goods_num) : totalPrice += 0
 				})
 				return totalPrice
 			}
 		},
 		onShow() {
 			this.chooseGoods = []
-		},
-		created() {
 			this.initGoosList()
 		},
 		methods: {
@@ -122,13 +117,26 @@
 			},
 			//删除商品
 			deleteShop(type,e,i) {
+				console.log(e,i)
+				this.goodsList.forEach(item=>{
+					if(item.checked === true) {
+						this.deleteIds.push(item.id)
+					}
+				})
 				let query;
 				if(type === 'delete') {
-					query = {
-						member_id: uni.getStorageSync('member_id'),
-						act: 'delete',
-						cart_list: this.deleteIds.join(','),
-						value: ''
+					if(this.deleteIds.length == 0) {
+						uni.showToast({
+							title: '请选择商品'
+						})
+						return
+					}else {
+						query = {
+							member_id: uni.getStorageSync('member_id'),
+							act: 'delete',
+							cart_list: this.deleteIds.join(','),
+							value: ''
+						}
 					}
 				}else {
 					query = {
@@ -138,12 +146,21 @@
 						value: i
 					}
 				}
+				console.log(query,'query')
 				editShopCart(query).then(res=>{
-					uni.showToast({
-					    title: res.msg,
-					    icon: 'none',
-					    duration: 2000
-					});
+					if(query.act === 'delete') {
+						uni.showToast({
+							title: '删除成功',
+							icon: 'none',
+							duration: 2000
+						});
+					}else {
+						uni.showToast({
+							title: res.msg,
+							icon: 'none',
+							duration: 2000
+						});
+					}
 					this.initGoosList()
 				})
 			},
@@ -158,36 +175,16 @@
 					const cartList = this.goodsList.every(item => {
 						return item.checked === true
 					})
-					this.goodsActiveList = []
 					let goodsIndex = i
-					this.goodsList.forEach(item=>{
-						if(item.checked === true) {
-							this.deleteIds.push(item.id)
-						}
-					})
-					//选中商品信息
-					this.goodsActiveList.push(e)
+					
 					if (cartList) {
 						this.allChecked = true
 					} else {
 						this.allChecked = false
 					}
 				}
-			},
-			//领券结算
-			toPay() {
-				this.goodsList.forEach(item=>{
-					if(item.checked === true) {
-						uni.navigateTo({
-							url: '/pages/store/confirmOrder/confirmOrder?goodsData=' + JSON.stringify(this.goodsActiveList)
-						})
-					}else {
-						uni.showToast({
-							title: '请选择商品',
-							duration: 2000
-						})
-					}
-				})
+				
+				
 			},
 			//全选
 			checkedAll(e) {
@@ -202,25 +199,80 @@
 					})
 				}
 			},
-			//拼团活动
-			toActivity() {
-				let query = {
-					member_id: uni.getStorageSync('member_id'),
-					goods_list: JSON.stringify(this.goodsActiveList),
-					address_id: 2
-				}
-				addCollageCart(query).then(res=>{
-					uni.showToast({
-					    title: res.msg,
-					    icon: 'none',
-					    duration: 2000
-					});
-					uni.navigateTo({
-						url: '/pages/home/groupBooking/groupBooking'
-					})
+			//领券结算
+			toPay() {
+				this.goodsActiveList = []
+				this.allNum = 0
+				this.goodsList.forEach(item=>{
+					if(item.checked === true) {
+						//立即购买中  选中商品信息
+						this.goodsActiveList.push({
+							image: item.goods.image,
+							title: item.goods.title,
+							goods_id: item.goods.id,
+							goods_sku_text: item.sku_price.goods_sku_text,
+							price: item.sku_price.price,
+							goods_num: item.goods_num,
+							goods_sku_price_id: item.sku_price_id
+						})
+						this.allNum = this.allNum + Number(item.goods_num)
+					}
 				})
-				
-			}
+				if(this.goodsActiveList.length == 0) {
+					uni.showToast({
+						title: '请选择商品',
+						duration: 2000
+					})
+					return
+				}else {
+					uni.navigateTo({
+						url: '/pages/store/confirmOrder/confirmOrder?data=' 
+						+ JSON.stringify(this.goodsActiveList) + '&allNum=' + this.allNum
+						+ '&type=2' + '&cart=2'
+					})
+				}
+			},
+			toActivity() {
+				this.goodsActiveList = []
+				this.allNum = 0
+				this.goodsList.forEach(item=>{
+					if(item.checked === true) {
+						//立即购买中  选中商品信息
+						this.goodsActiveList.push({
+							image: item.goods.image,
+							title: item.goods.title,
+							goods_id: item.goods.id,
+							goods_sku_text: item.sku_price.goods_sku_text,
+							price: item.sku_price.price,
+							goods_num: item.goods_num,
+							goods_sku_price_id: item.sku_price_id
+						})
+						this.allNum = this.allNum + Number(item.goods_num)
+					}
+				})
+				if(this.userInfo.signing_image === null || this.userInfo.signing_image === '' ) {
+					//去签约且去确认订单
+					uni.navigateTo({
+						url: '/pages/store/groupActivity/groupActivity?data=' + JSON.stringify(this.goodsActiveList)
+					})
+				}else {
+					//是否签约 1：未签约 2：已签约
+					//type=1 拼团跳转
+					if(this.userInfo.is_signing == '1'){
+						uni.navigateTo({
+							url: '/pages/store/confirmOrder/confirmOrder?data=' 
+							+ JSON.stringify(this.goodsActiveList)  + '&allNum=' + this.allNum 
+							+ '&type=1' + '&cart=2'
+						})
+					}else if(this.userInfo.is_signing == '2') {
+						uni.navigateTo({
+							url: '/pages/store/confirmOrder/confirmOrder?data=' 
+							+ JSON.stringify(this.goodsActiveList)  + '&allNum=' + this.allNum
+							+ '&type=1' + '&cart=2'
+						})
+					}
+				}
+			},
 		}
 	}
 </script>
@@ -304,6 +356,11 @@
 						.shopTitle {
 							width: 370rpx;
 							display: inline-block;
+							text-overflow: ellipsis;
+							overflow: hidden;
+							-webkit-line-clamp: 2;
+							display: -webkit-box;
+							-webkit-box-orient: vertical;
 						}
 						.shopTag {
 							width: 210rpx;

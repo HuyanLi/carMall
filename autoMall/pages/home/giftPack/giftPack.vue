@@ -12,11 +12,12 @@
 					<text v-if="item.type === '2'" class="title">{{item.reduce_price}}</text>
 					<text v-else="item.type === '1'" class="title">￥{{item.reduce_price}}</text>
 					<text class="money">满{{item.full_price}}元可使用</text>
-					<text class="getC" @click="getCoupons">立即领取</text>
+					<text v-if="userInfo.is_authentication === 2" class="getC" @click="getCoupons">立即使用</text>
+					<text v-if="userInfo.is_authentication === 1" class="getC" @click="getCoupons">立即领取</text>
 				</view>
 			</view>
-			<view class="approve">
-				<image @click="toApprove" src="https://carshop.duoka361.cn/images/static/image/register/approve.png"></image>
+			<view class="approve" v-if='userInfo.is_authentication === 1'>
+				<image  @click="toApprove" src="https://carshop.duoka361.cn/images/static/image/register/approve.png"></image>
 			</view>
 		</view>
 		<view class="task">
@@ -39,7 +40,8 @@
 			return {
 				bgcIMG: 'https://carshop.duoka361.cn/images/static/image/register/top.png',
 				couponsList:[],
-				testData: {}
+				testData: {},
+				userInfo: uni.getStorageSync('userInfo'),
 			}
 		},
 		created() {
@@ -51,7 +53,7 @@
 		methods: {
 			async initRegisterGift() {
 				let data = await registerGift()
-				this.bgcIMG = data.data.gift_bag_long_image
+				this.bgcIMG = data.data.gift_bag_image
 				this.testData = data.data
 			},
 			async initCoupon() {
@@ -60,9 +62,15 @@
 			},
 			//试货页面
 			getCoupons(e) {
-				uni.navigateTo({
-					url: '/pages/home/tryCargo/tryCargo'
-				})
+				if(this.userInfo.is_authentication === 1) {
+					uni.navigateTo({
+						url: '/pages/home/approve/approve',
+					})
+				}else {
+					uni.navigateTo({
+						url: '/pages/home/tryCargo/tryCargo'
+					})
+				}
 			},
 			// 认证页面
 			toApprove() {

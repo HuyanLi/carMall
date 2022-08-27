@@ -34,6 +34,7 @@ export const addShopCart = (data) => request(
 	data,
 	'POST'
 ) 
+
 //购物车列表
 export const shopList = (data) => request(
 	'/index.php/api/cart/cartList',

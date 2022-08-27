@@ -15,7 +15,10 @@
 			</view>
 		</view>
 		<view class="warehouse-content">
-			<view class="warehouse-content-item" v-for="(item,index) in data" :key="index">
+			<view v-if="data.length == 0" class="empty" >
+				暂无库存
+			</view>
+			<view v-else class="warehouse-content-item" v-for="(item,index) in data" :key="index">
 				<img :src="item.img" />
 				<view class="warehouse-content-item-info">
 					<view class="warehouse-content-item-info-title">{{item.title}}</view>
@@ -70,6 +73,12 @@
 					page: 1
 				}
 				await warehouse(query).then(res=>{
+					if(res.data.count.all_goods_num == null) {
+						res.data.count.all_goods_num = 0
+					}
+					if(res.data.count.all_goods_price == null) {
+						res.data.count.all_goods_price = 0
+					}
 					this.goodsNum = res.data.count.all_goods_num
 					this.goodsPrice = res.data.count.all_goods_price
 					let pageData = [];
@@ -222,6 +231,14 @@
 	position: relative;
 	box-sizing: border-box;
 	padding-bottom: 150rpx;
+	background-color: #F6F6F6;
+	height: 100%;
+	.empty {
+		height: 715rpx;
+		background: #FFFFFF;
+		text-align: center;
+		margin-top: 20%;
+	}
 	&-content {
 		background: #FFFFFF;
 		border-radius: 16rpx;

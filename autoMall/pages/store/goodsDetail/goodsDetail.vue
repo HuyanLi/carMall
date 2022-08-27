@@ -56,8 +56,8 @@
 				<text>相关推荐</text>
 			</view>
 			<view class="goodsTJ">
-				<view class="goodsList" @click="totjDetail()">
-					<view class="uni-flex uni-column goodsItem" v-for="(item,index) in goodsList"
+				<view class="goodsList">
+					<view class="uni-flex uni-column goodsItem" @click="totjDetail(item)" v-for="(item,index) in goodsList"
 						:key='index'>
 						<view class="text">
 							<image :src="item.image"></image>
@@ -79,21 +79,6 @@
 		</view>
 		<!-- 购物车 -->
 		<view class="shoppCar">
-			<!-- <view class="icon" @click="addCart('收藏')">
-				<template v-if="isShow">
-					<view>
-						<image src="https://carshop.duoka361.cn/images/static/image/mall/already.png"></image>
-					</view>
-				</template>
-				<template v-else>
-					<view>
-						<image src="https://carshop.duoka361.cn/images/static/image/mall/collect.png"></image>
-					</view>
-				</template>
-				<view class="text">
-					收藏
-				</view>
-			</view> -->
 			<view class="icon" @click="goShop">
 				<image src="https://carshop.duoka361.cn/images/static/image/mall/shopCar.png"></image>
 				<view class="text">
@@ -101,8 +86,9 @@
 				</view>
 			</view>
 			<view class="btn">
-				<button class="btn1" @click="addCart('购物车')">加入购物车</button>
-				<button class="btn2" @click="buyGroup">拼团</button>
+				<button  class="btn1" @click="addCart('购物车')">加入购物车</button>
+				<button v-if="user.level_id == 1" class="btn2" @click="addCart('购物车')">立即购买</button>
+				<button v-else class="btn2" @click="buyGroup">拼团</button>
 			</view>
 		</view>
 		<!-- 规格 -->
@@ -143,6 +129,9 @@
 			<view class="couppops" :style="{bottom: -bottomHight+'rpx',}">
 				<view class="title">
 					<text>选择优惠券</text>
+				</view>
+				<view v-if="couList.length == 0" class="empty">
+					暂无优惠券
 				</view>
 				<view class="couponsImage" v-for="(item,index) in couList" :key='index' @click="changeRadio(item,index)">
 					<image src="https://carshop.duoka361.cn/images/static/image/mall/detailC.png" mode=""></image>
@@ -210,23 +199,22 @@
 				user: '',
 				number: 1,
 				couponData: null,
-				ptgoods: null,
+				ptgoods: [],
 				queryData: null,
-				conf: null
+				conf: null,
+				chooseData: []
 			}
 		},
 		onLoad(option) {
 			this.goodsId = option.id
 			this.initgoods(this.goodsId)
 			this.user = uni.getStorageSync('userInfo')
-			console.log(this.user,'user')
+			console.log(this.user)
 		},
 		methods: {
 			async initgoods(e) {
 				let that = this
 				let data = await goodsDetail({goods_id: e})
-				console.log(data,'data')
-				that.ptgoods = data.data
 				that.imgList = data.data.images
 				that.price = data.data.price
 				that.title = data.data.title
@@ -234,6 +222,30 @@
 				that.shopDetail.productMainImg = data.data.image
 				that.shopDetail.productPrice = data.data.price
 				that.skuList = data.data.sku
+				data.data.sku_price.forEach(item=>{
+					that.sku_price_id = item.id
+				})
+				let skuText
+				if(data.data.goods_sku_text) {
+					skuText = data.data.goods_sku_text
+				}else {
+					skuText = ''
+				}
+				// 商品  确认订单传的数据
+				that.ptgoods.push({
+					image: data.data.image,
+					title: data.data.title,
+					goods_sku_text: skuText,
+					price: data.data.price,
+					goods_num: that.number,
+					goods_id: data.data.id,
+					goods_sku_price_id: that.sku_price_id
+				})
+				if(that.skuList.length == 0) {
+					that.chooseStyle = '暂无规格'
+				}else {
+					that.chooseStyle = '规格'
+				}
 				that.goodsList = data.data.relevant_recommend_goods
 				that.skuList.forEach(attr=>{
 					let temp = {
@@ -266,7 +278,6 @@
 			},
 			//选择规格
 			changecTab(key,key2) {
-				console.log(key,key2,'key')
 				let that = this;
 				that.selectSku = ''
 				if (!that.process_attribute[key].child[key2].disabled) {
@@ -274,7 +285,13 @@
 						item.actived = index == key2 ? !item.actived : false
 					})
 				}
+				this.chooseData = []
 				that.process_attribute.forEach((item,index)=>{
+					item.child.forEach(item=>{
+						if(item.actived == true) {
+							this.chooseData.push(item)
+						}
+					})
 					let selectData = item.child.filter(e=>{
 						return e.actived == true
 					})
@@ -286,7 +303,6 @@
 						}
 					}
 				})
-				console.log(that.process_attribute)
 				that.getPrice()
 			},
 			getPrice() {
@@ -295,9 +311,6 @@
 					console.log(res,'res')
 					return res.goods_sku_ids === that.selectSku
 				})
-				//提交到确认订单页数据
-				that.conf = data
-				console.log(data,that.selectSku,2)
 				if(data.length > 0) {
 					that.shopDetail.productPrice = data[0].price
 					that.chooseStyle = data[0].goods_sku_text
@@ -349,10 +362,9 @@
 			},
 			
 			//推荐详情
-			totjDetail() {
-				uni.navigateTo({
-					url: ''
-				})
+			totjDetail(item) {
+				console.log(item)
+				this.initgoods(item.id)
 			},
 			//购物车
 			goShop() {
@@ -369,9 +381,9 @@
 			change(e) {
 				console.log(e)
 				this.number = e
+				this.ptgoods[0].goods_num = e
 			},
 			changeRadio(e,i) {
-				console.log(e,i,'choose')
 				this.couponData = e
 				this.chooseR = i
 				this.coupTitle = '全场满'+ e.full_price + '减' + e.reduce_price
@@ -382,25 +394,12 @@
 			},
 			//加入购物车
 			addCart(e){
-				console.log(e)
-				if (e === '收藏') {
-					console.log(this.isShow)
-					if(this.isShow == true) {
-						uni.showToast({
-						    title: '收藏成功',
-						    icon: 'none',
-						    duration: 2000
-						});
-						this.isShow = !this.isShow
-					}else if(this.isShow == false){
-						console.log(this.isShow)
-						uni.showToast({
-						    title: '取消收藏',
-						    icon: 'none',
-						    duration: 2000
-						});
-						this.isShow = !this.isShow
-					}
+				if(this.chooseData.length !== this.skuList.length) {
+					uni.showToast({
+					    title: '请选择规格',
+					    icon: 'none',
+					    duration: 2000
+					});
 				}else {
 					this.queryData = {
 						member_id: uni.getStorageSync('member_id'),
@@ -411,7 +410,7 @@
 					addShopCart(this.queryData).then(res=>{
 						if(res.code === 0) {
 							uni.showToast({
-							    title: '请选择规格',
+							    title: res.msg,
 							    icon: 'none',
 							    duration: 2000
 							});
@@ -422,35 +421,35 @@
 							    duration: 2000
 							});
 						}
-						
 					})
 				}
 			},
 			//拼团
 			buyGroup() {
-				if(this.sku_price_id === '') {
+				console.log('hgkjh')
+				this.ptgoods[0].price = this.shopDetail.productPrice
+				this.ptgoods[0].goods_sku_price_id = this.sku_price_id
+				this.ptgoods[0].goods_sku_text = this.chooseStyle
+				this.ptgoods[0].goods_num = this.number
+				if(this.chooseData.length !== this.skuList.length) {
 					uni.showToast({
-						title: '请选择规格',
-						duration: 2000
-					})
+					    title: '请选择规格',
+					});
 				}else{
-					if(this.user.signing_image === null || this.user.signing_image === '' ) {
-						//去签约且去确认订单
+					//签约后商品详情跳到拼团页
+					if(this.user.is_signing == '2') {
 						uni.navigateTo({
-							url: '/pages/store/groupActivity/groupActivity?data=' + this.ptgoods
+							url: '/pages/home/groupBooking/groupBooking?data=' 
+							+ JSON.stringify(this.ptgoods) + '&allNum=' 
+							+ this.ptgoods[0].goods_num + '&type=1' + '&cart=1'
 						})
 					}else {
-						//是否签约 1：未签约 2：已签约
-						if(this.user.is_signing == '1'){
-							uni.navigateTo({
-								url: '/pages/store/confirmOrder/confirmOrder?data=' + JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
-							})
-						}else if(this.user.is_signing == '2') {
-							uni.navigateTo({
-								url: '/pages/store/confirmOrder/confirmOrder?data=' + JSON.stringify(this.ptgoods) + '&sku=' + JSON.stringify(this.conf) + '&num=' + this.number
-							})
-						}
-						
+						//认证后
+						uni.navigateTo({
+							url: '/pages/store/groupActivity/groupActivity?data='
+							 + JSON.stringify(this.ptgoods) + '&allNum='
+							  + this.ptgoods[0].goods_num + '&type=1'+ '&cart=1'
+						})
 					}
 				}
 			},
@@ -460,6 +459,8 @@
 
 <style lang="scss" scoped>
 .goodsDetail {
+	margin-bottom: 150rpx;
+	background-color: #f8f8f8;
 	.myContainer {
 		width: 750rpx;
 		display: flex;
@@ -467,7 +468,6 @@
 		border-radius:7rpx;
 		position: relative;
 		overflow: hidden;
-		// margin-top: 16rpx;
 		// 轮播图
 		.image-container {
 			width: 750rpx;
@@ -531,7 +531,7 @@
 		background: #FFFFFF;
 		border-radius: 16rpx;
 		margin: 20rpx auto;
-		padding: 40rpx 0rpx 20rpx;
+		padding: 30rpx 0rpx 20rpx;
 		.spec {
 			height: 60rpx;
 			line-height: 60rpx;
@@ -646,6 +646,7 @@
 		}
 		.box {
 			margin-bottom: 120rpx;
+			padding: 0 30rpx;
 		}
 	}
 	.shoppCar {
@@ -661,7 +662,7 @@
 		.icon {
 			display: flex;
 			flex-direction: column;
-			width: 15%;
+			width: 30%;
 			text-align: center;
 			image {
 				width: 42rpx;
@@ -867,7 +868,7 @@
 		border-radius: 30rpx 30rpx 0 0;
 		margin: 0 auto;
 		width: 100%;
-		// height: 912rpx;
+		height: 912rpx;
 		background: white;
 		overflow: hidden;
 		position: fixed;
@@ -878,6 +879,10 @@
 			background: #FFFFFF;
 			text-align: center;
 			
+		}
+		.empty {
+			text-align: center;
+			margin-top: 30rpx;
 		}
 		.couponsImage {
 			width: 690rpx;
@@ -978,6 +983,8 @@
 				font-weight: 400;
 				font-size: 26rpx;
 				color: #FFFFFF;
+				position: fixed;
+				bottom: 30rpx;
 			}
 			
 		}

@@ -31,7 +31,8 @@
 				</view>
 			</view>
 			<view class="group-sale-article">
-				{{note}}
+				<!-- {{note}} -->
+				<rich-text :nodes="note"></rich-text>
 			</view>
 		</view>
 		<view class="group-botton">

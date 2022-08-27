@@ -49,3 +49,20 @@ export const orderData = (data) => request(
 	data,
 	'POST'
 )
+//获取测试报告列表
+export const getQuestion = (data) => request(
+	'/index.php/api/index/getQuestionList',
+	data,
+	'POST'
+)
+//提交题目
+export const addAnswer = (data) => request(
+	'/index.php/api/index/addQuestionAnswer',
+	data,
+	'POST'
+)
+//获取签约设置
+export const getQY = () => request(
+	'/index.php/api/index/getSigningSet',
+	'POST'
+)

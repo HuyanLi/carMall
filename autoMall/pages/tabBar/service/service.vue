@@ -46,10 +46,12 @@
 
 <style lang="scss" scoped>
 .service {
-	padding-bottom: 100rpx;
+	margin-bottom: 250rpx;
 	// padding-top: 124rpx;
+	// overflow-y: auto;
 	position: relative;
 	width: 750rpx;
+	background-color: #f8f8f8;
 	&-content {
 		padding: 30rpx;
 		// height: 1132rpx;
@@ -64,7 +66,7 @@
 	}
 	&-text {
 		width: 100%;
-		height: 1100rpx;
+		// height: 1100rpx;
 	}
 	button {
 		width: 690rpx;

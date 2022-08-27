@@ -97,3 +97,9 @@ export const userGet = (data) => request(
 	data,
 	'POST'
 )
+//团长 分销列表
+export const getGrith = (data) => request(
+	'/index.php/api/user/getMySubordinateList',
+	data,
+	'POST'
+)

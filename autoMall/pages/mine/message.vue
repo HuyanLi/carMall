@@ -6,7 +6,10 @@
 		<view class="message-swiper-wrap">
 			<swiper class="swiper" duration="500" :current="current" @change="handleSwipeChange">
 				<swiper-item>
-					<view class="swiper-item">
+					<view v-if="messageList.length == 0"  class="empty" >
+						暂无数据
+					</view>
+					<view v-else class="swiper-item">
 						<view class="message-item" v-for="(item, index) in messageList" :key="index">
 							<view class="message-item-title">
 								{{item.name}}
@@ -21,7 +24,10 @@
 					</view>
 				</swiper-item>
 				<swiper-item>
-					<view class="swiper-item">
+					<view v-if="messageList.length == 0"  class="empty" >
+						暂无数据
+					</view>
+					<view v-else class="swiper-item">
 						<view class="message-item" v-for="(item, index) in messageList" :key="index">
 							<view class="message-item-title">
 								{{item.name}}
@@ -35,9 +41,7 @@
 						</view>
 					</view>
 				</swiper-item>
-				
 			</swiper>
-			
 		</view>
 	</view>
 </template>
@@ -51,7 +55,7 @@
 				activeIndex: 0,
 				messageState: [{title: '系统消息',type: '1'},{title: '后台通知',type:'2'}],
 				messageList: [],
-				type: ''
+				type: '1'
 			}
 		},
 		created() {
@@ -64,8 +68,8 @@
 					type: this.type
 				}
 				getInfoList(query).then(res=>{
-					if(res.code === 0) {
-						this.messageList = res.data.rows
+					if(res.data = null) {
+						this.messageList = []
 					}else {
 						this.messageList = res.data.rows
 					}
@@ -134,6 +138,10 @@
 				transform: translate3d(-50%, 0, 0);
 			}
 		}
+	}
+	.empty {
+		text-align: center;
+		margin-top: 50%;
 	}
 	.swiper {
 		height: 100%;

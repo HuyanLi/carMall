@@ -103,6 +103,7 @@
 			}
 		},
 		onLoad(e) {
+			console.log(e)
 			this.orderId = e.orderId
 			this.orderDetail()
 			this.initBank()
@@ -114,11 +115,7 @@
 					order_id: this.orderId
 				}
 				getOrderInfo(query).then(res=>{
-					uni.showToast({
-						duration: 2000,
-						title: res.msg
-					})
-					console.log(this.goodsData)
+					console.log(res.data)
 					if(res.code === 1) {
 						this.goodsData = res.data
 					}
@@ -142,7 +139,6 @@
 					if(this.imgList.length === 0) {
 						uni.showToast({
 							title:'请上传凭证',
-							duration:2000
 						})
 					}else {
 						let query = {
@@ -153,7 +149,6 @@
 						commitPay(query).then(res=>{
 							uni.showToast({
 								title: res.msg,
-								duration: 2000
 							})
 							//完成支付
 							uni.navigateTo({
@@ -171,9 +166,10 @@
 					sourceType: ['album'], //从相册选择
 					loop: true,
 					success: res => {
-						console.log(res);
 						if (res.tempFilePaths.length != 0) {
-							this.imgList.push(res.tempFilePaths[0]);
+							res.tempFilePaths.forEach(item=>{
+								this.imgList.push(item)
+							})
 						}
 						var tempFilePaths = res.tempFilePaths;
 						uni.uploadFile({

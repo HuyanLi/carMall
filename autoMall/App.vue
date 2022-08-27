@@ -94,7 +94,7 @@
 
 	/* 以下样式用于 hello uni-app 演示所需 */
 	page {
-		background-color: #efeff4;
+		background-color: #F6F6F6;
 		height: 100%;
 		font-size: 28rpx;
 		/* line-height: 1.8; */

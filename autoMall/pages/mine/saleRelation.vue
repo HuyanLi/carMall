@@ -1,13 +1,13 @@
 <template>
 	<view class="sale-relation">
 		<view class="sale-relation-user">
-			<img src="https://carshop.duoka361.cn/images/static/image/home/shihuo.png" />
+			<img :src="userInfo.head_img" />
 			<view class="sale-relation-user-msg">
 				<view class="sale-relation-user-msg-name">
-					Latte今天喝拿铁
+					{{userInfo.nickname}}
 				</view>
 				<view class="sale-relation-user-msg-title">
-					代理商
+					{{levelName}}
 				</view>
 			</view>
 		</view>
@@ -64,7 +64,6 @@
 								</view>
 							</view>
 						</view>
-						
 					</swiper-item>
 				</swiper>
 				
@@ -74,35 +73,36 @@
 </template>
 
 <script>
-	import { getRelationlist } from '@/api/mine.js'
+	import { getRelationlist, getGrith } from '@/api/mine.js'
 	export default {
 		data() {
 			return {
 				activeIndex: 0,
 				current: 0,
-				type: '',
-				contactState: [{title: '平级代理商',type: '1'},{title: '下级团长',type: '2'},{title: '下级团员',type:'3'}],
-				contacts: [{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
-					name: '用户名称',
-					date: '2020-08-18 23:02:31'
-				},{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
-					name: '用户名称',
-					date: '2020-08-18 23:02:31'
-				},{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
-					name: '用户名称',
-					date: '2020-08-18 23:02:31'
-				},{
-					img: 'https://carshop.duoka361.cn/images/static/image/home/shihuo.png',
-					name: '用户名称',
-					date: '2020-08-18 23:02:31'
-				}]
+				type: '1',
+				userInfo: uni.getStorageSync('userInfo'),
+				contactState: [],
+				contacts: [],
+				levelName: ''
 			}
 		},
-		created() {
-			this.initlist()
+		onShow() {
+			this.contacts = []
+			if(this.userInfo.level_id == 1) {
+				this.levelName = '代理商'
+				this.contactState = [{title: '平级代理商',type: '1'},{title: '下级团长',type: '2'},{title: '下级团员',type:'3'}]
+				this.initlist()
+			}else if(this.userInfo.level_id == 2) {
+				this.levelName = '团长'
+				this.contactState = [{title: '下级团员',type: '1' }]
+				this.initLevelSecord()
+			}else if(this.userInfo.level_id == 3){
+				this.levelName = '团员'
+				this.contactState = [{title: '上级团长',type: '1'}]
+				this.contacts.push(this.userInfo.agent)
+			}else {
+				this.levelName = ''
+			}
 		},
 		methods: {
 			initlist() {
@@ -111,6 +111,17 @@
 					level_id: this.type
 				}
 				getRelationlist(query).then(res=>{
+					if(res.code == 1) {
+						this.contacts = res.data.rows
+					}
+				})
+			},
+			initLevelSecord() {
+				let query = {
+					member_id: uni.getStorageSync('member_id'),
+					level_id: 3
+				}
+				getGrith(query).then(res=>{
 					this.contacts = res.data.rows
 				})
 			},

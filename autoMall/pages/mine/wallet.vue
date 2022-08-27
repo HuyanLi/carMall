@@ -26,7 +26,10 @@
 		</view>
 		
 		<view class="wallet-bill">
-			<view class="wallet-bill-item" v-for="(item, index) in bills.rows" :key="index">
+			<view v-if="bills.rows.length == 0" class="empty" >
+				暂无数据
+			</view>
+			<view v-else class="wallet-bill-item" v-for="(item, index) in bills.rows" :key="index">
 				<view class="wallet-bill-item-content">
 					<view class="title">收入(获取途径)</view>
 					<view class="account" :class="item.accountType == 'in' ? 'color333333' : 'color7D0016'">{{item.commission_price}}</view>
@@ -83,6 +86,10 @@
 <style lang="scss" scoped>
 .wallet {
 	background: #f6f6f6;
+	height: 100%;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
 	&-header {
 		height: 340rpx;
 		background: url("https://carshop.duoka361.cn/images/static/image/mine/background-blue.png") no-repeat;
@@ -159,7 +166,11 @@
 			}
 		}
 	}
-	
+	.empty {
+		height: 715rpx;
+		text-align: center;
+		padding-top: 20%;
+	}
 	&-bill {
 		width: 90%;
 		margin: 27rpx auto;

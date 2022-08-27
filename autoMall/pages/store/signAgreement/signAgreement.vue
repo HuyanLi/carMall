@@ -88,20 +88,21 @@
 							signing_image: res.tempFilePath,
 							member_id: uni.getStorageSync('member_id')
 						}
-						console.log(res.tempFilePath,query,'0909') 
-						//图片格式为base64，如果不是可上传七牛云，之后请求签名接口即可
 						editUser(query).then(res=>{
 							if(res.code == 1) {
 								//走到这里就签名成功了
-								uni.navigateTo({
-									url:'/pages/store/moneyCertificates/moneyCertificates?orderId='+this.orderId
-								})
 								uni.showToast({
 									title:res.msg,
-									duration:2000
 								})
+								setTimeout(()=>{
+									uni.navigateTo({
+										url:'/pages/store/moneyCertificates/moneyCertificates?orderId='+that.orderId
+									})
+								},500)
 							}else{
-								// that.$u.toast(res.result.message)
+								uni.showToast({
+									title:res.msg,
+								})
 							}
 						})
 					}

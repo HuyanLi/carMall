@@ -2,20 +2,15 @@
 <template>
 	<view class="report">
 		<view class="report-content">
-			<image src="https://carshop.duoka361.cn/images/static/image/home/rrr.png" mode=""></image>
-			<view class="report-content-text">
-				<view class="report-content-text-item">
-					<text class="report-content-text-item-title">一、加油时的#98、#95、#92有什么区别？</text>
-					<uni-data-checkbox wrap="true" v-model="radio1" :localdata="sex"></uni-data-checkbox>
+			<image :src="bgcIMG" mode=""></image>
+			<view class="report-content-text" v-for="(item,index) in questionList" :key='index'>
+				<view class="report-content-text-item" v-if="item.type == 1">
+					<text class="report-content-text-item-title">{{item.title}}</text>
+					<uni-data-checkbox wrap="true" @change="changeAnswer" :v-model="value" :localdata="item.answer"></uni-data-checkbox>
 				</view>
-				<view class="report-content-text-item">
-					<text class="report-content-text-item-title">二、填写选项题样式</text>
-					<uni-easyinput v-model="style1" placeholder="请输入" />
-					<uni-easyinput v-model="style1" placeholder="请输入" />
-				</view>
-				<view class="report-content-text-item">
-					<text class="report-content-text-item-title">三、题目名称文字占位题目名称文字占位题目名称文字占位题目名称文字占位</text>
-					<uni-data-checkbox v-model="radio1" :localdata="sex"></uni-data-checkbox>
+				<view class="report-content-text-item" v-if="item.type == 2">
+					<text class="report-content-text-item-title">{{item.title}}</text>
+					<uni-easyinput @blur='addinput(item)' type="text" v-model="item.text" placeholder="请输入" />
 				</view>
 			</view>
 		</view>
@@ -29,12 +24,14 @@
 
 <script>
 	import Dialog from '@/components/dialog.vue'
+	import { getQuestion, addAnswer, registerGift} from '@/api/home.js'
 	export default {
 		components:{
 			Dialog
 		},
 		data() {
 			return {
+				bgcIMG: '',
 				radio1: 2,
 				sex: [{
 					text: '没什么区别',
@@ -51,20 +48,83 @@
 				dialogVisible: false,
 				title: '提交成功',
 				cancleText: '返回',
-				confirmText: '确定'
+				confirmText: '确定',
+				questionList: [],
+				answer: null,
+				value: '',
+				text: '',
 			}
 		},
 		onLoad(e) {
-			console.log(e)
+		},
+		onShow() {
+			//图片
+			this.initRegisterGift()
+			this.initQuestion()
+			this.answer = new Map()
 		},
 		methods: {
+			async initRegisterGift() {
+				let data = await registerGift()
+				this.bgcIMG = data.data.test_report_image
+			},
+			initQuestion() {
+				getQuestion().then(res=>{
+					res.data.rows.forEach(item=>{
+						item.answer.forEach(e=>{
+							e.id = item.id
+							e.title = item.title
+						})
+					})
+					this.questionList = res.data.rows
+				})
+			},
+			changeAnswer(e) {
+				this.answer.set(e.detail.data.id,e.detail.data)
+			},
+			addinput(e){
+				this.answer.set(e.id,{
+					id: e.id,
+					title: e.title,
+					text: e.text
+				})
+			},
 			toGift() {
 				uni.navigateTo({
 					url: '/pages/home/checkWard/checkWard'
 				})
 			},
 			commitRep() {
-				this.dialogVisible = true
+				console.log(Object.keys(this.answer),this.answer,this.questionList,'answer')
+				if(Object.keys(this.answer).length < this.questionList.length) {
+					uni.showToast({
+						title: '请答完所有问题再提交',
+					})
+					return
+				}else {
+					let list = []
+					this.answer.forEach((val,key)=>{
+						list.push({
+							question_id: val.id,
+							question_title: val.title,
+							answer: val.text
+						})
+					})
+					let query = {
+						member_id: uni.getStorageSync('member_id'),
+						question: JSON.stringify(list)
+					}
+					addAnswer(query).then(res=>{
+						uni.showToast({
+							title: res.msg,
+						})
+						setTimeout(()=>{
+							uni.navigateBack({
+								delta: 1
+							})
+						},500)
+					})
+				}
 			},
 			handleCancel() {
 				this.dialogVisible = false 
@@ -77,12 +137,14 @@
 </script>
 
 <style lang="scss" scoped>
+
 ::v-deep.report {
 	width: 750rpx;
-	height: 100%;
-	// margin-bottom: 140rpx;
+	overflow-y: auto;
+	background-color: #f8f8f8;
 	&-content {
 		// margin-bottom: 120rpx;
+		// margin-bottom: 250rpx;
 		margin-bottom: 160rpx;
 		image {
 			width: 750rpx;
@@ -147,6 +209,7 @@
 		&-btn1 {
 			background: #EDEDED;
 			color: #202425;
+			z-index: 999;
 		}
 		&-btn2 {
 			background: #202425;

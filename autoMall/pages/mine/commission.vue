@@ -1,8 +1,7 @@
-<!-- 我的权益 -->
+<!-- 分销协议 -->
 <template>
-	<view class="equity">
+	<view class="commi">
 		<view class="detailBox">
-			<!-- <text>商品详情</text> -->
 			<rich-text class="richBox" :nodes="content"></rich-text>
 		</view>
 	</view>
@@ -23,14 +22,14 @@
 		methods: {
 			async initRegisterGift() {
 				let data = await registerGift()
-				this.content = data.data.member_note
+				this.content = data.data.commission_note
 			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-.equity {
+.commi {
 	width: 100%;
 	height: 100%;
 	.detailBox {

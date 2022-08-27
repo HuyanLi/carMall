@@ -118,7 +118,6 @@
 				var iv = e.detail.iv;
 				// 不允许授权
 				if (e.detail.errMsg !== "getPhoneNumber:ok") {
-					console.log("没有授权")
 					return;
 				}
 				let data = {
@@ -132,7 +131,6 @@
 					})
 					uni.setStorageSync("mobile",res.data.phone.phoneNumber);
 					this.$store.commit('mobile',res.data.phone.phoneNumber)
-					console.log(this.$store.state.user,'iuyuiyi')
 					_this.isPhone = false
 					_this.isMap = true
 					// location.reload()
@@ -142,11 +140,7 @@
 			getAddress() {
 				uni.chooseLocation({
 					success: (res) => {
-						// console.log('位置名称：' + res.name);
-						// console.log('详细地址：' + res.address);
-						// console.log('纬度：' + res.latitude);
-						// console.log('经度：' + res.longitude);
-						_this.isMap = false
+						this.isMap = false
 					}
 				});
 			}

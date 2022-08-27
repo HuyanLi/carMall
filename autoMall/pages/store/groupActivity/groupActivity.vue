@@ -9,21 +9,31 @@
 </template>
 
 <script>
+	import { getptStep } from '@/api/store.js'
 	export default {
 		data() {
 			return {
-				content: ''
+				content: '',
+				data: null,
+				allNum: 0,
 			}
 		},
-		onLoad(){
-			var data = '<p><img src="https://public.haotiku.com/haotiku/videos/20220216/1644974733576.png" alt="" width="571" height="337" /></p><p>应用内集成的第三方SDK以及插件：<br />1.cn.jpush.android: 用来给用户推送应用内资讯信息以及消息通知。<br />2.com.alipay：用于app内会员支付信息费<br />3.com.umeng.commonsdk：用于微信 qq等第三方登录授权以及分享。<br />4.com.amap.api：高德地图用于发布职位定位，已经用户入职导航。</p>';
-			data = data.replace(/\<img/g, "<img style='width: 100%;'")
-			this.content= data;
+		onLoad(e){
+			this.initContent()
+			if(e) {
+				this.data = e.data
+				this.allNum = e.allNum
+			}
 		},
 		methods: {
+			initContent() {
+				getptStep().then(res=>{
+					this.content = res.data.activity_note
+				})
+			},
 			toShare() {
 				uni.navigateTo({
-					url: '/pages/store/confirmOrder/confirmOrder'
+					url: '/pages/store/confirmOrder/confirmOrder?data=' + this.data +'&allNum=' +this.allNum 
 				})
 			}
 		}
@@ -32,11 +42,11 @@
 
 <style lang="scss" scoped>
 .groupA {
-	margin: 0 auto;
+	margin: 0 auto 120rpx;
 	width: 750rpx;
+	background-color: #f8f8f8;
 	.box {
-		margin: 0 auto;
-		width: 100%;
+		padding: 30rpx;
 		button {
 			position: fixed;
 			bottom: 30rpx;

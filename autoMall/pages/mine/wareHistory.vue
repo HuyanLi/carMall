@@ -1,11 +1,14 @@
 <template>
 	<view class="warehistory">
 		<view class="warehistory-title">
-			<view>当前库存/时间</view>
+			<view>{{name}}</view>
 			<view class="warehistory-title-right" @tap="handleFilter"><img src="https://carshop.duoka361.cn/images/static/image/mine/filter@2x.png" /><text>历史筛选</text></view>
 		</view>
 		<view class="warehouse-content">
-			<view class="warehouse-content-item" v-for="(item,index) in data" :key="index">
+			<view v-if="data.length == 0" class="empty" >
+				暂无库存记录
+			</view>
+			<view v-else class="warehouse-content-item" v-for="(item,index) in data" :key="index">
 				<img :src="item.goods_image" />
 				<view class="warehouse-content-item-info">
 					<view class="warehouse-content-item-info-title">{{item.goods_title}}</view>
@@ -39,11 +42,14 @@
 				type: '',
 				filter: [],
 				data: [],
-				chooseId: ''
+				chooseId: '',
+				title: '',
+				name: '当前库存'
 			}
 		},
 		created() {
 			this.initList()
+			this.name = '当前库存'
 		},
 		methods: {
 			initList() {
@@ -93,16 +99,14 @@
 					item.selected = false
 				})
 				this.filter[index].selected = true
+				this.title = item.createtime
 				this.chooseId = item.id
 			},
 			submitBtn() {
 				this.initList()
+				this.name = this.title
 				this.$refs.popup.close('bottom')
 			}
-			// setRadius() {
-			// 	document.getElementsByName('content')[0].style.borderRadius = '15px 15px 0 0'
-			// 	document.getElementsByName('content')[0].style.overflow = 'hidden'
-			// }
 		},
 	}
 </script>
@@ -175,6 +179,8 @@
 }
 
 .warehistory {
+	height: 100%;
+	background-color: #f6f6f6;
 	&-title {
 		display: flex;
 		flex-direction: row;
@@ -196,6 +202,12 @@
 			margin-right: 15rpx;
 		}
 	}
+}
+.empty {
+	height: 715rpx;
+	background: #FFFFFF;
+	text-align: center;
+	margin-top: 20%;
 }
 .warehouse-content {
 		background: #FFFFFF;

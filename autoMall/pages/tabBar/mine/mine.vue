@@ -9,7 +9,7 @@
 				<view class="info-content">
 					<view>
 						<text class="info-name">{{userInfo.nickname}}</text>
-						<image class="info-title" src="https://carshop.duoka361.cn/images/static/image/mine/tuanzhang.png">
+						<image class="info-title" :src='levelImg'>
 					</view>
 					<view class="info-invit-code">邀请码：{{userInfo.invitation_code}}</view>
 				</view>
@@ -78,39 +78,10 @@
 						name: '待评价',
 					},
 				],
-				tool: [
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
-						name: '站内信',
-						url: '/pages/mine/message'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
-						name: '我的权益',
-						url: '/pages/mine/equity'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
-						name: '收货地址',
-						url: '/pages/store/shipAddress/shipAddress'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '联系客服',
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '我的钱包',
-						url: '/pages/mine/wallet'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '我的仓库',
-						url: '/pages/mine/warehouse'
-					},
-				],
+				tool: [],
 				showQY: false,
-				tabbar: uni.getStorageSync('tabbar')
+				tabbar: uni.getStorageSync('tabbar'),
+				levelImg: ''
 			}
 		},
 		onLoad() {
@@ -120,13 +91,27 @@
 				  _this.statusBarHeight = res.statusBarHeight;
 			  },
 			});
+			if(this.userInfo.is_signing == 2) {
+				this.showQY = true
+			}else{
+				this.showQY = false
+			}
+			//  level_id 1:代理商 2：团长 3：团员 0：啥也不是
+			if(this.userInfo.level_id == 1) {
+				this.levelImg = 'https://carshop.duoka361.cn/images/static/image/mine/level1.png'
+			}else if(this.userInfo.level_id == 2) {
+				this.levelImg = 'https://carshop.duoka361.cn/images/static/image/mine/level2.png'
+			}else if(this.userInfo.level_id == 3) {
+				this.levelImg = 'https://carshop.duoka361.cn/images/static/image/mine/level3.png'
+			}else {
+				this.levelImg = ''
+			}
 		},
 		created() {
-			/* 等级 1：代理商 2：团长 3：团员 */
-			if (this.userInfo.level_id !== 1) {
-				if(this.userInfo.signing_image !== '' && this.userInfo.signing_image !== null) {
-					this.showQY = true
-					this.tool = [{
+			/* 等级 1：代理商 2：团长 3：团员 */  
+			// 可以看到仓库钱包  签约后   level是1的，
+			if(this.userInfo.level_id !== 0) {
+				this.tool = [{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
 							name: '站内信',
 							url: '/pages/mine/message'
@@ -134,6 +119,7 @@
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
 							name: '我的权益',
+							url: '/pages/home/equities/equities'
 						},
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
@@ -143,6 +129,7 @@
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 							name: '联系客服',
+							url: '/pages/tabBar/service/service'
 						},
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
@@ -154,9 +141,8 @@
 							name: '我的仓库',
 							url: '/pages/mine/warehouse'
 						}]
-				}else if(this.userInfo.level_id === 2){
-					this.showQY = false
-					this.tool = [{
+			}else {
+				this.tool = [{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
 							name: '站内信',
 							url: '/pages/mine/message'
@@ -164,6 +150,7 @@
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
 							name: '我的权益',
+							url: '/pages/home/equities/equities'
 						},
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
@@ -173,37 +160,8 @@
 						{
 							img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
 							name: '联系客服',
+							url: '/pages/tabBar/service/service'
 						}]
-				}
-			}else {
-				this.tool = [{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/zhanneixin.png',
-						name: '站内信',
-						url: '/pages/mine/message'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/wodequanyi.png',
-						name: '我的权益',
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/shouhuodizhi.png',
-						name: '收货地址',
-						url: '/pages/store/shipAddress/shipAddress'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '联系客服',
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '我的钱包',
-						url: '/pages/mine/wallet'
-					},
-					{
-						img: 'https://carshop.duoka361.cn/images/static/image/mine/lianxikefu.png',
-						name: '我的仓库',
-						url: '/pages/mine/warehouse'
-					}]
 			}
 		},
 		methods: {
